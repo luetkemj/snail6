@@ -48,6 +48,7 @@ module.exports = {
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
       title: "Snail 6",
+      template: "index.html",
     }),
   ],
   output: {

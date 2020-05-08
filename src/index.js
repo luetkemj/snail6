@@ -1,13 +1,6 @@
-import "./style.scss";
-
 import _ from "lodash";
 
-function component() {
-  const element = document.createElement("div");
+import "./style.scss";
+import "./lib/canvas.js";
 
-  element.innerHTML = _.join(["Hello", "webpacky o"], " ");
-
-  return element;
-}
-
-document.body.appendChild(component());
+document.addEventListener("keydown", (ev) => console.log(ev.key));

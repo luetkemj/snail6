@@ -1,7 +1,14 @@
-$red: #ff0000;
-$white: #ffffff;
-
 body {
-  background-color: $red;
-  color: $white;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 0;
+}
+
+canvas {
+  background: #000;
+  margin-top: 30px;
 }
