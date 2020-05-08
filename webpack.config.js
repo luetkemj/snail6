@@ -44,6 +44,7 @@ module.exports = {
   ...devServer(),
 
   entry: "./src/index.js",
+
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
@@ -52,7 +53,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: "main.js",
+    filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
   },
 
