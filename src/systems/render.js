@@ -4,7 +4,7 @@ import { clearCanvas, drawCell } from "../lib/canvas";
 export const render = () => {
   clearCanvas();
   // render map
-  const entities = ecs.createQuery(ecs, {
+  const entities = ecs.createQuery({
     all: [Appearance],
   });
 

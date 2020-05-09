@@ -5,11 +5,8 @@ import { layers } from "../lib/canvas";
 
 const ecs = new Engine();
 
-// some player components
-export class Position extends Component {
-  static properties = { x: 0, y: 0 };
-}
-
+// some components
+// todo: move these to own files somewhere
 export class Appearance extends Component {
   static properties = {
     color: colors.defaultColor,
@@ -19,11 +16,20 @@ export class Appearance extends Component {
   };
 }
 
-// all Components and Prefabs must be `registered` by the engine
-ecs.registerComponent(Position);
-ecs.registerComponent(Appearance);
+export class MoveTo extends Component {
+  static properties = { x: 0, y: 0 };
+}
 
-const player = ecs.createEntity();
+export class Position extends Component {
+  static properties = { x: 0, y: 0 };
+}
+
+// all Components and Prefabs must be `registered` by the engine
+ecs.registerComponent(Appearance);
+ecs.registerComponent(MoveTo);
+ecs.registerComponent(Position);
+
+export const player = ecs.createEntity();
 player.add(Position);
 player.add(Appearance, { char: chars.player, color: colors.player });
 

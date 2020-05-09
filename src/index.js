@@ -3,19 +3,18 @@ import "./lib/canvas.js";
 import { input, processUserInput } from "./lib/process-user-input";
 
 import game from "./state/game";
-import ecs from "./state/ecs";
 
+import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
 document.addEventListener("keydown", (ev) => input(ev.key));
 
-function initGame() {
-  console.log(ecs.serialize());
-}
+function initGame() {}
 
 initGame();
 
 function gameTick() {
+  movement();
   render();
 }
 

@@ -1,4 +1,5 @@
 import game from "../state/game";
+import { MoveTo, player } from "../state/ecs";
 
 export const input = (key) => {
   switch (key) {
@@ -31,10 +32,7 @@ export const processUserInput = () => {
 
   const { key, type, payload } = game.userInput;
 
-  console.log({ key, type, payload, raw: game.userInput });
-  // const player = getPlayer();
-
-  // if (type === "MOVE") {
-  //   player.addComponent("moveTo", payload);
-  // }
+  if (type === "MOVE") {
+    player.add(MoveTo, payload);
+  }
 };
