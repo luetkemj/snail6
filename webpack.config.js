@@ -1,6 +1,9 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
+
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const mode = () => {
   if (process.env.NODE_ENV === "development") {
@@ -51,6 +54,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Snail 6",
       template: "index.html",
+      version: gitRevisionPlugin.commithash().slice(0, 7),
     }),
   ],
   output: {
