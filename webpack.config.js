@@ -2,6 +2,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const gitRevisionPlugin = new GitRevisionPlugin();
 
@@ -46,6 +47,19 @@ module.exports = {
   ...mode(),
   ...devtool(),
   ...devServer(),
+
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          // because it's jacking up my property names and breaking code && mangle.properties = false don't do shit
+          // probably related to babel class properties...
+          mangle: false,
+        },
+      }),
+    ],
+  },
 
   entry: "./src/index.js",
 
