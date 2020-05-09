@@ -116,13 +116,12 @@ const drawChar = (char, color, position) => {
 };
 
 export const drawCell = (entity, options = {}) => {
+  console.log("drawCell");
   const { fg, bg, x, y } = options;
   const {
-    components: {
-      // todo: refactor this - color should come from light instead of having to be passed in...
-      appearance: { char, background, color },
-      position,
-    },
+    // todo: refactor this - color should come from light instead of having to be passed in...
+    appearance: { char, background, color },
+    position,
   } = entity;
 
   const bgColor = bg ? bg : background;

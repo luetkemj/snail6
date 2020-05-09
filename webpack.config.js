@@ -31,6 +31,7 @@ const devServer = () => {
     return {
       devServer: {
         contentBase: "./dist",
+        open: false,
       },
     };
   }

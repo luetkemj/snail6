@@ -2,34 +2,37 @@ import "./style.scss";
 import "./lib/canvas.js";
 import { input, processUserInput } from "./lib/process-user-input";
 
-export const state = {
-  userInput: null,
-  playerTurn: false,
-  turn: 0,
-};
+import game from "./state/game";
+import ecs from "./state/ecs";
+
+import { render } from "./systems/render";
 
 document.addEventListener("keydown", (ev) => input(ev.key));
 
+function initGame() {
+  console.log(ecs.serialize());
+}
+
+initGame();
+
 function gameTick() {
-  // this is where the systems will run
-  // console.log("tick");
+  render();
 }
 
 gameTick();
 
 function update() {
-  if (state.userInput && state.playerTurn) {
+  if (game.userInput && game.playerTurn) {
     processUserInput();
     gameTick();
-    state.userInput = null;
-    state.turn = state.turn += 1;
-    state.playerTurn = false;
-    console.log(state.turn);
+    game.userInput = null;
+    game.turn = game.turn += 1;
+    game.playerTurn = false;
   }
 
-  if (!state.playerTurn) {
+  if (!game.playerTurn) {
     gameTick();
-    state.playerTurn = true;
+    game.playerTurn = true;
   }
 }
 
