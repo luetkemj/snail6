@@ -1,4 +1,6 @@
-import ecs, { MoveTo, Position } from "../state/ecs";
+import ecs from "../state/ecs";
+import MoveTo from "../components/MoveTo";
+import Position from "../components/Position";
 
 export const movement = () => {
   const entities = ecs.createQuery({

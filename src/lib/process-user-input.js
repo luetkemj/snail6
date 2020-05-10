@@ -1,5 +1,7 @@
 import game from "../state/game";
-import { MoveTo, player } from "../state/ecs";
+
+import MoveTo from "../components/MoveTo";
+import { player } from "../state/ecs";
 
 export const input = (key) => {
   switch (key) {

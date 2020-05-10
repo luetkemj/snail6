@@ -34,7 +34,7 @@ export const colors = {
   player: color("#FFF"),
   // monsters
   goblin: color("#0C9"),
-  rat: color("#F1948A")
+  rat: color("#F1948A"),
 };
 
 export const chars = {
@@ -64,5 +64,5 @@ export const chars = {
   player: "@",
   // monsters
   goblin: "g",
-  rat: "r"
+  rat: "r",
 };
