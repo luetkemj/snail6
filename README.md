@@ -4,4 +4,4 @@
 
 The sixth iteration of snail. A roguelike built to learn how to build roguelikes.
 
-This iteration features a [canned ECS architecture](https://github.com/ddmills/geotic) mixed with a full bag and tips and tricks learned from the last 5 iterations.
+This iteration features a [canned ECS architecture](https://github.com/ddmills/geotic) mixed with a full bag of tips and tricks learned from the last 5 iterations.
