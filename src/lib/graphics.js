@@ -1,40 +1,38 @@
-import color from "color";
-
 export const colors = {
-  defaultColor: color("#ff0077"),
-  defaultBGColor: color("#000"),
+  defaultColor: "#ff0077",
+  defaultBGColor: "#000",
 
-  inventoryHighlight: color("#A9CCE3"),
+  inventoryHighlight: "#A9CCE3",
 
   // light:
-  torchLight: color("#FFD00E"),
-  campfire: color("#FFD00E"),
+  torchLight: "#FFD00E",
+  campfire: "#FFD00E",
 
   // staging:
-  fountain: color("#3366FF"),
+  fountain: "#3366FF",
 
   // items:
-  armor: color("#DAA520"),
-  bandage: color("#F7DC6F"),
-  chest: color("#DAA520"),
-  currency: color("#DAA520"),
-  multipleItems: color("#DAA520"),
-  potion: color("#DAA520"),
-  weapon: color("#DAA520"),
+  armor: "#DAA520",
+  bandage: "#F7DC6F",
+  chest: "#DAA520",
+  currency: "#DAA520",
+  multipleItems: "#DAA520",
+  potion: "#DAA520",
+  weapon: "#DAA520",
   // log
-  hudText: color("#fff"),
-  healthBar: color("#B91906"),
+  hudText: "#fff",
+  healthBar: "#B91906",
   // maps
-  wall: color("#AAA"),
-  floor: color("#555"),
-  cavernFloor: color("#71331E"),
-  stairsUp: color("#AAA"),
-  stairsDown: color("#AAA"),
+  wall: "#AAA",
+  floor: "#555",
+  cavernFloor: "#71331E",
+  stairsUp: "#AAA",
+  stairsDown: "#AAA",
   // player
-  player: color("#FFF"),
+  player: "#FFF",
   // monsters
-  goblin: color("#0C9"),
-  rat: color("#F1948A"),
+  goblin: "#0C9",
+  rat: "#F1948A",
 };
 
 export const chars = {

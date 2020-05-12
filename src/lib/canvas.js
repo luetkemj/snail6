@@ -1,3 +1,5 @@
+import Color from "color";
+
 const pixelRatio = window.devicePixelRatio || 1;
 let canvas;
 let ctx;
@@ -97,7 +99,7 @@ ctx.textBaseline = "middle";
 const drawBackground = (color, position) => {
   if (color === "transparent") return;
 
-  ctx.fillStyle = color.hsl().string("hsla");
+  ctx.fillStyle = Color(color).hsl().string("hsla");
   ctx.fillRect(
     position.x * cellWidth,
     position.y * cellHeight,
@@ -107,7 +109,7 @@ const drawBackground = (color, position) => {
 };
 
 const drawChar = (char, color, position) => {
-  ctx.fillStyle = color.hsl().string("hsla");
+  ctx.fillStyle = Color(color).hsl().string("hsla");
   ctx.fillText(
     char,
     position.x * cellWidth + cellWidth / 2,
