@@ -12,7 +12,6 @@ This iteration features a [canned ECS architecture](https://github.com/ddmills/g
 
 `npm test` Run all tests
 
-`npm run preprod` Build the application and run dist locally via python SimpleHTTPServer at port 8000
+`npm run preprod` Build the application and serve locally on port 1234
 
 `npm run deploy` Build application and deploy to github pages
-

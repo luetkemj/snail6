@@ -6,7 +6,7 @@
     "build": "NODE_ENV='production' webpack",
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
-    "preprod": "npm run build && cd dist && python -m SimpleHTTPServer 8000",
+    "preprod": "npm run build && npx http-server ./dist -o -p 1234",
     "start": "NODE_ENV='development' webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,7 @@
     "gh-pages": "2.2.0",
     "git-revision-webpack-plugin": "3.0.6",
     "html-webpack-plugin": "4.3.0",
+    "http-server": "0.12.3",
     "sass": "1.26.5",
     "sass-loader": "8.0.2",
     "style-loader": "1.2.1",
