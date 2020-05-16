@@ -1,4 +1,5 @@
 import Appearance from "../components/Appearance";
+
 import { chars, colors } from "../lib/graphics";
 
 export default {

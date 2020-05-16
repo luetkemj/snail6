@@ -10,8 +10,6 @@ export default {
   inherit: ["TilePrefab"],
 
   components: [
-    { type: IsBlocking },
-    { type: IsOpaque },
     {
       type: Appearance,
       properties: {
@@ -19,5 +17,7 @@ export default {
         char: chars.wall,
       },
     },
+    { type: IsBlocking },
+    { type: IsOpaque },
   ],
 };

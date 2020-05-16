@@ -3,6 +3,8 @@ import { Engine } from "geotic";
 import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
 import IsOpaque from "../components/IsOpaque";
+import Layer100 from "../components/Layer100";
+import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 
@@ -20,6 +22,8 @@ const ecs = new Engine();
 ecs.registerComponent(Appearance);
 ecs.registerComponent(IsBlocking);
 ecs.registerComponent(IsOpaque);
+ecs.registerComponent(Layer100);
+ecs.registerComponent(Layer400);
 ecs.registerComponent(MoveTo);
 ecs.registerComponent(Position);
 
