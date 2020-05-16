@@ -1,5 +1,6 @@
 import "./style.scss";
 import "./lib/canvas.js";
+import { player } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 
 import game from "./state/game";
@@ -13,6 +14,8 @@ document.addEventListener("keydown", (ev) => input(ev.key));
 
 function initGame() {
   const dungeon = initDungeonLevel();
+  player.position.x = dungeon.start.x;
+  player.position.y = dungeon.start.y;
 }
 
 initGame();

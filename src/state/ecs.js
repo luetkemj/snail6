@@ -37,8 +37,6 @@ ecs.registerPrefab(WallPrefab);
 
 export const player = ecs.createPrefab("PlayerPrefab");
 
-console.log("playret", player);
-
 console.log(ecs.serialize());
 
 export default ecs;
