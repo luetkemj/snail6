@@ -4,12 +4,16 @@ import { input, processUserInput } from "./lib/process-user-input";
 
 import game from "./state/game";
 
+import initDungeonLevel from "./initializers/dungeon-level.init";
+
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
 document.addEventListener("keydown", (ev) => input(ev.key));
 
-function initGame() {}
+function initGame() {
+  const dungeon = initDungeonLevel();
+}
 
 initGame();
 
