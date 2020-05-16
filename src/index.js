@@ -7,6 +7,7 @@ import game from "./state/game";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
+import { fov } from "./systems/fov";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
@@ -22,6 +23,7 @@ initGame();
 
 function gameTick() {
   movement();
+  fov();
   render();
 }
 

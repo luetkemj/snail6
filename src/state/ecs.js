@@ -2,7 +2,9 @@ import { Engine } from "geotic";
 
 import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
+import IsInFov from "../components/IsInFov";
 import IsOpaque from "../components/IsOpaque";
+import IsRevealed from "../components/IsRevealed";
 import Layer100 from "../components/Layer100";
 import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
@@ -21,7 +23,9 @@ const ecs = new Engine();
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Appearance);
 ecs.registerComponent(IsBlocking);
+ecs.registerComponent(IsInFov);
 ecs.registerComponent(IsOpaque);
+ecs.registerComponent(IsRevealed);
 ecs.registerComponent(Layer100);
 ecs.registerComponent(Layer400);
 ecs.registerComponent(MoveTo);
