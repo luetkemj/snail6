@@ -1,9 +1,8 @@
-import ecs from "../state/ecs";
+import ecs, { cache } from "../state/ecs";
 
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
-
-console.log("dli", ecs);
+import { cellToId } from "../lib/grid";
 
 const initDungeonLevel = () => {
   // create dungeon level
@@ -20,23 +19,28 @@ const initDungeonLevel = () => {
   Object.keys(dungeon.tiles).forEach((tileId) => {
     const currTile = dungeon.tiles[tileId];
 
+    let entity;
+
     if (currTile.sprite === "WALL") {
-      ecs.createPrefab("WallPrefab", {
+      entity = ecs.createPrefab("WallPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
     }
 
     if (currTile.sprite === "FLOOR") {
-      ecs.createPrefab("FloorPrefab", {
+      entity = ecs.createPrefab("FloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
     }
 
     if (currTile.sprite === "CAVERN_FLOOR") {
-      ecs.createPrefab("CavernFloorPrefab", {
+      entity = ecs.createPrefab("CavernFloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
     }
+
+    const locId = cellToId(currTile);
+    cache.add("entitiesAtLocation", locId, entity.id);
   });
 
   return dungeon;

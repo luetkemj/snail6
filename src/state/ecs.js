@@ -1,4 +1,5 @@
 import { Engine } from "geotic";
+import Cache from "./cache";
 
 import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
@@ -19,6 +20,7 @@ import FloorPrefab from "../prefabs/floor";
 import WallPrefab from "../prefabs/wall";
 
 const ecs = new Engine();
+export const cache = new Cache();
 
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Appearance);
@@ -40,7 +42,5 @@ ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(WallPrefab);
 
 export const player = ecs.createPrefab("PlayerPrefab");
-
-console.log(ecs.serialize());
 
 export default ecs;

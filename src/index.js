@@ -1,7 +1,8 @@
 import "./style.scss";
 import "./lib/canvas.js";
-import { player } from "./state/ecs";
+import { cache, player } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
+import { cellToId } from "./lib/grid";
 
 import game from "./state/game";
 
@@ -17,6 +18,8 @@ function initGame() {
   const dungeon = initDungeonLevel();
   player.position.x = dungeon.start.x;
   player.position.y = dungeon.start.y;
+
+  cache.add("entitiesAtLocation", cellToId(dungeon.start), player.id);
 }
 
 initGame();

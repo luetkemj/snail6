@@ -1,5 +1,6 @@
-import ecs from "../state/ecs";
+import ecs, { cache } from "../state/ecs";
 import { grid } from "../lib/canvas";
+import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 import IsBlocking from "../components/IsBlocking";
@@ -36,6 +37,10 @@ export const movement = () => {
     if (hasBlockers) {
       return entity.remove(MoveTo);
     }
+
+    // update cache
+    cache.delete("entitiesAtLocation", cellToId(entity.position), entity.id);
+    cache.add("entitiesAtLocation", cellToId({ x: mx, y: my }), entity.id);
 
     entity.position.x = mx;
     entity.position.y = my;
