@@ -6,5 +6,9 @@
   <body>
     <canvas id="canvas"></canvas>
     <div class="build">Build: <%= htmlWebpackPlugin.options.version %></div>
+    <img
+      class="sprites basic"
+      src="<%=require('./src/assets/sprites.png').default%>"
+    />
   </body>
 </html>

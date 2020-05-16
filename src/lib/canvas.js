@@ -15,6 +15,9 @@ if (process.env.NODE_ENV === "test") {
   ctx = canvas.getContext("2d");
 }
 
+// sprites
+const spritesBasic = document.querySelector(".sprites.basic");
+
 export const layers = {
   ground: 100,
   tracks: 200,
@@ -86,9 +89,16 @@ let cellWidth = calculatedFontSize * pixelRatio;
 let cellHeight = calculatedFontSize * lineHeight * pixelRatio;
 let fontSize = calculatedFontSize * pixelRatio;
 
-canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
-  calculatedFontSize * lineHeight * grid.height
-}`;
+// if using sprites - set cellHeight to cellWidth
+cellHeight = cellWidth;
+console.log(cellHeight, cellWidth);
+
+// also do it here
+// canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
+//   calculatedFontSize * lineHeight * grid.height
+// }`;
+canvas.style.cssText = `width: ${calculatedFontSize * grid.width};`;
+
 canvas.width = cellWidth * grid.width;
 canvas.height = cellHeight * grid.height;
 
@@ -117,6 +127,22 @@ const drawChar = (char, color, position) => {
   );
 };
 
+// export const drawCell = (entity, options = {}) => {
+//   const { fg, bg, x, y } = options;
+//   const {
+//     // todo: refactor this - color should come from light instead of having to be passed in...
+//     appearance: { char, background, color },
+//     position,
+//   } = entity;
+
+//   const bgColor = bg ? bg : background;
+//   const charColor = fg ? fg : color;
+//   const pos = x && y ? { x, y } : position;
+
+//   drawBackground(bgColor, pos);
+//   drawChar(char, charColor, pos);
+// };
+
 export const drawCell = (entity, options = {}) => {
   const { fg, bg, x, y } = options;
   const {
@@ -130,7 +156,19 @@ export const drawCell = (entity, options = {}) => {
   const pos = x && y ? { x, y } : position;
 
   drawBackground(bgColor, pos);
-  drawChar(char, charColor, pos);
+  // drawChar(char, charColor, pos);
+
+  ctx.drawImage(
+    spritesBasic,
+    16,
+    16,
+    16,
+    16,
+    pos.x,
+    pos.y,
+    cellWidth,
+    cellHeight
+  );
 };
 
 export const clearCanvas = () =>

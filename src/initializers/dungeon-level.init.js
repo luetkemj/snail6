@@ -3,8 +3,6 @@ import ecs from "../state/ecs";
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
 
-console.log("dli", ecs);
-
 const initDungeonLevel = () => {
   // create dungeon level
   const dungeon = generateDungeon({
