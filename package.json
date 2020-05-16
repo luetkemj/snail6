@@ -6,7 +6,7 @@
     "build": "NODE_ENV='production' webpack",
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
-    "preprod": "npm run build && npx http-server ./dist -o -p 1234",
+    "preprod": "rm -rf ./dist && npm run build && npx http-server ./dist -o -p 1234",
     "start": "NODE_ENV='development' webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
