@@ -100,7 +100,6 @@ export const light = () => {
     const locIds = getNeighborIds(
       entity.position.x,
       entity.position.y
-      // todo: FOV.fov could be a set for perf
     ).filter((locId) => fov.has(locId));
 
     // get brightest light from all neighbors and set light to that

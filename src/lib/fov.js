@@ -101,10 +101,9 @@ export default function createFOV(
     castShadows(originX, originY, 1, 1, 0, octant, radius);
   }
 
-  const visibleIds = [...visible];
   return {
-    fov: visibleIds,
-    distance: visibleIds.reduce((acc, val) => {
+    fov: visible,
+    distance: [...visible].reduce((acc, val) => {
       const cell = idToCell(val);
       acc[val] = distance({ x: originX, y: originY }, { x: cell.x, y: cell.y });
       return acc;
