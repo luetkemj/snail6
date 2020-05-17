@@ -29,9 +29,14 @@
         position: absolute;
         bottom: 0;
       }
+
+      .hide {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <img id="loading" src="<%=require('./src/assets/loading.gif').default%>" />
     <canvas id="canvas"></canvas>
     <div class="build">Build: <%= htmlWebpackPlugin.options.version %></div>
   </body>

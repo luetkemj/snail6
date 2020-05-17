@@ -14,6 +14,7 @@ import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
 document.addEventListener("keydown", (ev) => input(ev.key));
+document.querySelector("#loading").classList.add("hide");
 
 function initGame() {
   const dungeon = initDungeonLevel();
@@ -67,15 +68,5 @@ if (process.env.NODE_ENV !== "test") {
     cache
       .read("entitiesAtLocation", locId)
       .forEach((eId) => console.log(ecs.getEntity(eId).serialize()));
-
-    // const entities = filter(
-    //   ECS.entities,
-    //   (entity) =>
-    //     entity.components.position.x === x && entity.components.position.y === y
-    // );
-
-    // entities.forEach((entity) => entity.print());
-
-    // console.log(`${x},${y}`, { ECS });
   };
 }
