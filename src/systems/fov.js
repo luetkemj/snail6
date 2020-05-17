@@ -1,11 +1,11 @@
-import { player } from "../state/ecs";
+import ecs, { cache, player } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import createFOV from "../lib/fov";
 
 import IsInFov from "../components/IsInFov";
 import IsRevealed from "../components/IsRevealed";
 
-import { renderableEntities, opaqueEntities } from "../queries";
+import { inFovEntities, renderableEntities, opaqueEntities } from "../queries";
 
 export const fov = () => {
   const { width, height } = grid;
@@ -16,23 +16,55 @@ export const fov = () => {
   const FOV = createFOV(opaqueEntities, width, height, originX, originY, 100);
 
   // try doing this from FOV.fov and checking entities at location cache to speed up!
-  renderableEntities.get().forEach((entity) => {
-    const locId = `${entity.position.x},${entity.position.y}`;
+  // console.log({ FOV });
 
-    if (FOV.fov.includes(locId)) {
-      if (!entity.isInFov) {
+  // clear out stale fov
+  inFovEntities.get().forEach((x) => x.remove(IsInFov));
+
+  FOV.fov.forEach((locId) => {
+    const entitiesAtLoc = cache.read("entitiesAtLocation", locId);
+
+    if (entitiesAtLoc) {
+      entitiesAtLoc.forEach((eId) => {
+        const entity = ecs.getEntity(eId);
         entity.add(IsInFov);
-      }
 
-      if (entity.light && entity.light.a > 0) {
-        if (!entity.isRevealed) {
-          entity.add(IsRevealed);
+        if (entity.light && entity.light.a > 0) {
+          if (!entity.isRevealed) {
+            entity.add(IsRevealed);
+          }
         }
-      }
-    } else {
-      if (entity.isInFov) {
-        entity.remove(IsInFov);
-      }
+      });
     }
+    // cache.read("entitiesAtLocation", locId).forEach((eId) => {
+    //   const entity = ecs.getEntity(eId);
+    //   entity.add(IsInFov);
+
+    //   if (entity.light && entity.light.a > 0) {
+    //     if (!entity.isRevealed) {
+    //       entity.add(IsRevealed);
+    //     }
+    //   }
+    // });
   });
+
+  // renderableEntities.get().forEach((entity) => {
+  //   const locId = `${entity.position.x},${entity.position.y}`;
+
+  //   if (FOV.fov.has(locId)) {
+  //     if (!entity.isInFov) {
+  //       entity.add(IsInFov);
+  //     }
+
+  //     if (entity.light && entity.light.a > 0) {
+  //       if (!entity.isRevealed) {
+  //         entity.add(IsRevealed);
+  //       }
+  //     }
+  //   } else {
+  //     if (entity.isInFov) {
+  //       entity.remove(IsInFov);
+  //     }
+  //   }
+  // });
 };
