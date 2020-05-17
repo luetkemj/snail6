@@ -1,11 +1,11 @@
 import Appearance from "../components/Appearance";
+import Layer100 from "../components/Layer100";
+import Position from "../components/Position";
 
 import { chars, colors } from "../lib/graphics";
 
 export default {
   name: "FloorPrefab",
-
-  inherit: ["TilePrefab"],
 
   components: [
     {
@@ -15,5 +15,7 @@ export default {
         char: chars.floor,
       },
     },
+    { type: Layer100 },
+    { type: Position },
   ],
 };

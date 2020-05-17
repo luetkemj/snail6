@@ -13,11 +13,7 @@ import LightSource from "../components/LightSource";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 
-import CreaturePrefab from "../prefabs/creature";
 import PlayerPrefab from "../prefabs/player";
-
-import TilePrefab from "../prefabs/tile";
-import CavernFloorPrefab from "../prefabs/cavern-floor";
 import FloorPrefab from "../prefabs/floor";
 import WallPrefab from "../prefabs/wall";
 
@@ -37,11 +33,7 @@ ecs.registerComponent(LightSource);
 ecs.registerComponent(MoveTo);
 ecs.registerComponent(Position);
 
-ecs.registerPrefab(CreaturePrefab);
 ecs.registerPrefab(PlayerPrefab);
-
-ecs.registerPrefab(TilePrefab);
-ecs.registerPrefab(CavernFloorPrefab);
 ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(WallPrefab);
 

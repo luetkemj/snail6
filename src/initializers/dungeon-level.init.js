@@ -1,5 +1,5 @@
 import ecs, { cache } from "../state/ecs";
-
+import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
@@ -34,9 +34,11 @@ const initDungeonLevel = () => {
     }
 
     if (currTile.sprite === "CAVERN_FLOOR") {
-      entity = ecs.createPrefab("CavernFloorPrefab", {
+      entity = ecs.createPrefab("FloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
+
+      entity.appearance.color = colors.cavern_floor;
     }
 
     const locId = cellToId(currTile);
