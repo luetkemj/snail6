@@ -13,8 +13,9 @@ import LightSource from "../components/LightSource";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 
-import PlayerPrefab from "../prefabs/player";
+import BonfirePrefab from "../prefabs/bonfire";
 import FloorPrefab from "../prefabs/floor";
+import PlayerPrefab from "../prefabs/player";
 import WallPrefab from "../prefabs/wall";
 
 const ecs = new Engine();
@@ -33,8 +34,9 @@ ecs.registerComponent(LightSource);
 ecs.registerComponent(MoveTo);
 ecs.registerComponent(Position);
 
-ecs.registerPrefab(PlayerPrefab);
+ecs.registerPrefab(BonfirePrefab);
 ecs.registerPrefab(FloorPrefab);
+ecs.registerPrefab(PlayerPrefab);
 ecs.registerPrefab(WallPrefab);
 
 export const player = ecs.createPrefab("PlayerPrefab");

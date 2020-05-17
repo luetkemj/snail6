@@ -1,3 +1,4 @@
+import { random } from "lodash";
 import ecs, { cache } from "../state/ecs";
 import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
@@ -43,6 +44,17 @@ const initDungeonLevel = () => {
 
     const locId = cellToId(currTile);
     cache.add("entitiesAtLocation", locId, entity.id);
+  });
+
+  dungeon.rooms.forEach((room, index) => {
+    if (index !== 0 && random(1, 3) === 1) {
+      const entity = ecs.createPrefab("BonfirePrefab", {
+        position: room.center,
+      });
+
+      const locId = cellToId(room.center);
+      cache.add("entitiesAtLocation", locId, entity.id);
+    }
   });
 
   return dungeon;

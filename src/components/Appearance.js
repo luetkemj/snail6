@@ -6,7 +6,7 @@ export default class Appearance extends Component {
   static properties = {
     color: colors.defaultColor,
     char: chars.defaultChar,
-    background: "transparent",
+    background: colors.defaultBGColor,
     layer: layers.ground,
   };
 }
