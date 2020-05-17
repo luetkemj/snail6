@@ -1,14 +1,16 @@
 import Color from "color";
 
-import ecs, { cache } from "../state/ecs";
+import ecs, { cache, player } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import createFov from "../lib/fov";
+import { cellToId, getNeighborIds } from "../lib/grid";
 
 import Light from "../components/Light";
 import LightSource from "../components/LightSource";
 import Position from "../components/Position";
 import Appearance from "../components/Appearance";
 import IsOpaque from "../components/IsOpaque";
+import IsInFov from "../components/IsInFov";
 
 const lightSources = ecs.createQuery({
   all: [LightSource, Position],
@@ -22,11 +24,19 @@ const opaqueEntities = ecs.createQuery({
   all: [IsOpaque],
 });
 
-const visibleEntities = ecs.createQuery({
-  all: [Position, Appearance],
+const opaqueNotLightSource = ecs.createQuery({
+  all: [IsOpaque],
+  none: [LightSource],
 });
 
-const { width, height } = grid;
+const inFovEntities = ecs.createQuery({
+  all: [IsInFov],
+});
+
+const gridWidth = grid.width;
+const gridHeight = grid.height;
+
+const gridMax = Math.max(gridWidth, gridHeight);
 
 export const light = () => {
   // first remove all lights
@@ -41,8 +51,8 @@ export const light = () => {
 
     const { fov, distance } = createFov(
       opaqueEntities,
-      width,
-      height,
+      gridWidth,
+      gridHeight,
       originX,
       originY,
       range
@@ -95,44 +105,51 @@ export const light = () => {
     }
   });
 
-  // lightSources.get().forEach((lsEntity) => {
-  //   console.log(lsEntity);
-  //   const { range } = lsEntity.lightSource;
-  //   const originX = lsEntity.position.x;
-  //   const originY = lsEntity.position.y;
-  //   const FOV = createFOV(
-  //     opaqueLocations,
-  //     width,
-  //     height,
-  //     originX,
-  //     originY,
-  //     range
-  //   );
-  //   const { fov, distance } = FOV;
-  //   fov.forEach((locId) => {
-  //     const opacity = ((range - distance[locId]) / range) * 100;
-  //     if (entitiesByLocation[locId]) {
-  //       entitiesByLocation[locId].forEach((entityId) => {
-  //         const entity = getEntity(entityId);
-  //         if (!entity.components.isOpaque) {
-  //           if (entity.components.light) {
-  //             const a = entity.components.light.a + opacity;
-  //             entity.updateComponent("light", { a });
-  //           } else {
-  //             entity.addComponent("light", { a: opacity });
-  //             litEntityIds.push(entity.id);
-  //           }
-  //           const sources = [...entity.components.light.sources, eId];
-  //           entity.updateComponent("light", { sources });
-  //         }
-  //         if (entity.components.lightsource) {
-  //           entity.addComponent("light", { a: 100 });
-  //           const sources = [...entity.components.light.sources, eId];
-  //           entity.updateComponent("light", { sources });
-  //           litEntityIds.push(entity.id);
-  //         }
-  //       });
-  //     }
-  //   });
-  // });
+  // Opaque entities lighting
+  const fov = new Set(
+    [...inFovEntities.get()].map((x) => cellToId(x.position))
+  );
+
+  opaqueNotLightSource.get().forEach((entity) => {
+    let brightestLight = 0;
+    let light = null;
+
+    // get all of it's neighbors
+    const locIds = getNeighborIds(
+      entity.position.x,
+      entity.position.y
+      // todo: FOV.fov could be a set for perf
+    ).filter((locId) => fov.has(locId));
+
+    // get brightest light from all neighbors and set light to that
+    // if no neighors are lit - stay dark :)
+    locIds.forEach((locId) => {
+      const entitiesAtLoc = cache.read("entitiesAtLocation", locId);
+      if (entitiesAtLoc) {
+        entitiesAtLoc.forEach((id) => {
+          const e = ecs.getEntity(id);
+          if (e.light && !e.isOpaque) {
+            if (brightestLight < e.light.a) {
+              brightestLight = e.light.a;
+              light = {
+                a: e.light.a,
+                sources: e.light.sources,
+              };
+            }
+          }
+        });
+      }
+    });
+
+    if (brightestLight) {
+      entity.add(Light, light);
+      entity.light.sources.forEach((sourceId) => {
+        const { color, weight } = ecs.getEntity(sourceId).lightSource;
+        let fg = Color(entity.appearance.color).alpha(light.a / 100);
+
+        const mixedColor = fg.mix(Color(color), weight);
+        entity.light.color = mixedColor;
+      });
+    }
+  });
 };

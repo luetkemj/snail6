@@ -32,8 +32,10 @@ export const fov = () => {
         entity.add(IsInFov);
       }
 
-      if (!entity.isRevealed) {
-        entity.add(IsRevealed);
+      if (entity.light && entity.light.a > 0) {
+        if (!entity.isRevealed) {
+          entity.add(IsRevealed);
+        }
       }
     } else {
       if (entity.isInFov) {

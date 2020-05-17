@@ -28,13 +28,13 @@ const drawCellIfAble = (entity) => {
     if (light.color && light.a > 0) {
       drawCell(entity, { fg: light.color });
     }
+  }
 
-    if (entity.has("IsRevealed")) {
-      if (!isInFov || (isInFov && !light) || (isInFov && light <= 0)) {
-        drawCell(entity, {
-          fg: appearance.color.alpha(0.1).saturationl(100).hue(200),
-        });
-      }
+  if (entity.has("IsRevealed")) {
+    if (!isInFov || (isInFov && !light) || (isInFov && light <= 0)) {
+      drawCell(entity, {
+        fg: Color(appearance.color).alpha(0.15).saturationl(100).hue(200),
+      });
     }
   }
 };
