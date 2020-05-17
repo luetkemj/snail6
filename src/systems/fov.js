@@ -22,13 +22,7 @@ export const fov = () => {
   const originX = player.position.x;
   const originY = player.position.y;
 
-  const opaqueLocations = new Set();
-
-  opaqueEntities
-    .get()
-    .forEach((x) => opaqueLocations.add(`${x.position.x},${x.position.y}`));
-
-  const FOV = createFOV(opaqueLocations, width, height, originX, originY, 100);
+  const FOV = createFOV(opaqueEntities, width, height, originX, originY, 100);
 
   entities.get().forEach((entity) => {
     const locId = `${entity.position.x},${entity.position.y}`;

@@ -14,7 +14,7 @@ const octantTransforms = [
 // width: width of map (or visible map?)
 // height: height of map (or visible map?)
 export default function createFOV(
-  blockingLocations,
+  opaqueEntities,
   width,
   height,
   originX,
@@ -22,6 +22,12 @@ export default function createFOV(
   radius
 ) {
   const visible = new Set();
+
+  const blockingLocations = new Set();
+  opaqueEntities
+    .get()
+    .forEach((x) => blockingLocations.add(`${x.position.x},${x.position.y}`));
+
   const isOpaque = (x, y) => {
     const locId = `${x},${y}`;
     return !!blockingLocations.has(locId);
