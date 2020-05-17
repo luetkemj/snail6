@@ -1,4 +1,3 @@
-import "./style.scss";
 import "./lib/canvas.js";
 import { pxToCell } from "./lib/canvas";
 import ecs, { cache, player } from "./state/ecs";
