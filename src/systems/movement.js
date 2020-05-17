@@ -1,20 +1,11 @@
-import ecs, { cache } from "../state/ecs";
+import { cache } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
-import Position from "../components/Position";
-import IsBlocking from "../components/IsBlocking";
-
-const entities = ecs.createQuery({
-  all: [MoveTo, Position],
-});
-
-const blockingEntities = ecs.createQuery({
-  all: [IsBlocking, Position],
-});
+import { movableEntities, blockingEntities } from "../queries";
 
 export const movement = () => {
-  entities.get().forEach((entity) => {
+  movableEntities.get().forEach((entity) => {
     const mPos = {
       x: entity.position.x + entity.moveTo.x,
       y: entity.position.y + entity.moveTo.y,

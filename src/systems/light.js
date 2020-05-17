@@ -6,32 +6,14 @@ import createFov from "../lib/fov";
 import { cellToId, getNeighborIds } from "../lib/grid";
 
 import Light from "../components/Light";
-import LightSource from "../components/LightSource";
-import Position from "../components/Position";
-import Appearance from "../components/Appearance";
-import IsOpaque from "../components/IsOpaque";
-import IsInFov from "../components/IsInFov";
 
-const lightSources = ecs.createQuery({
-  all: [LightSource, Position],
-});
-
-const litEntities = ecs.createQuery({
-  all: [Light],
-});
-
-const opaqueEntities = ecs.createQuery({
-  all: [IsOpaque],
-});
-
-const opaqueNotLightSource = ecs.createQuery({
-  all: [IsOpaque],
-  none: [LightSource],
-});
-
-const inFovEntities = ecs.createQuery({
-  all: [IsInFov],
-});
+import {
+  lightSourcesEntities,
+  litEntities,
+  opaqueEntities,
+  opaqueNonLightSourceEntities,
+  inFovEntities,
+} from "../queries";
 
 const gridWidth = grid.width;
 const gridHeight = grid.height;
@@ -43,7 +25,7 @@ export const light = () => {
   litEntities.get().forEach((x) => x.remove("Light"));
 
   // initial lighting
-  lightSources.get().forEach((lsEntity) => {
+  lightSourcesEntities.get().forEach((lsEntity) => {
     const {
       lightSource: { range },
       position: { x: originX, y: originY },
@@ -110,7 +92,7 @@ export const light = () => {
     [...inFovEntities.get()].map((x) => cellToId(x.position))
   );
 
-  opaqueNotLightSource.get().forEach((entity) => {
+  opaqueNonLightSourceEntities.get().forEach((entity) => {
     let brightestLight = 0;
     let light = null;
 
