@@ -1,6 +1,7 @@
 import "./style.scss";
 import "./lib/canvas.js";
-import { cache, player } from "./state/ecs";
+import { pxToCell } from "./lib/canvas";
+import ecs, { cache, player } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 import { cellToId } from "./lib/grid";
 
@@ -9,6 +10,7 @@ import game from "./state/game";
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
 import { fov } from "./systems/fov";
+import { light } from "./systems/light";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
@@ -27,6 +29,7 @@ initGame();
 function gameTick() {
   movement();
   fov();
+  light();
   render();
 }
 
@@ -53,3 +56,27 @@ function gameLoop() {
 }
 
 requestAnimationFrame(gameLoop);
+
+// it's a PITA to mock canvas in jest so we just hack it's running
+if (process.env.NODE_ENV !== "test") {
+  const canvas = document.querySelector("#canvas");
+
+  canvas.onclick = (e) => {
+    const [x, y] = pxToCell(e);
+    const locId = cellToId({ x, y });
+
+    cache
+      .read("entitiesAtLocation", locId)
+      .forEach((eId) => console.log(ecs.getEntity(eId).serialize()));
+
+    // const entities = filter(
+    //   ECS.entities,
+    //   (entity) =>
+    //     entity.components.position.x === x && entity.components.position.y === y
+    // );
+
+    // entities.forEach((entity) => entity.print());
+
+    // console.log(`${x},${y}`, { ECS });
+  };
+}

@@ -8,6 +8,8 @@ import IsOpaque from "../components/IsOpaque";
 import IsRevealed from "../components/IsRevealed";
 import Layer100 from "../components/Layer100";
 import Layer400 from "../components/Layer400";
+import Light from "../components/Light";
+import LightSource from "../components/LightSource";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 
@@ -30,6 +32,8 @@ ecs.registerComponent(IsOpaque);
 ecs.registerComponent(IsRevealed);
 ecs.registerComponent(Layer100);
 ecs.registerComponent(Layer400);
+ecs.registerComponent(Light);
+ecs.registerComponent(LightSource);
 ecs.registerComponent(MoveTo);
 ecs.registerComponent(Position);
 
