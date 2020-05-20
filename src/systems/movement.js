@@ -3,6 +3,7 @@ import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
 import { movableEntities, blockingEntities } from "../queries";
+  HasMovedEntities,
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {

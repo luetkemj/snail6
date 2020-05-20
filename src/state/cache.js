@@ -1,16 +1,11 @@
+import { get, set } from "lodash";
+
 export default class Cache {
   entitiesAtLocation = {};
+  dijkstraMaps = {};
 
-  validate(name, operation) {
-    if (!this[name]) {
-      throw new Error(`Cannot "${operation}". Cache "${name}" does not exist`);
-    }
-
-    return true;
-  }
-
-  add(name, key, value) {
-    this.validate(name, "add");
+  addSet(name, key, value) {
+    if (!this.validate(name, key, "addSet")) return;
 
     if (this[name][key]) {
       this[name][key].add(value);
@@ -20,15 +15,26 @@ export default class Cache {
     }
   }
 
-  read(name, key, value) {
-    this.validate(name, "read");
+  readSet(name, key, value) {
+    if (!this.validate(name, key, "readSet")) return;
 
-    if (value) return this[name][key][value];
+    if (value) {
+      return this[name][key].get(value);
+    }
+
     return this[name][key];
   }
 
+  addObj(name, path, value) {
+    set(this[name], path, value);
+  }
+
+  readObj(name, path) {
+    return get(this[name], path);
+  }
+
   delete(name, key, value) {
-    this.validate(name, "delete");
+    if (!this.validate(name, key, "delete")) return;
 
     if (this[name][key].has(value)) {
       this[name][key].delete(value);
@@ -47,5 +53,30 @@ export default class Cache {
     if (name && key) {
       return console.log(this[name][key]);
     }
+  }
+
+  validate(name, key, operation) {
+    if (operation === "add") {
+      if (!this[name]) {
+        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        return false;
+      }
+    }
+
+    if (operation === "read") {
+      if (!this[name]) {
+        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        return false;
+      }
+
+      if (key && !this[name][key]) {
+        console.warn(
+          `Cannot "${operation}". Cache ${name}.${key} does not exist`
+        );
+        return false;
+      }
+    }
+
+    return true;
   }
 }

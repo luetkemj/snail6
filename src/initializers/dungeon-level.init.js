@@ -4,6 +4,7 @@ import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
+import CanDijkstra from "../components/CanDijkstra";
 
 const initDungeonLevel = () => {
   // create dungeon level
@@ -32,18 +33,19 @@ const initDungeonLevel = () => {
       entity = ecs.createPrefab("FloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
+      entity.add(CanDijkstra);
     }
 
     if (currTile.sprite === "CAVERN_FLOOR") {
       entity = ecs.createPrefab("FloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
-
       entity.appearance.color = colors.cavern_floor;
+      entity.add(CanDijkstra);
     }
 
     const locId = cellToId(currTile);
-    cache.add("entitiesAtLocation", locId, entity.id);
+    cache.addSet("entitiesAtLocation", locId, entity.id);
   });
 
   dungeon.rooms.forEach((room, index) => {
@@ -53,7 +55,7 @@ const initDungeonLevel = () => {
       });
 
       const locId = cellToId(room.center);
-      cache.add("entitiesAtLocation", locId, entity.id);
+      cache.addSet("entitiesAtLocation", locId, entity.id);
     }
   });
 

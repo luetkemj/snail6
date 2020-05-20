@@ -5,7 +5,7 @@ import createFOV from "../lib/fov";
 import IsInFov from "../components/IsInFov";
 import IsRevealed from "../components/IsRevealed";
 
-import { inFovEntities, renderableEntities, opaqueEntities } from "../queries";
+import { inFovEntities, opaqueEntities } from "../queries";
 
 export const fov = () => {
   const { width, height } = grid;
@@ -19,7 +19,7 @@ export const fov = () => {
   inFovEntities.get().forEach((x) => x.remove(IsInFov));
 
   FOV.fov.forEach((locId) => {
-    const entitiesAtLoc = cache.read("entitiesAtLocation", locId);
+    const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
 
     if (entitiesAtLoc) {
       entitiesAtLoc.forEach((eId) => {

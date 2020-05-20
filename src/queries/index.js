@@ -11,9 +11,14 @@ import Light from "../components/Light";
 import LightSource from "../components/LightSource";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
+import CanDijkstra from "../components/CanDijkstra";
 
 export const blockingEntities = ecs.createQuery({
   all: [IsBlocking, Position],
+});
+
+export const dijkstraAbleEntities = ecs.createQuery({
+  all: [CanDijkstra],
 });
 
 export const inFovEntities = ecs.createQuery({

@@ -18,8 +18,6 @@ import {
 const gridWidth = grid.width;
 const gridHeight = grid.height;
 
-const gridMax = Math.max(gridWidth, gridHeight);
-
 export const light = () => {
   // first remove all lights
   litEntities.get().forEach((x) => x.remove("Light"));
@@ -43,7 +41,7 @@ export const light = () => {
     fov.forEach((locId) => {
       const opacity = ((range - distance[locId]) / range) * 100;
 
-      const entitiesAtLoc = cache.read("entitiesAtLocation", locId);
+      const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
 
       if (entitiesAtLoc) {
         entitiesAtLoc.forEach((eId) => {
@@ -105,7 +103,7 @@ export const light = () => {
     // get brightest light from all neighbors and set light to that
     // if no neighors are lit - stay dark :)
     locIds.forEach((locId) => {
-      const entitiesAtLoc = cache.read("entitiesAtLocation", locId);
+      const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
       if (entitiesAtLoc) {
         entitiesAtLoc.forEach((id) => {
           const e = ecs.getEntity(id);
