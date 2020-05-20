@@ -1,6 +1,7 @@
 import ecs from "../state/ecs";
 
 import Appearance from "../components/Appearance";
+import HasMoved from "../components/HasMoved";
 import IsBlocking from "../components/IsBlocking";
 import IsInFov from "../components/IsInFov";
 import IsOpaque from "../components/IsOpaque";
@@ -19,6 +20,10 @@ export const blockingEntities = ecs.createQuery({
 
 export const dijkstraAbleEntities = ecs.createQuery({
   all: [CanDijkstra],
+});
+
+export const hasMovedEntities = ecs.createQuery({
+  all: [HasMoved],
 });
 
 export const inFovEntities = ecs.createQuery({

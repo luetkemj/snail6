@@ -28,7 +28,9 @@ initGame();
 
 function gameTick() {
   movement();
-  fov();
+  if (game.playerTurn) {
+    fov();
+  }
   light();
   render();
 }
@@ -66,7 +68,7 @@ if (process.env.NODE_ENV !== "test") {
     const locId = cellToId({ x, y });
 
     cache
-      .read("entitiesAtLocation", locId)
+      .readSet("entitiesAtLocation", locId)
       .forEach((eId) => console.log(ecs.getEntity(eId).serialize()));
   };
 }

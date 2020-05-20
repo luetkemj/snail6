@@ -8,6 +8,7 @@ import { cellToId, getNeighborIds } from "../lib/grid";
 import Light from "../components/Light";
 
 import {
+  hasMovedEntities,
   lightSourcesEntities,
   litEntities,
   opaqueEntities,
@@ -19,56 +20,82 @@ const gridWidth = grid.width;
 const gridHeight = grid.height;
 
 export const light = () => {
-  // first remove all lights
-  litEntities.get().forEach((x) => x.remove("Light"));
+  // first remove all lightsources ONLY for entities that have moved!
+  const movedEntities = [...hasMovedEntities.get()].map((x) => x.id);
+  litEntities.get().forEach((entity) => {
+    entity.light.sources.forEach((eId) => {
+      if (movedEntities.includes(eId)) {
+        entity.light.sources.delete(eId);
+        if (!entity.light.sources.size) {
+          entity.remove(Light);
+        }
+      }
+    });
+  });
 
   // initial lighting
   lightSourcesEntities.get().forEach((lsEntity) => {
     const {
+      light,
       lightSource: { range },
       position: { x: originX, y: originY },
+      hasMoved,
     } = lsEntity;
 
-    const { fov, distance } = createFov(
-      opaqueEntities,
-      gridWidth,
-      gridHeight,
-      originX,
-      originY,
-      range
-    );
+    // ONLY do this if lighsource hasMoved or has not been lit (the first time)
+    // todo: maybe check if it's in player FOV?
+    if (hasMoved || !light) {
+      const { fov, distance } = createFov(
+        opaqueEntities,
+        gridWidth,
+        gridHeight,
+        originX,
+        originY,
+        range
+      );
 
-    fov.forEach((locId) => {
-      const opacity = ((range - distance[locId]) / range) * 100;
+      fov.forEach((locId) => {
+        const opacity = ((range - distance[locId]) / range) * 100;
 
-      const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
+        const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
 
-      if (entitiesAtLoc) {
-        entitiesAtLoc.forEach((eId) => {
-          const entity = ecs.getEntity(eId);
+        if (entitiesAtLoc) {
+          entitiesAtLoc.forEach((eId) => {
+            const entity = ecs.getEntity(eId);
+            if (!entity.has("IsOpaque")) {
+              if (entity.has("Light")) {
+                // need to somehow check lightsour
 
-          if (!entity.has("IsOpaque")) {
-            if (entity.has("Light")) {
-              entity.light.a = entity.light.a + opacity;
-            } else {
-              entity.add(Light, { a: opacity });
+                // entity.light.a = entity.light.a + opacity;
+                entity.light.a = opacity;
+              } else {
+                entity.add("Light", { a: opacity });
+              }
+
+              if (entity.light.sources) {
+                entity.light.sources.add(lsEntity.id);
+              } else {
+                entity.light.sources = new Set([lsEntity.id]);
+              }
             }
 
-            entity.light.sources.add(lsEntity.id);
-          }
+            if (entity.has("LightSource")) {
+              if (entity.has("Light")) {
+                entity.light.a = 100;
+              } else {
+                entity.add("Light", { a: 100 });
+              }
 
-          if (entity.has("LightSource")) {
-            if (entity.has("Light")) {
-              entity.light.a = 100;
-            } else {
-              entity.add(Light, { a: 100 });
+              if (entity.light.sources) {
+                entity.light.sources.add(lsEntity.id);
+              } else {
+                entity.light.sources = new Set([lsEntity.id]);
+              }
             }
-
-            entity.light.sources.add(lsEntity.id);
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
   });
 
   // light source mixing
@@ -86,6 +113,7 @@ export const light = () => {
   });
 
   // Opaque entities lighting
+  // These should only do the walls that are withing light range of sources
   const fov = new Set(
     [...inFovEntities.get()].map((x) => cellToId(x.position))
   );
@@ -115,13 +143,21 @@ export const light = () => {
                 sources: e.light.sources,
               };
             }
+
+            // if (brightestLight === 0) {
+            //   e.light.a = 0;
+            // }
           }
         });
       }
     });
 
     if (brightestLight) {
+      if (entity.has(Light)) {
+        entity.remove(Light);
+      }
       entity.add(Light, light);
+
       entity.light.sources.forEach((sourceId) => {
         const { color, weight } = ecs.getEntity(sourceId).lightSource;
         let fg = Color(entity.appearance.color).alpha(light.a / 100);

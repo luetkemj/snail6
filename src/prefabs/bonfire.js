@@ -21,7 +21,7 @@ export default {
     {
       type: LightSource,
       properties: {
-        range: 4,
+        range: 4.5,
       },
     },
     { type: Position },

@@ -3,6 +3,7 @@ import Cache from "./cache";
 
 import Appearance from "../components/Appearance";
 import CanDijkstra from "../components/CanDijkstra";
+import HasMoved from "../components/HasMoved";
 import IsBlocking from "../components/IsBlocking";
 import IsInFov from "../components/IsInFov";
 import IsOpaque from "../components/IsOpaque";
@@ -25,6 +26,7 @@ export const cache = new Cache();
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Appearance);
 ecs.registerComponent(CanDijkstra);
+ecs.registerComponent(HasMoved);
 ecs.registerComponent(IsBlocking);
 ecs.registerComponent(IsInFov);
 ecs.registerComponent(IsOpaque);
