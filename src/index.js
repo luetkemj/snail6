@@ -21,7 +21,7 @@ function initGame() {
   player.position.x = dungeon.start.x;
   player.position.y = dungeon.start.y;
 
-  cache.add("entitiesAtLocation", cellToId(dungeon.start), player.id);
+  cache.addSet("entitiesAtLocation", cellToId(dungeon.start), player.id);
 }
 
 initGame();

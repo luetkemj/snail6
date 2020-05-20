@@ -1,9 +1,13 @@
-import { cache } from "../state/ecs";
+import { dijkstra } from "../lib/dijkstra";
+import { cache, player } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
-import { movableEntities, blockingEntities } from "../queries";
+import {
+  blockingEntities,
   HasMovedEntities,
+  movableEntities,
+} from "../queries";
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
@@ -32,7 +36,12 @@ export const movement = () => {
 
     // update cache
     cache.delete("entitiesAtLocation", cellToId(entity.position), entity.id);
-    cache.add("entitiesAtLocation", cellToId({ x: mx, y: my }), entity.id);
+    cache.addSet("entitiesAtLocation", cellToId({ x: mx, y: my }), entity.id);
+
+    if (entity.id === player.id) {
+      const playerDijkstraMap = dijkstra([{ x: mx, y: my }]);
+      cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
+    }
 
     entity.position.x = mx;
     entity.position.y = my;
