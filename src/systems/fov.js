@@ -13,7 +13,7 @@ export const fov = () => {
   const originX = player.position.x;
   const originY = player.position.y;
 
-  const FOV = createFOV(opaqueEntities, width, height, originX, originY, 100);
+  const FOV = createFOV(opaqueEntities, width, height, originX, originY, 10.5);
 
   // clear out stale fov
   inFovEntities.get().forEach((x) => x.remove(IsInFov));

@@ -3,13 +3,16 @@ import { cache, player } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
+import HasMoved from "../components/HasMoved";
 import {
   blockingEntities,
-  HasMovedEntities,
+  hasMovedEntities,
   movableEntities,
 } from "../queries";
 
 export const movement = () => {
+  hasMovedEntities.get().forEach((entity) => entity.remove(HasMoved));
+
   movableEntities.get().forEach((entity) => {
     const mPos = {
       x: entity.position.x + entity.moveTo.x,
@@ -46,6 +49,7 @@ export const movement = () => {
     entity.position.x = mx;
     entity.position.y = my;
 
+    entity.add(HasMoved);
     entity.remove(MoveTo);
   });
 };

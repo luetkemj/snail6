@@ -9,7 +9,7 @@ import game from "./state/game";
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
 import { fov } from "./systems/fov";
-import { light } from "./systems/light";
+import { lightSystem } from "./systems/light";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
@@ -27,10 +27,12 @@ function initGame() {
 initGame();
 
 function gameTick() {
+  console.time("tick");
   movement();
   if (game.playerTurn) fov();
-  light();
+  lightSystem();
   render();
+  console.timeEnd("tick");
 }
 
 gameTick();
@@ -66,7 +68,7 @@ if (process.env.NODE_ENV !== "test") {
     const locId = cellToId({ x, y });
 
     cache
-      .read("entitiesAtLocation", locId)
+      .readSet("entitiesAtLocation", locId)
       .forEach((eId) => console.log(ecs.getEntity(eId).serialize()));
   };
 }

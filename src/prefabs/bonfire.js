@@ -18,12 +18,12 @@ export default {
     },
     { type: IsBlocking },
     { type: Layer400 },
-    {
-      type: LightSource,
-      properties: {
-        range: 4,
-      },
-    },
+    // {
+    //   type: LightSource,
+    //   properties: {
+    //     range: 4,
+    //   },
+    // },
     { type: Position },
   ],
 };

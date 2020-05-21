@@ -49,7 +49,7 @@ const initDungeonLevel = () => {
   });
 
   dungeon.rooms.forEach((room, index) => {
-    if (index !== 0 && random(1, 3) === 1) {
+    if (index !== 0 && random(1, 1) === 1) {
       const entity = ecs.createPrefab("BonfirePrefab", {
         position: room.center,
       });

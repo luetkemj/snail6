@@ -1,6 +1,7 @@
 import Color from "color";
 
 import ecs, { cache, player } from "../state/ecs";
+import game from "../state/game";
 import { grid } from "../lib/canvas";
 import createFov from "../lib/fov";
 import { cellToId, getNeighborIds } from "../lib/grid";
@@ -18,7 +19,7 @@ import {
 const gridWidth = grid.width;
 const gridHeight = grid.height;
 
-export const light = () => {
+export const lightSystem = () => {
   // first remove all lights
   litEntities.get().forEach((x) => x.remove("Light"));
 
@@ -29,6 +30,8 @@ export const light = () => {
       position: { x: originX, y: originY },
     } = lsEntity;
 
+    // if (lsEntity) {
+    // if (lsEntity.has("HasMoved") || game.turn === 0) {
     const { fov, distance } = createFov(
       opaqueEntities,
       gridWidth,
@@ -69,6 +72,7 @@ export const light = () => {
         });
       }
     });
+    // }
   });
 
   // light source mixing
@@ -121,7 +125,13 @@ export const light = () => {
     });
 
     if (brightestLight) {
-      entity.add(Light, light);
+      if (entity.has("Light")) {
+        entity.light.a = light.a;
+        entity.light.sources = light.sources;
+        entity.light.color = light.color;
+      } else {
+        entity.add(Light, light);
+      }
       entity.light.sources.forEach((sourceId) => {
         const { color, weight } = ecs.getEntity(sourceId).lightSource;
         let fg = Color(entity.appearance.color).alpha(light.a / 100);
