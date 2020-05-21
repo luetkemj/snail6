@@ -28,7 +28,7 @@ initGame();
 
 function gameTick() {
   movement();
-  fov();
+  if (game.playerTurn) fov();
   light();
   render();
 }
