@@ -40,7 +40,7 @@ const initDungeonLevel = () => {
       entity = ecs.createPrefab("FloorPrefab", {
         position: { x: currTile.x, y: currTile.y },
       });
-      entity.appearance.color = colors.cavern_floor;
+      entity.appearance.color = colors.cavernFloor;
       entity.add(CanDijkstra);
     }
 
