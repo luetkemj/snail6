@@ -1,5 +1,3 @@
-import Color from "color";
-
 const pixelRatio = window.devicePixelRatio || 1;
 let canvas;
 let ctx;
@@ -99,7 +97,7 @@ ctx.textBaseline = "middle";
 const drawBackground = (color, position) => {
   if (color === "transparent") return;
 
-  ctx.fillStyle = Color(color).hsl().string("hsla");
+  ctx.fillStyle = color;
   ctx.fillRect(
     position.x * cellWidth,
     position.y * cellHeight,
@@ -109,7 +107,7 @@ const drawBackground = (color, position) => {
 };
 
 const drawChar = (char, color, position) => {
-  ctx.fillStyle = Color(color).hsl().string("hsla");
+  ctx.fillStyle = color;
   ctx.fillText(
     char,
     position.x * cellWidth + cellWidth / 2,
@@ -120,7 +118,6 @@ const drawChar = (char, color, position) => {
 export const drawCell = (entity, options = {}) => {
   const { fg, bg, x, y } = options;
   const {
-    // todo: refactor this - color should come from light instead of having to be passed in...
     appearance: { char, background, color },
     position,
   } = entity;

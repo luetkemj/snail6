@@ -13,7 +13,7 @@ export const fov = () => {
   const originX = player.position.x;
   const originY = player.position.y;
 
-  const FOV = createFOV(opaqueEntities, width, height, originX, originY, 100);
+  const FOV = createFOV(opaqueEntities, width, height, originX, originY, 10);
 
   // clear out stale fov
   inFovEntities.get().forEach((x) => x.remove(IsInFov));
@@ -26,10 +26,8 @@ export const fov = () => {
         const entity = ecs.getEntity(eId);
         entity.add(IsInFov);
 
-        if (entity.light && entity.light.a > 0) {
-          if (!entity.isRevealed) {
-            entity.add(IsRevealed);
-          }
+        if (!entity.has("IsRevealed")) {
+          entity.add(IsRevealed);
         }
       });
     }
