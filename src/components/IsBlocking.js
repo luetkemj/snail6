@@ -1,5 +1,3 @@
 import { Component } from "geotic";
 
-export default class IsBlocking extends Component {
-  static properties = {};
-}
+export default class IsBlocking extends Component {}
