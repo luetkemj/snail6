@@ -1,9 +1,9 @@
-import { get, random, some } from "lodash";
+import { get, random, sample, some, times } from "lodash";
 import ecs, { cache } from "../state/ecs";
 import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
-import { cellToId, getNeighborIds } from "../lib/grid";
+import { cellToId, toCell, getNeighborIds } from "../lib/grid";
 import CanDijkstra from "../components/CanDijkstra";
 
 const initDungeonLevel = () => {
@@ -55,16 +55,34 @@ const initDungeonLevel = () => {
     }
   });
 
+  // add bonfires
   dungeon.rooms.forEach((room, index) => {
     if (index !== 0 && random(1, 3) === 1) {
-      const entity = ecs.createPrefab("BonfirePrefab", {
-        position: room.center,
+      const locId = cellToId(room.center);
+      // make sure the location is empty (only floor tiles should exist here...)
+      if (cache.readSet("entitiesAtLocation", locId).size === 1) {
+        const entity = ecs.createPrefab("BonfirePrefab", {
+          position: room.center,
+        });
+
+        cache.addSet("entitiesAtLocation", locId, entity.id);
+      }
+    }
+  });
+
+  // spawn monsters!
+  times(10, () => {
+    const locId = sample(dungeon.openTileIds);
+    if (cache.readSet("entitiesAtLocation", locId).size === 1) {
+      const entity = ecs.createPrefab("GoblinPrefab", {
+        position: toCell(locId),
       });
 
-      const locId = cellToId(room.center);
       cache.addSet("entitiesAtLocation", locId, entity.id);
     }
   });
+
+  console.log(dungeon);
 
   return dungeon;
 };

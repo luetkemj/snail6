@@ -6,14 +6,14 @@ import Layer400 from "../components/Layer400";
 import IsBlocking from "../components/IsBlocking";
 
 export default {
-  name: "PlayerPrefab",
+  name: "GoblinPrefab",
 
   components: [
     {
       type: Appearance,
       properties: {
-        color: colors.player,
-        char: chars.player,
+        color: colors.goblin,
+        char: chars.goblin,
       },
     },
     { type: IsBlocking },

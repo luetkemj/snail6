@@ -14,6 +14,7 @@ import Position from "../components/Position";
 
 import BonfirePrefab from "../prefabs/bonfire";
 import FloorPrefab from "../prefabs/floor";
+import GoblinPrefab from "../prefabs/goblin";
 import PlayerPrefab from "../prefabs/player";
 import WallPrefab from "../prefabs/wall";
 
@@ -34,6 +35,7 @@ ecs.registerComponent(Position);
 
 ecs.registerPrefab(BonfirePrefab);
 ecs.registerPrefab(FloorPrefab);
+ecs.registerPrefab(GoblinPrefab);
 ecs.registerPrefab(PlayerPrefab);
 ecs.registerPrefab(WallPrefab);
 
