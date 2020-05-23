@@ -37,6 +37,51 @@ ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(PlayerPrefab);
 ecs.registerPrefab(WallPrefab);
 
-export const player = ecs.createPrefab("PlayerPrefab");
+export let gameState = {
+  userInput: null,
+  playerTurn: true,
+  turn: 0,
+};
+
+export let player = ecs.createPrefab("PlayerPrefab");
+
+export function loadGame() {
+  for (let item of ecs.entities.all) {
+    item.destroy();
+  }
+
+  const data = JSON.parse(localStorage.getItem("gameSaveData"));
+  ecs.deserialize(data.ecs);
+  cache.deserialize(data.cache);
+  gameState = data.gameState;
+  player = ecs.getEntity(data.playerId);
+
+  console.log("game loaded", {
+    cache,
+    gameState,
+    ecs,
+    player,
+  });
+}
+
+export function saveGame() {
+  const gameSaveData = {
+    ecs: ecs.serialize(),
+    cache: cache.serialize(),
+    gameState,
+    playerId: player.id,
+  };
+  localStorage.setItem("gameSaveData", JSON.stringify(gameSaveData));
+
+  console.log("game saved");
+}
 
 export default ecs;
+
+module.export = {
+  cache,
+  gameState,
+  player,
+  loadGame,
+  saveGame,
+};

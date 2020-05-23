@@ -4,6 +4,41 @@ export default class Cache {
   entitiesAtLocation = {};
   dijkstraMaps = {};
 
+  serialize() {
+    const entitiesAtLocation = Object.keys(this.entitiesAtLocation).reduce(
+      (acc, val) => {
+        acc[val] = [...this.entitiesAtLocation[val]];
+        return acc;
+      },
+      {}
+    );
+
+    const dijkstraMaps = this.dijkstraMaps;
+
+    return {
+      entitiesAtLocation,
+      dijkstraMaps,
+    };
+  }
+
+  clear() {
+    this.entitiesAtLocation = {};
+    this.dijkstraMaps = {};
+  }
+
+  deserialize(data) {
+    this.clear();
+
+    this.dijkstraMaps = data.dijkstraMaps;
+    this.entitiesAtLocation = Object.keys(data.entitiesAtLocation).reduce(
+      (acc, val) => {
+        acc[val] = new Set(data.entitiesAtLocation[val]);
+        return acc;
+      },
+      {}
+    );
+  }
+
   addSet(name, key, value) {
     if (!this.validate(name, key, "addSet")) return;
 

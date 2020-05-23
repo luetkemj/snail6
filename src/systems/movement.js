@@ -1,6 +1,5 @@
 import { dijkstra } from "../lib/dijkstra";
-import { cache, player } from "../state/ecs";
-import game from "../state/game";
+import { cache, player, gameState } from "../state/ecs";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
@@ -35,7 +34,7 @@ export const movement = () => {
     cache.delete("entitiesAtLocation", cellToId(entity.position), entity.id);
     cache.addSet("entitiesAtLocation", cellToId({ x: mx, y: my }), entity.id);
 
-    if (entity.id === player.id && game.playerTurn) {
+    if (entity.id === player.id && gameState.playerTurn) {
       const playerDijkstraMap = dijkstra([{ x: mx, y: my }]);
       cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
     }

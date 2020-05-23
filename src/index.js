@@ -1,10 +1,8 @@
 import "./lib/canvas.js";
 import { pxToCell } from "./lib/canvas";
-import ecs, { cache, player } from "./state/ecs";
+import ecs, { cache, player, gameState } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 import { cellToId } from "./lib/grid";
-
-import game from "./state/game";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
@@ -27,7 +25,7 @@ initGame();
 
 function gameTick() {
   movement();
-  if (game.playerTurn) {
+  if (gameState.playerTurn) {
     fov();
     render();
   }
@@ -36,17 +34,17 @@ function gameTick() {
 gameTick();
 
 function update() {
-  if (game.userInput && game.playerTurn) {
+  if (gameState.userInput && gameState.playerTurn) {
     processUserInput();
     gameTick();
-    game.userInput = null;
-    game.turn = game.turn += 1;
-    game.playerTurn = false;
+    gameState.userInput = null;
+    gameState.turn = gameState.turn += 1;
+    gameState.playerTurn = false;
   }
 
-  if (!game.playerTurn) {
+  if (!gameState.playerTurn) {
     gameTick();
-    game.playerTurn = true;
+    gameState.playerTurn = true;
   }
 }
 
