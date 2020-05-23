@@ -16,7 +16,7 @@ export const dijkstra = (goals, weights = []) => {
 
     // current entity position component
     const cell = idToCell(current);
-    const neighborLocIds = getNeighborIds(cell.x, cell.y);
+    const neighborLocIds = getNeighborIds(cell);
 
     neighborLocIds.forEach((neighborId) => {
       if (!distance[neighborId]) {
