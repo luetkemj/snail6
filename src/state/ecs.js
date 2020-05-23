@@ -46,6 +46,10 @@ export let gameState = {
 export let player = ecs.createPrefab("PlayerPrefab");
 
 export function loadGame() {
+  for (let item of ecs.entities.all) {
+    item.destroy();
+  }
+
   const data = JSON.parse(localStorage.getItem("gameSaveData"));
   ecs.deserialize(data.ecs);
   cache.deserialize(data.cache);
