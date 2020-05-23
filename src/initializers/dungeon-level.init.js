@@ -1,9 +1,9 @@
-import { random } from "lodash";
+import { get, random, some } from "lodash";
 import ecs, { cache } from "../state/ecs";
 import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
 import { grid } from "../lib/canvas";
-import { cellToId } from "../lib/grid";
+import { cellToId, getNeighborIds } from "../lib/grid";
 import CanDijkstra from "../components/CanDijkstra";
 
 const initDungeonLevel = () => {
@@ -21,31 +21,38 @@ const initDungeonLevel = () => {
   Object.keys(dungeon.tiles).forEach((tileId) => {
     const currTile = dungeon.tiles[tileId];
 
-    let entity;
+    // Only make entities for tiles can be seen
+    if (
+      some(getNeighborIds(currTile, "ALL"), (locId) => {
+        return get(dungeon, `tiles.${locId}.sprite`, "WALL") !== "WALL";
+      })
+    ) {
+      let entity;
 
-    if (currTile.sprite === "WALL") {
-      entity = ecs.createPrefab("WallPrefab", {
-        position: { x: currTile.x, y: currTile.y },
-      });
+      if (currTile.sprite === "WALL") {
+        entity = ecs.createPrefab("WallPrefab", {
+          position: { x: currTile.x, y: currTile.y },
+        });
+      }
+
+      if (currTile.sprite === "FLOOR") {
+        entity = ecs.createPrefab("FloorPrefab", {
+          position: { x: currTile.x, y: currTile.y },
+        });
+        entity.add(CanDijkstra);
+      }
+
+      if (currTile.sprite === "CAVERN_FLOOR") {
+        entity = ecs.createPrefab("FloorPrefab", {
+          position: { x: currTile.x, y: currTile.y },
+        });
+        entity.appearance.color = colors.cavernFloor;
+        entity.add(CanDijkstra);
+      }
+
+      const locId = cellToId(currTile);
+      cache.addSet("entitiesAtLocation", locId, entity.id);
     }
-
-    if (currTile.sprite === "FLOOR") {
-      entity = ecs.createPrefab("FloorPrefab", {
-        position: { x: currTile.x, y: currTile.y },
-      });
-      entity.add(CanDijkstra);
-    }
-
-    if (currTile.sprite === "CAVERN_FLOOR") {
-      entity = ecs.createPrefab("FloorPrefab", {
-        position: { x: currTile.x, y: currTile.y },
-      });
-      entity.appearance.color = colors.cavernFloor;
-      entity.add(CanDijkstra);
-    }
-
-    const locId = cellToId(currTile);
-    cache.addSet("entitiesAtLocation", locId, entity.id);
   });
 
   dungeon.rooms.forEach((room, index) => {

@@ -8,6 +8,20 @@ export const CARDINAL = [
   { x: -1, y: 0 }, // W
 ];
 
+export const DIAGONAL = [
+  { x: 1, y: -1 }, // NE
+  { x: 1, y: 1 }, // SE
+  { x: -1, y: 1 }, // SW
+  { x: -1, y: -1 }, // NW
+];
+
+export const toCell = (cellOrId) => {
+  let cell = cellOrId;
+  if (typeof cell === "string") cell = idToCell(cell);
+
+  return cell;
+};
+
 export const rectangle = ({ x, y, width, height, hasWalls }, tileProps) => {
   const tiles = {};
 
@@ -70,12 +84,12 @@ export const isOnMapEdge = (x, y) => {
   return false;
 };
 
-export const getNeighbors = (x, y) => {
+export const getNeighbors = ({ x, y }, direction = CARDINAL) => {
   const points = [];
-  for (let direction of CARDINAL) {
+  for (let dir of direction) {
     let candidate = {
-      x: x + direction.x,
-      y: y + direction.y,
+      x: x + dir.x,
+      y: y + dir.y,
     };
     if (
       candidate.x >= 0 &&
@@ -89,7 +103,26 @@ export const getNeighbors = (x, y) => {
   return points;
 };
 
-export const getNeighborIds = (x, y) => getNeighbors(x, y).map(cellToId);
+// export const getNeighborIds = (x, y) => getNeighbors({ x, y }).map(cellToId);
+
+export const getNeighborIds = (cellOrId, direction = "CARDINAL") => {
+  let cell = toCell(cellOrId);
+
+  if (direction === "CARDINAL") {
+    return getNeighbors(cell, CARDINAL).map(cellToId);
+  }
+
+  if (direction === "DIAGONAL") {
+    return getNeighbors(cell, DIAGONAL).map(cellToId);
+  }
+
+  if (direction === "ALL") {
+    return [
+      ...getNeighbors(cell, CARDINAL).map(cellToId),
+      ...getNeighbors(cell, DIAGONAL).map(cellToId),
+    ];
+  }
+};
 
 export const isNeighbor = (a, b) => {
   let posA = a;
