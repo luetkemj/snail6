@@ -26,9 +26,11 @@ function initGame() {
 initGame();
 
 const worker = new Worker();
-worker.postMessage({ a: 1 });
+let workerIsBusy = false;
+
 worker.onmessage = function (event) {
   console.log("onmessage: event:", event);
+  workerIsBusy = false;
 };
 
 // worker.addEventListener("message", function (event) {
@@ -36,27 +38,33 @@ worker.onmessage = function (event) {
 // });
 
 function gameTick() {
+  workerIsBusy = true;
+  // this stuff should happen in worker (except render)
   movement();
   if (gameState.playerTurn) {
     fov();
     render();
   }
+
+  worker.postMessage({ a: 1 });
 }
 
 gameTick();
 
 function update() {
-  if (gameState.userInput && gameState.playerTurn) {
-    processUserInput();
-    gameTick();
-    gameState.userInput = null;
-    gameState.turn = gameState.turn += 1;
-    gameState.playerTurn = false;
-  }
+  if (!workerIsBusy) {
+    if (gameState.userInput && gameState.playerTurn) {
+      processUserInput();
+      gameTick();
+      gameState.userInput = null;
+      gameState.turn = gameState.turn += 1;
+      gameState.playerTurn = false;
+    }
 
-  if (!gameState.playerTurn) {
-    gameTick();
-    gameState.playerTurn = true;
+    if (!gameState.playerTurn) {
+      gameTick();
+      gameState.playerTurn = true;
+    }
   }
 }
 

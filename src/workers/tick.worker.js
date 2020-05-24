@@ -1,5 +1,7 @@
-self.onmessage = function (event) {
-  console.log("tick:", event);
+import { toCell } from "../lib/grid";
 
-  self.postMessage("done poop");
+self.onmessage = function (event) {
+  // console.log("tick:", event);
+
+  self.postMessage(toCell("1,3"));
 };
