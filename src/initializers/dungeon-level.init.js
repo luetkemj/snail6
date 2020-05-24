@@ -14,8 +14,8 @@ const initDungeonLevel = () => {
     width: grid.map.width,
     height: grid.map.height,
     maxRoomCount: 30,
-    minRoomSize: 6,
-    maxRoomSize: 12,
+    minRoomSize: 100,
+    maxRoomSize: 100,
   });
 
   Object.keys(dungeon.tiles).forEach((tileId) => {

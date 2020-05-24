@@ -15,7 +15,7 @@ document.addEventListener("keydown", (ev) => {
   } else {
     userInput = false;
   }
-  console.log(userInput);
+  // console.log(userInput);
 });
 document.querySelector("#loading").classList.add("hide");
 

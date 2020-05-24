@@ -53,6 +53,8 @@ self.onmessage = function (event) {
       fov();
       fov();
       fov();
+      fov();
+      fov();
     }
 
     // if (payload.playerTurn) {
