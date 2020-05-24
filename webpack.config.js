@@ -98,6 +98,10 @@ module.exports = {
         },
       },
       {
+        test: /\.worker\.js$/,
+        use: { loader: "worker-loader" },
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings

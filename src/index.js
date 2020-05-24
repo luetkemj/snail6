@@ -10,6 +10,8 @@ import { fov } from "./systems/fov";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
 
+import Worker from "./workers/tick.worker.js";
+
 document.addEventListener("keydown", (ev) => input(ev.key));
 document.querySelector("#loading").classList.add("hide");
 
@@ -22,6 +24,16 @@ function initGame() {
 }
 
 initGame();
+
+const worker = new Worker();
+worker.postMessage({ a: 1 });
+worker.onmessage = function (event) {
+  console.log("onmessage: event:", event);
+};
+
+// worker.addEventListener("message", function (event) {
+//   console.log("eventListener: message", event);
+// });
 
 function gameTick() {
   movement();
