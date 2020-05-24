@@ -28,7 +28,7 @@ function initGame() {
 initGame();
 
 worker.onmessage = function (event) {
-  if (event) {
+  if (gameState.playerTurn) {
     render(event);
   }
   workerIsBusy = false;
