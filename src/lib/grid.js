@@ -1,4 +1,4 @@
-import { grid } from "../lib/canvas";
+import { grid } from "./settings";
 import { sample } from "lodash";
 
 export const CARDINAL = [

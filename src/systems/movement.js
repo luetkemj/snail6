@@ -1,6 +1,6 @@
 import { dijkstra } from "../lib/dijkstra";
 import { cache, player, gameState } from "../state/ecs";
-import { grid } from "../lib/canvas";
+import { grid } from "../lib/settings";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
 import { blockingEntities, movableEntities } from "../queries";

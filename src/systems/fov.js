@@ -1,5 +1,5 @@
 import ecs, { cache, player } from "../state/ecs";
-import { grid } from "../lib/canvas";
+import { grid } from "../lib/settings";
 import createFOV from "../lib/fov";
 
 import IsInFov from "../components/IsInFov";

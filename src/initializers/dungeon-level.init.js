@@ -2,7 +2,7 @@ import { get, random, sample, some, times } from "lodash";
 import ecs, { cache } from "../state/ecs";
 import { colors } from "../lib/graphics";
 import { generateDungeon } from "../lib/dungeon";
-import { grid } from "../lib/canvas";
+import { grid } from "../lib/settings";
 import { cellToId, toCell, getNeighborIds } from "../lib/grid";
 import CanDijkstra from "../components/CanDijkstra";
 
