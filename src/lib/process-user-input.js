@@ -4,39 +4,31 @@ import { gameState, player, loadGame, saveGame } from "../state/ecs";
 export const input = (key) => {
   switch (key) {
     case "S":
-      gameState.userInput = { key, type: "SAVE", payload: {} };
-      break;
+      return { key, type: "SAVE", payload: {} };
     case "L":
-      gameState.userInput = { key, type: "LOAD", payload: {} };
-      break;
+      return { key, type: "LOAD", payload: {} };
     case "z":
-      gameState.userInput = { key, type: "REST", payload: {} };
-      break;
+      return { key, type: "REST", payload: {} };
     case "ArrowUp":
-      gameState.userInput = { key, type: "MOVE", payload: { x: 0, y: -1 } };
-      break;
+      return { key, type: "MOVE", payload: { x: 0, y: -1 } };
     case "ArrowDown":
-      gameState.userInput = { key, type: "MOVE", payload: { x: 0, y: 1 } };
-      break;
+      return { key, type: "MOVE", payload: { x: 0, y: 1 } };
     case "ArrowLeft":
-      gameState.userInput = { key, type: "MOVE", payload: { x: -1, y: 0 } };
-      break;
+      return { key, type: "MOVE", payload: { x: -1, y: 0 } };
     case "ArrowRight":
-      gameState.userInput = { key, type: "MOVE", payload: { x: 1, y: 0 } };
-      break;
+      return { key, type: "MOVE", payload: { x: 1, y: 0 } };
     case "Escape": {
-      gameState.userInput = { key, type: "ESCAPE", payload: {} };
-      break;
+      return { key, type: "ESCAPE", payload: {} };
     }
   }
 };
 
-export const processUserInput = () => {
-  if (!gameState.userInput) {
+export const processUserInput = (input) => {
+  if (!input) {
     return;
   }
 
-  const { key, type, payload } = gameState.userInput;
+  const { key, type, payload } = input;
 
   if (type === "MOVE") {
     player.add(MoveTo, payload);

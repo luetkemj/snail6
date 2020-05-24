@@ -1,6 +1,5 @@
 import { colors } from "../lib/graphics";
 import { clearCanvas, drawCell } from "../lib/canvas";
-import { layer100Entities, layer400Entities } from "../queries";
 
 const drawCellIfAble = (entity) => {
   const { appearance, isInFov, isRevealed } = entity;
@@ -16,8 +15,9 @@ const drawCellIfAble = (entity) => {
   }
 };
 
-export const render = () => {
+export const render = (event) => {
   clearCanvas();
-  layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
-  layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
+  const { layer100, layer400 } = event.data.payload;
+  layer100.forEach((entity) => drawCellIfAble(entity));
+  layer400.forEach((entity) => drawCellIfAble(entity));
 };

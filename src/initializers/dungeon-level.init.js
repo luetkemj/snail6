@@ -71,7 +71,7 @@ const initDungeonLevel = () => {
   });
 
   // spawn monsters!
-  times(10, () => {
+  times(0, () => {
     const locId = sample(dungeon.openTileIds);
     if (cache.readSet("entitiesAtLocation", locId).size === 1) {
       const entity = ecs.createPrefab("GoblinPrefab", {
