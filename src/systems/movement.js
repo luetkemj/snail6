@@ -43,6 +43,12 @@ export const movement = () => {
             },
           });
 
+          blocker.add("Animate", {
+            animation: {
+              type: "shake",
+            },
+          });
+
           if (blocker.health.current <= 0) {
             if (!blocker.isDead) {
               blocker.add("IsDead");

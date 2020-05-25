@@ -7,35 +7,52 @@ export const animation = () => {
   animatingEntities.get().forEach((entity) => {
     const time = new Date();
 
-    // set animation startTime
-    if (!entity.animate.startTime) {
-      entity.fireEvent("set-start-time", { time });
-    }
+    entity.animate.forEach((animationX) => {
+      // set animation startTime
+      if (!animationX.startTime) {
+        entity.fireEvent("set-start-time", { time });
+      }
 
-    const frameTime = time - entity.animate.startTime;
+      const frameTime = time - animationX.startTime;
 
-    // end animation when complete
-    if (frameTime > entity.animate.duration) {
-      return entity.remove("Animate");
-    }
+      // end animation when complete
+      if (frameTime > animationX.duration) {
+        return entity.remove("Animate");
+      }
 
-    const framePercent = frameTime / entity.animate.duration;
+      const framePercent = frameTime / animationX.duration;
 
-    // do the animation
-    // clear the cell first
-    clearCell(entity.position.x, entity.position.y);
+      // do the animation
+      // clear the cell first
+      clearCell(entity.position.x, entity.position.y);
 
-    if (entity.animate.animation.type === "color") {
-      // drawEndFrame
-      drawCell(entity, {
-        fg: entity.animate.animation.stops[0],
-      });
-      // drawStartFrame
-      drawCell(entity, {
-        fg: entity.animate.animation.stops[1],
-        fgA: framePercent,
-        bg: "transparent",
-      });
-    }
+      // COLOR
+      if (animationX.animation.type === "color") {
+        // drawEndFrame
+        drawCell(entity, {
+          fg: animationX.animation.stops[0],
+        });
+        // drawStartFrame
+        drawCell(entity, {
+          fg: animationX.animation.stops[1],
+          fgA: framePercent,
+          bg: "transparent",
+        });
+      }
+
+      // SHAKE
+      if (animationX.animation.type === "shake") {
+        // drawEndFrame
+        if (framePercent < 0.5) {
+          drawCell(entity, {
+            offsetX: -1,
+          });
+        } else {
+          drawCell(entity, {
+            offsetX: 1,
+          });
+        }
+      }
+    });
   });
 };

@@ -118,7 +118,7 @@ const drawChar = (char, color, position, alpha = 1) => {
 };
 
 export const drawCell = (entity, options = {}) => {
-  const { fg, bg, x, y, fgA = 1, bgA = 1 } = options;
+  const { fg, bg, x, y, fgA = 1, bgA = 1, offsetX = 0, offsetY = 0 } = options;
   const {
     appearance: { char, background, color },
     position,
@@ -127,6 +127,9 @@ export const drawCell = (entity, options = {}) => {
   const bgColor = bg ? bg : background;
   const charColor = fg ? fg : color;
   const pos = x && y ? { x, y } : position;
+
+  pos.x += offsetX;
+  pos.y += offsetY;
 
   drawBackground(bgColor, pos, bgA);
   drawChar(char, charColor, pos, fgA);

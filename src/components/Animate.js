@@ -3,6 +3,8 @@ import { Component } from "geotic";
 
 export default class Animate extends Component {
   static properties = {
+    allowMultiple: true,
+
     startTime: null,
     duration: 100,
     animation: {
