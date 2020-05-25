@@ -1,9 +1,11 @@
 import { dijkstra } from "../lib/dijkstra";
-import { cache, player, gameState } from "../state/ecs";
+import ecs, { cache, player, gameState } from "../state/ecs";
+import { chars } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
-import { blockingEntities, movableEntities } from "../queries";
+import IsDead from "../components/IsDead";
+import { movableEntities } from "../queries";
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
@@ -18,15 +20,34 @@ export const movement = () => {
     const mx = Math.min(width + x - 1, Math.max(x, mPos.x));
     const my = Math.min(height + y - 1, Math.max(y, mPos.y));
 
-    let hasBlockers = false;
+    let blockers = [];
 
-    blockingEntities.get().forEach((e) => {
-      if (e.position.x === mx && e.position.y === my && e.isBlocking) {
-        hasBlockers = true;
+    const locId = cellToId({ x: mx, y: my });
+    const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
+
+    entitiesAtLoc.forEach((eid) => {
+      const potentialBlocker = ecs.getEntity(eid);
+      if (potentialBlocker.isBlocking) {
+        blockers.push(potentialBlocker);
       }
     });
 
-    if (hasBlockers) {
+    if (blockers.length) {
+      blockers.forEach((blocker) => {
+        if (blocker.health) {
+          blocker.fireEvent("take-damage", { amount: 5 });
+
+          if (blocker.health.current <= 0) {
+            if (!blocker.isDead) {
+              blocker.add("IsDead");
+              blocker.remove("Layer400");
+              blocker.add("Layer300");
+              blocker.remove("IsBlocking");
+              blocker.appearance.char = chars.corpse;
+            }
+          }
+        }
+      });
       return entity.remove(MoveTo);
     }
 

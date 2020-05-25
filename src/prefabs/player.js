@@ -1,5 +1,5 @@
 import Appearance from "../components/Appearance";
-import IsOpaque from "../components/IsOpaque";
+import Health from "../components/Health";
 import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
 import Layer400 from "../components/Layer400";
@@ -16,8 +16,8 @@ export default {
         char: chars.player,
       },
     },
+    { type: Health },
     { type: IsBlocking },
-    { type: IsOpaque },
     { type: Layer400 },
     { type: Position },
   ],

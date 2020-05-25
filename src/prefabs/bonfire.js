@@ -2,7 +2,7 @@ import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
 import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
-import Layer400 from "../components/Layer400";
+import Layer300 from "../components/Layer300";
 
 export default {
   name: "BonfirePrefab",
@@ -16,7 +16,7 @@ export default {
       },
     },
     { type: IsBlocking },
-    { type: Layer400 },
+    { type: Layer300 },
     { type: Position },
   ],
 };

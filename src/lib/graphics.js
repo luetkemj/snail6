@@ -38,6 +38,7 @@ export const colors = {
 
 export const chars = {
   defaultChar: "?",
+  corpse: "%",
   // staging
   campfire: "ô", // ö o
   fountain: "⨀", // ⦿ ⦾ ◯ ⨀ ⊚
