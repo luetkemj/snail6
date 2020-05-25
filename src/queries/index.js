@@ -1,5 +1,6 @@
 import ecs from "../state/ecs";
 
+import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
 import IsInFov from "../components/IsInFov";
@@ -11,6 +12,10 @@ import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 import CanDijkstra from "../components/CanDijkstra";
+
+export const animatingEntities = ecs.createQuery({
+  all: [Animate],
+});
 
 export const blockingEntities = ecs.createQuery({
   all: [IsBlocking, Position],
