@@ -2,7 +2,7 @@ import { colors } from "../lib/graphics";
 import { Component } from "geotic";
 
 export default class Animate extends Component {
-  allowMultiple = true;
+  static allowMultiple = true;
 
   static properties = {
     startTime: null,
