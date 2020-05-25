@@ -6,9 +6,12 @@ import { cellToId } from "./lib/grid";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
+import { animation } from "./systems/animation";
 import { fov } from "./systems/fov";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
+
+import { animatingEntities } from "./queries";
 
 document.addEventListener("keydown", (ev) => input(ev.key));
 document.querySelector("#loading").classList.add("hide");
@@ -34,17 +37,25 @@ function gameTick() {
 gameTick();
 
 function update() {
-  if (gameState.userInput && gameState.playerTurn) {
-    processUserInput();
-    gameTick();
-    gameState.userInput = null;
-    gameState.turn = gameState.turn += 1;
-    gameState.playerTurn = false;
+  // resolve animations if any exist
+  if (animatingEntities.get().size) {
+    animation();
   }
 
-  if (!gameState.playerTurn) {
-    gameTick();
-    gameState.playerTurn = true;
+  // game should be blocked until all animations resolve
+  if (!animatingEntities.get().size) {
+    if (gameState.userInput && gameState.playerTurn) {
+      processUserInput();
+      gameTick();
+      gameState.userInput = null;
+      gameState.turn = gameState.turn += 1;
+      gameState.playerTurn = false;
+    }
+
+    if (!gameState.playerTurn) {
+      gameTick();
+      gameState.playerTurn = true;
+    }
   }
 }
 

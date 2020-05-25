@@ -94,9 +94,10 @@ ctx.font = `normal ${fontSize}px ${font}`;
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
-const drawBackground = (color, position) => {
+const drawBackground = (color, position, alpha = 1) => {
   if (color === "transparent") return;
 
+  ctx.globalAlpha = alpha;
   ctx.fillStyle = color;
   ctx.fillRect(
     position.x * cellWidth,
@@ -106,7 +107,8 @@ const drawBackground = (color, position) => {
   );
 };
 
-const drawChar = (char, color, position) => {
+const drawChar = (char, color, position, alpha = 1) => {
+  ctx.globalAlpha = alpha;
   ctx.fillStyle = color;
   ctx.fillText(
     char,
@@ -116,7 +118,7 @@ const drawChar = (char, color, position) => {
 };
 
 export const drawCell = (entity, options = {}) => {
-  const { fg, bg, x, y } = options;
+  const { fg, bg, x, y, fgA = 1, bgA = 1 } = options;
   const {
     appearance: { char, background, color },
     position,
@@ -126,12 +128,16 @@ export const drawCell = (entity, options = {}) => {
   const charColor = fg ? fg : color;
   const pos = x && y ? { x, y } : position;
 
-  drawBackground(bgColor, pos);
-  drawChar(char, charColor, pos);
+  drawBackground(bgColor, pos, bgA);
+  drawChar(char, charColor, pos, fgA);
 };
 
 export const clearCanvas = () =>
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+export const clearCell = (x, y) => {
+  ctx.clearRect(x, y, cellWidth, cellHeight);
+};
 
 export const pxToCell = (ev) => {
   const bounds = canvas.getBoundingClientRect();

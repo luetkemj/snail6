@@ -5,6 +5,9 @@ export const colors = {
 
   inventoryHighlight: "#A9CCE3",
 
+  // animations
+  damage: "#ff0000",
+
   // light:
   torchLight: "#FFD00E",
   campfire: "#FFD00E",

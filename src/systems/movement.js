@@ -1,6 +1,6 @@
 import { dijkstra } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
-import { chars } from "../lib/graphics";
+import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
 import MoveTo from "../components/MoveTo";
@@ -36,6 +36,12 @@ export const movement = () => {
       blockers.forEach((blocker) => {
         if (blocker.health) {
           blocker.fireEvent("take-damage", { amount: 5 });
+          blocker.add("Animate", {
+            animation: {
+              type: "color",
+              stops: [colors.damage, blocker.appearance.color],
+            },
+          });
 
           if (blocker.health.current <= 0) {
             if (!blocker.isDead) {

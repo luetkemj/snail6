@@ -1,6 +1,7 @@
 import { Engine } from "geotic";
 import Cache from "./cache";
 
+import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
 import CanDijkstra from "../components/CanDijkstra";
 import Health from "../components/Health";
@@ -25,6 +26,7 @@ const ecs = new Engine();
 export const cache = new Cache();
 
 // all Components and Prefabs must be `registered` by the engine
+ecs.registerComponent(Animate);
 ecs.registerComponent(Appearance);
 ecs.registerComponent(CanDijkstra);
 ecs.registerComponent(Health);
