@@ -2,9 +2,9 @@ import { colors } from "../lib/graphics";
 import { Component } from "geotic";
 
 export default class Animate extends Component {
-  static properties = {
-    allowMultiple: true,
+  allowMultiple = true;
 
+  static properties = {
     startTime: null,
     duration: 100,
     animation: {
@@ -18,7 +18,7 @@ export default class Animate extends Component {
     evt.handle();
   }
 
-  onRemove() {
-    console.log("Animation over!");
+  onDestory() {
+    console.log("DESTROYED!");
   }
 }

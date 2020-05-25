@@ -5,54 +5,60 @@ import { animatingEntities } from "../queries";
 
 export const animation = () => {
   animatingEntities.get().forEach((entity) => {
-    const time = new Date();
+    // const time = new Date();
 
-    entity.animate.forEach((animationX) => {
-      // set animation startTime
-      if (!animationX.startTime) {
-        entity.fireEvent("set-start-time", { time });
-      }
+    console.log(entity.animate);
+    entity.animate[0].destroy();
+    console.log(entity.animate);
 
-      const frameTime = time - animationX.startTime;
+    // entity.animate.forEach((animationX) => {
+    //   console.log(animationX);
 
-      // end animation when complete
-      if (frameTime > animationX.duration) {
-        return entity.remove("Animate");
-      }
+    //   // set animation startTime
+    //   if (!animationX.startTime) {
+    //     entity.fireEvent("set-start-time", { time });
+    //   }
 
-      const framePercent = frameTime / animationX.duration;
+    //   const frameTime = time - animationX.startTime;
 
-      // do the animation
-      // clear the cell first
-      clearCell(entity.position.x, entity.position.y);
+    //   // end animation when complete
+    //   if (frameTime > animationX.duration) {
+    //     return animationX.destroy();
+    //   }
 
-      // COLOR
-      if (animationX.animation.type === "color") {
-        // drawEndFrame
-        drawCell(entity, {
-          fg: animationX.animation.stops[0],
-        });
-        // drawStartFrame
-        drawCell(entity, {
-          fg: animationX.animation.stops[1],
-          fgA: framePercent,
-          bg: "transparent",
-        });
-      }
+    //   const framePercent = frameTime / animationX.duration;
 
-      // SHAKE
-      if (animationX.animation.type === "shake") {
-        // drawEndFrame
-        if (framePercent < 0.5) {
-          drawCell(entity, {
-            offsetX: -1,
-          });
-        } else {
-          drawCell(entity, {
-            offsetX: 1,
-          });
-        }
-      }
-    });
+    //   // do the animation
+    //   // clear the cell first
+    //   clearCell(entity.position.x, entity.position.y);
+
+    //   // COLOR
+    //   if (animationX.animation.type === "color") {
+    //     // drawEndFrame
+    //     drawCell(entity, {
+    //       fg: animationX.animation.stops[0],
+    //     });
+    //     // drawStartFrame
+    //     drawCell(entity, {
+    //       fg: animationX.animation.stops[1],
+    //       fgA: framePercent,
+    //       bg: "transparent",
+    //     });
+    //   }
+
+    //   // SHAKE
+    //   if (animationX.animation.type === "shake") {
+    //     // drawEndFrame
+    //     if (framePercent < 0.5) {
+    //       drawCell(entity, {
+    //         offsetX: -1,
+    //       });
+    //     } else {
+    //       drawCell(entity, {
+    //         offsetX: 1,
+    //       });
+    //     }
+    //   }
+    // });
   });
 };
