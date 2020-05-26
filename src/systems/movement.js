@@ -7,6 +7,13 @@ import MoveTo from "../components/MoveTo";
 import IsDead from "../components/IsDead";
 import { movableEntities } from "../queries";
 
+import deathSound from "../assets/sound/death.mp3";
+import hitSound from "../assets/sound/hit.mp3";
+import stepLeft from "../assets/sound/stepLeft.mp3";
+import stepRight from "../assets/sound/stepRight.mp3";
+
+// var snd = new Audio(hitSound); // buffers automatically when created
+
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
     const mPos = {
@@ -36,6 +43,9 @@ export const movement = () => {
       blockers.forEach((blocker) => {
         if (blocker.health) {
           blocker.fireEvent("take-damage", { amount: 5 });
+
+          new Audio(hitSound).play();
+
           blocker.add("Animate", {
             animation: {
               type: "color",
@@ -46,6 +56,7 @@ export const movement = () => {
           if (blocker.health.current <= 0) {
             if (!blocker.isDead) {
               blocker.add("IsDead");
+              new Audio(deathSound).play();
               blocker.remove("Layer400");
               blocker.add("Layer300");
               blocker.remove("IsBlocking");
@@ -65,6 +76,12 @@ export const movement = () => {
       const playerDijkstraMap = dijkstra([{ x: mx, y: my }]);
       cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
     }
+
+    // if (gameState.turn % 2) {
+    //   new Audio(stepLeft).play();
+    // } else {
+    //   new Audio(stepRight).play();
+    // }
 
     entity.position.x = mx;
     entity.position.y = my;
