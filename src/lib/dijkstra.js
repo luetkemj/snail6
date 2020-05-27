@@ -20,12 +20,14 @@ export const dijkstra = (goals, weights = []) => {
 
     neighborLocIds.forEach((neighborId) => {
       if (!distance[neighborId]) {
-        const neighborIds = cache.readSet("entitiesAtLocation", neighborId);
+        const neighborIds = [
+          ...cache.readSet("entitiesAtLocation", neighborId),
+        ];
         if (
           // check if location exists and is NOT blocking (no entity at location can be blocking)
-          (neighborIds && !some(neighborIds),
-          (x) => {
-            ecs.getEntity(x).has("IsBlocking");
+          neighborIds &&
+          !some(neighborIds, (x) => {
+            return ecs.getEntity(x).has("IsBlocking");
           })
         ) {
           let dscore = distance[current] + 1;

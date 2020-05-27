@@ -9,10 +9,13 @@ import { movableEntities } from "../queries";
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
-    const mPos = {
-      x: entity.position.x + entity.moveTo.x,
-      y: entity.position.y + entity.moveTo.y,
-    };
+    let mPos = { x: entity.moveTo.x, y: entity.moveTo.y };
+    if (entity.moveTo.relative) {
+      mPos = {
+        x: entity.position.x + entity.moveTo.x,
+        y: entity.position.y + entity.moveTo.y,
+      };
+    }
 
     const { width, height, x, y } = grid.map;
 
@@ -50,6 +53,7 @@ export const movement = () => {
               blocker.add("Layer300");
               blocker.remove("IsBlocking");
               blocker.appearance.char = chars.corpse;
+              blocker.remove("Brain");
             }
           }
         }

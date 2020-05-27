@@ -6,6 +6,7 @@ import { cellToId } from "./lib/grid";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
+import { ai } from "./systems/ai";
 import { animation } from "./systems/animation";
 import { fov } from "./systems/fov";
 import { movement } from "./systems/movement";
@@ -27,11 +28,14 @@ function initGame() {
 initGame();
 
 function gameTick() {
+  if (!gameState.playerTurn) {
+    ai();
+  }
   movement();
   if (gameState.playerTurn) {
     fov();
-    render();
   }
+  render();
 }
 
 gameTick();
@@ -44,7 +48,7 @@ function update() {
 
   // game should be blocked until all animations resolve
   if (!animatingEntities.get().size) {
-    if (gameState.userInput && gameState.playerTurn) {
+    if (gameState.userInput && gameState.playerTurn && !player.isDead) {
       processUserInput();
       gameTick();
       gameState.userInput = null;

@@ -107,18 +107,21 @@ const drawBackground = (color, position, alpha = 1) => {
   );
 };
 
-const drawChar = (char, color, position, alpha = 1) => {
-  ctx.globalAlpha = alpha;
+const drawChar = ({ char, color, pos, fgA, size }) => {
+  ctx.globalAlpha = fgA;
   ctx.fillStyle = color;
+  if (size) {
+    ctx.font = `${size}px sans-serif`;
+  }
   ctx.fillText(
     char,
-    position.x * cellWidth + cellWidth / 2,
-    position.y * cellHeight + cellHeight / 2
+    pos.x * cellWidth + cellWidth / 2,
+    pos.y * cellHeight + cellHeight / 2
   );
 };
 
 export const drawCell = (entity, options = {}) => {
-  const { fg, bg, x, y, fgA = 1, bgA = 1 } = options;
+  const { fg, bg, x, y, fgA = 1, bgA = 1, size = null } = options;
   const {
     appearance: { char, background, color },
     position,
@@ -129,7 +132,7 @@ export const drawCell = (entity, options = {}) => {
   const pos = x && y ? { x, y } : position;
 
   drawBackground(bgColor, pos, bgA);
-  drawChar(char, charColor, pos, fgA);
+  drawChar({ char, color: charColor, pos, fgA, size });
 };
 
 export const clearCanvas = () =>

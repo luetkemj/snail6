@@ -1,4 +1,5 @@
 import Appearance from "../components/Appearance";
+import Brain from "../components/Brain";
 import Health from "../components/Health";
 import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
@@ -16,6 +17,7 @@ export default {
         char: chars.goblin,
       },
     },
+    { type: Brain },
     { type: Health },
     { type: IsBlocking },
     { type: Layer400 },

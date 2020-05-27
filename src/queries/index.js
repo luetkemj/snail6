@@ -1,5 +1,6 @@
 import ecs from "../state/ecs";
 
+import Brain from "../components/Brain";
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
 import IsBlocking from "../components/IsBlocking";
@@ -12,6 +13,10 @@ import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
 import CanDijkstra from "../components/CanDijkstra";
+
+export const aiEntities = ecs.createQuery({
+  all: [Brain],
+});
 
 export const animatingEntities = ecs.createQuery({
   all: [Animate],

@@ -3,6 +3,7 @@ import Cache from "./cache";
 
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
+import Brain from "../components/Brain";
 import CanDijkstra from "../components/CanDijkstra";
 import Health from "../components/Health";
 import IsBlocking from "../components/IsBlocking";
@@ -28,6 +29,7 @@ export const cache = new Cache();
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
 ecs.registerComponent(Appearance);
+ecs.registerComponent(Brain);
 ecs.registerComponent(CanDijkstra);
 ecs.registerComponent(Health);
 ecs.registerComponent(IsBlocking);

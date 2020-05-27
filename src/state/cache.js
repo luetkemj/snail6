@@ -2,7 +2,9 @@ import { get, set } from "lodash";
 
 export default class Cache {
   entitiesAtLocation = {};
-  dijkstraMaps = {};
+  dijkstraMaps = {
+    player: {},
+  };
 
   serialize() {
     const entitiesAtLocation = Object.keys(this.entitiesAtLocation).reduce(

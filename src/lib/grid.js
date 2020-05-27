@@ -22,6 +22,13 @@ export const toCell = (cellOrId) => {
   return cell;
 };
 
+export const toLocId = (cellOrId) => {
+  let locId = cellOrId;
+  if (typeof locId !== "string") locId = cellToId(locId);
+
+  return locId;
+};
+
 export const rectangle = ({ x, y, width, height, hasWalls }, tileProps) => {
   const tiles = {};
 
