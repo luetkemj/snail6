@@ -7,13 +7,13 @@ import {
 } from "../queries";
 
 const drawCellIfAble = (entity) => {
-  const { animate, appearance, isInFov, isRevealed } = entity;
+  const { appearance, isInFov, isRevealed } = entity;
 
-  if (isInFov && !animate) {
-    drawCell(entity, { fg: appearance.color });
+  if (isInFov) {
+    drawCell(entity, { fg: appearance.currentColor || appearance.color });
   }
 
-  if (isRevealed && !isInFov && !animate) {
+  if (isRevealed && !isInFov) {
     drawCell(entity, {
       fg: colors.revealedColor,
     });

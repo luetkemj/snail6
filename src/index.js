@@ -41,25 +41,21 @@ function gameTick() {
 gameTick();
 
 function update() {
-  // resolve animations if any exist
   if (animatingEntities.get().size) {
     animation();
   }
 
-  // game should be blocked until all animations resolve
-  if (!animatingEntities.get().size) {
-    if (gameState.userInput && gameState.playerTurn && !player.isDead) {
-      processUserInput();
-      gameTick();
-      gameState.userInput = null;
-      gameState.turn = gameState.turn += 1;
-      gameState.playerTurn = false;
-    }
+  if (gameState.userInput && gameState.playerTurn && !player.isDead) {
+    processUserInput();
+    gameTick();
+    gameState.userInput = null;
+    gameState.turn = gameState.turn += 1;
+    gameState.playerTurn = false;
+  }
 
-    if (!gameState.playerTurn) {
-      gameTick();
-      gameState.playerTurn = true;
-    }
+  if (!gameState.playerTurn) {
+    gameTick();
+    gameState.playerTurn = true;
   }
 }
 

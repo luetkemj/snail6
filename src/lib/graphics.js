@@ -8,6 +8,9 @@ export const colors = {
   // animations
   damage: "#ff0000",
 
+  // soilage
+  blood: ["#660000", "#8b0000", "#800000", "#cc1100"],
+
   // light:
   torchLight: "#FFD00E",
   campfire: "#FFD00E",
@@ -27,9 +30,9 @@ export const colors = {
   hudText: "#fff",
   healthBar: "#B91906",
   // maps
-  wall: "#AAA",
-  floor: "#555",
-  cavernFloor: "#71331E",
+  wall: ["#AAA", "#BBB", "#CCC", "#DDD"],
+  floor: ["#555555", "#666666", "#444444"],
+  cavernFloor: ["#71331e", "#652d1b", "#5a2818", "#4f2315"],
   stairsUp: "#AAA",
   stairsDown: "#AAA",
   // player
