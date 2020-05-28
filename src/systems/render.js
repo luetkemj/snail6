@@ -10,7 +10,7 @@ const drawCellIfAble = (entity) => {
   const { appearance, isInFov, isRevealed } = entity;
 
   if (isInFov) {
-    drawCell(entity, { fg: appearance.color });
+    drawCell(entity, { fg: appearance.currentColor || appearance.color });
   }
 
   if (isRevealed && !isInFov) {

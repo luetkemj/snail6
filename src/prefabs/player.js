@@ -16,7 +16,7 @@ export default {
         char: chars.player,
       },
     },
-    { type: Health },
+    { type: Health, properties: { current: 10000, max: 10000 } },
     { type: IsBlocking },
     { type: Layer400 },
     { type: Position },

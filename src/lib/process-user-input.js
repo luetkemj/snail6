@@ -3,11 +3,14 @@ import { gameState, player, loadGame, saveGame } from "../state/ecs";
 
 export const input = (key) => {
   switch (key) {
+    case "L":
+      gameState.userInput = { key, type: "LOAD", payload: {} };
+      break;
     case "S":
       gameState.userInput = { key, type: "SAVE", payload: {} };
       break;
-    case "L":
-      gameState.userInput = { key, type: "LOAD", payload: {} };
+    case "c":
+      gameState.userInput = { key, type: "CLEAN", payload: {} };
       break;
     case "z":
       gameState.userInput = { key, type: "REST", payload: {} };
@@ -37,6 +40,10 @@ export const processUserInput = () => {
   }
 
   const { key, type, payload } = gameState.userInput;
+
+  if (type === "CLEAN") {
+    player.fireEvent("clean");
+  }
 
   if (type === "MOVE") {
     player.add(MoveTo, payload);

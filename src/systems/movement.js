@@ -1,8 +1,9 @@
+import { random, sample, times } from "lodash";
 import { dijkstra } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
-import { cellToId } from "../lib/grid";
+import { cellToId, getNeighborIds } from "../lib/grid";
 import { movableEntities } from "../queries";
 
 const kill = (entity) => {
@@ -16,14 +17,33 @@ const kill = (entity) => {
 
 const hit = (entity) => {
   entity.fireEvent("take-damage", { amount: 5 });
+
+  splatterBlood(entity);
+
   if (!entity.has("Animate")) {
     entity.add("Animate", {
       animation: {
         type: "color",
-        stops: [colors.damage, entity.appearance.color],
+        stops: [
+          colors.damage,
+          entity.appearance.currentColor || entity.appearance.color,
+        ],
       },
     });
   }
+};
+
+const splatterBlood = (entity) => {
+  const neighborIds = getNeighborIds(entity.position, "ALL");
+  const locIds = [];
+
+  times(random(0, 8), () => locIds.push(sample(neighborIds)));
+
+  locIds.forEach((locId) => {
+    cache.readSet("entitiesAtLocation", locId).forEach((x) => {
+      ecs.getEntity(x).fireEvent("soil", { color: sample(colors.blood) });
+    });
+  });
 };
 
 export const movement = () => {

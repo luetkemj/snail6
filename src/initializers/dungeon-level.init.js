@@ -33,12 +33,14 @@ const initDungeonLevel = () => {
         entity = ecs.createPrefab("WallPrefab", {
           position: { x: currTile.x, y: currTile.y },
         });
+        entity.appearance.color = sample(colors.wall);
       }
 
       if (currTile.sprite === "FLOOR") {
         entity = ecs.createPrefab("FloorPrefab", {
           position: { x: currTile.x, y: currTile.y },
         });
+        entity.appearance.color = sample(colors.floor);
         entity.add(CanDijkstra);
       }
 
@@ -46,7 +48,7 @@ const initDungeonLevel = () => {
         entity = ecs.createPrefab("FloorPrefab", {
           position: { x: currTile.x, y: currTile.y },
         });
-        entity.appearance.color = colors.cavernFloor;
+        entity.appearance.color = sample(colors.cavernFloor);
         entity.add(CanDijkstra);
       }
 
