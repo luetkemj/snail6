@@ -4,7 +4,7 @@ import { Component } from "geotic";
 export default class Animate extends Component {
   static properties = {
     startTime: null,
-    duration: 100,
+    duration: 300,
     animation: {
       type: "color",
       stops: [colors.defaultColor],

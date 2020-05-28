@@ -1,3 +1,5 @@
+import { renderOmniscience } from "../lib/debug";
+
 import { colors } from "../lib/graphics";
 import { clearCanvas, drawCell } from "../lib/canvas";
 import {
@@ -13,15 +15,17 @@ const drawCellIfAble = (entity) => {
     drawCell(entity, { fg: appearance.color });
   }
 
-  if (isRevealed && !isInFov && !animate) {
-    drawCell(entity, {
-      fg: colors.revealedColor,
-    });
-  }
+  // if (isRevealed && !isInFov && !animate) {
+  //   drawCell(entity, {
+  //     fg: colors.revealedColor,
+  //   });
+  // }
 };
 
 export const render = () => {
   clearCanvas();
+
+  renderOmniscience();
 
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));

@@ -19,7 +19,7 @@ export const aiEntities = ecs.createQuery({
 });
 
 export const animatingEntities = ecs.createQuery({
-  all: [Animate],
+  all: [Animate, IsInFov],
 });
 
 export const blockingEntities = ecs.createQuery({
