@@ -3,9 +3,28 @@ import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { cellToId } from "../lib/grid";
-import MoveTo from "../components/MoveTo";
-import IsDead from "../components/IsDead";
 import { movableEntities } from "../queries";
+
+const kill = (entity) => {
+  entity.add("IsDead");
+  entity.remove("Layer400");
+  entity.add("Layer300");
+  entity.remove("IsBlocking");
+  entity.appearance.char = chars.corpse;
+  entity.remove("Brain");
+};
+
+const hit = (entity) => {
+  entity.fireEvent("take-damage", { amount: 5 });
+  if (!entity.has("Animate")) {
+    entity.add("Animate", {
+      animation: {
+        type: "color",
+        stops: [colors.damage, entity.appearance.color],
+      },
+    });
+  }
+};
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
@@ -38,27 +57,14 @@ export const movement = () => {
     if (blockers.length) {
       blockers.forEach((blocker) => {
         if (blocker.health) {
-          blocker.fireEvent("take-damage", { amount: 5 });
-          blocker.add("Animate", {
-            animation: {
-              type: "color",
-              stops: [colors.damage, blocker.appearance.color],
-            },
-          });
+          hit(blocker);
 
           if (blocker.health.current <= 0) {
-            if (!blocker.isDead) {
-              blocker.add("IsDead");
-              blocker.remove("Layer400");
-              blocker.add("Layer300");
-              blocker.remove("IsBlocking");
-              blocker.appearance.char = chars.corpse;
-              blocker.remove("Brain");
-            }
+            kill(blocker);
           }
         }
       });
-      return entity.remove(MoveTo);
+      return entity.remove("MoveTo");
     }
 
     // update cache
@@ -73,6 +79,6 @@ export const movement = () => {
     entity.position.x = mx;
     entity.position.y = my;
 
-    entity.remove(MoveTo);
+    entity.remove("MoveTo");
   });
 };
