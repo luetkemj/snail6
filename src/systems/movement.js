@@ -41,7 +41,12 @@ const splatterBlood = (entity) => {
 
   locIds.forEach((locId) => {
     cache.readSet("entitiesAtLocation", locId).forEach((x) => {
-      ecs.getEntity(x).fireEvent("soil", { color: sample(colors.blood) });
+        ecs.getEntity(x).add('Soilage', {
+            color: sample(colors.blood),
+            name: 'blood',
+            sourceEntityId: entity.id,
+            sourceName: entity.name.nomen
+        })
     });
   });
 };

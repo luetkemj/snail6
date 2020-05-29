@@ -5,6 +5,7 @@ import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
 import Layer400 from "../components/Layer400";
 import IsBlocking from "../components/IsBlocking";
+import Name from "../components/Name";
 
 export default {
   name: "GoblinPrefab",
@@ -21,6 +22,7 @@ export default {
     { type: Health },
     { type: IsBlocking },
     { type: Layer400 },
+    { type: Name, properties: { nomen: 'goblin' } },
     { type: Position },
   ],
 };
