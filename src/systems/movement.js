@@ -5,6 +5,7 @@ import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { cellToId, getNeighborIds } from "../lib/grid";
 import { movableEntities } from "../queries";
+// import Soilage from '../components/Soilage'
 
 const kill = (entity) => {
   entity.add("IsDead");
@@ -15,18 +16,18 @@ const kill = (entity) => {
   entity.remove("Brain");
 };
 
-const hit = (entity) => {
-  entity.fireEvent("take-damage", { amount: 5 });
+const hit = (targetEntity) => {
+  targetEntity.fireEvent("take-damage", { amount: 5 });
 
-  splatterBlood(entity);
+  splatterBlood(targetEntity);
 
-  if (!entity.has("Animate")) {
-    entity.add("Animate", {
+  if (!targetEntity.has("Animate")) {
+    targetEntity.add("Animate", {
       animation: {
         type: "color",
         stops: [
           colors.damage,
-          entity.appearance.currentColor || entity.appearance.color,
+          targetEntity.appearance.currentColor || targetEntity.appearance.color,
         ],
       },
     });
@@ -50,6 +51,27 @@ const splatterBlood = (entity) => {
     });
   });
 };
+
+const bumpAttack = (targetEntity) => {
+    if (targetEntity.health) {
+        hit(targetEntity);
+
+        if (targetEntity.health.current <= 0) {
+          kill(targetEntity);
+        }
+      }
+}
+
+const washInFountain = (targetEntity, fountain) => {
+    if (targetEntity.has('Soilage')) {
+        if (fountain.has('Soilage')) {
+            console.log("You can't clean yourself in this foul fountain")
+        } else {
+            targetEntity.get('Soilage').forEach(x => fountain.add('Soilage', { ...x.serialize() }))
+            targetEntity.fireEvent('clean')
+        }
+    }
+}
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
@@ -81,13 +103,15 @@ export const movement = () => {
 
     if (blockers.length) {
       blockers.forEach((blocker) => {
-        if (blocker.health) {
-          hit(blocker);
-
-          if (blocker.health.current <= 0) {
-            kill(blocker);
-          }
+        // if has brain and not the same species - bump attack
+        if (blocker.brain && entity.name.nomen !== blocker.name.nomen) {
+            bumpAttack(blocker)
         }
+
+        if (blocker.name.nomen === 'fountain') {
+            washInFountain(entity, blocker)
+        }
+
       });
       return entity.remove("MoveTo");
     }
