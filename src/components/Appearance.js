@@ -18,6 +18,5 @@ export default class Appearance extends Component {
 
   onClean(evt) {
     this.currentColor = null;
-    evt.handle();
   }
 }
