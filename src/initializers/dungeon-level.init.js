@@ -63,7 +63,7 @@ const initDungeonLevel = () => {
       const locId = cellToId(room.center);
       // make sure the location is empty (only floor tiles should exist here...)
       if (cache.readSet("entitiesAtLocation", locId).size === 1) {
-        const entity = ecs.createPrefab("BonfirePrefab", {
+        const entity = ecs.createPrefab("FountainPrefab", {
           position: room.center,
         });
 
@@ -83,8 +83,6 @@ const initDungeonLevel = () => {
       cache.addSet("entitiesAtLocation", locId, entity.id);
     }
   });
-
-  console.log(dungeon);
 
   return dungeon;
 };

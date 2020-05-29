@@ -47,7 +47,7 @@ export const chars = {
   corpse: "%",
   // staging
   campfire: "ô", // ö o
-  fountain: "⨀", // ⦿ ⦾ ◯ ⨀ ⊚
+  fountain: "⦿", // ⦿ ⦾ ◯ ⨀ ⊚
   // equipment
   armor: "[",
   weapon: ")",
