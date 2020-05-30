@@ -4,6 +4,7 @@ export default class Cache {
   entitiesAtLocation = {};
   dijkstraMaps = {
     player: {},
+    playerReverse: {},
   };
 
   serialize() {

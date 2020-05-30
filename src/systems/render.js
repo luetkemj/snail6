@@ -6,6 +6,8 @@ import {
   layer400Entities,
 } from "../queries";
 
+import { renderOmniscience } from "../lib/debug";
+
 const drawCellIfAble = (entity) => {
   const { appearance, isInFov, isRevealed } = entity;
 
@@ -24,6 +26,9 @@ export const render = () => {
   clearCanvas();
 
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
+
+  // renderOmniscience();
+
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 };

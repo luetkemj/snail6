@@ -20,5 +20,9 @@ export const renderDijkstra = (dMapName) => {
 
 export const renderOmniscience = () => {
   console.log(ecs);
-  [...ecs.entities.all].forEach(drawCell);
+  [...ecs.entities.all].forEach((entity) =>
+    drawCell(entity, {
+      fg: entity.appearance.currentColor || entity.appearance.color,
+    })
+  );
 };

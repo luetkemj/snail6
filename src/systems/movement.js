@@ -1,11 +1,10 @@
 import { random, sample, times } from "lodash";
-import { dijkstra } from "../lib/dijkstra";
+import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { cellToId, getNeighborIds } from "../lib/grid";
 import { movableEntities } from "../queries";
-// import Soilage from '../components/Soilage'
 
 const kill = (entity) => {
   entity.add("IsDead");
@@ -124,7 +123,10 @@ export const movement = () => {
 
     if (entity.id === player.id && gameState.playerTurn) {
       const playerDijkstraMap = dijkstra([{ x: mx, y: my }]);
+      const playerReverse = dijkstraReverse(playerDijkstraMap);
+
       cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
+      cache.addObj("dijkstraMaps", "playerReverse", playerReverse);
     }
 
     entity.position.x = mx;

@@ -1,10 +1,10 @@
 import { some } from "lodash";
 import ecs, { cache } from "../state/ecs";
-import { cellToId, getNeighborIds, idToCell } from "./grid";
+import { toLocId, getNeighborIds, toCell } from "./grid";
 
 // goals: Array of { x, y } positions
 export const dijkstra = (goals, weights = []) => {
-  const frontier = goals.map(cellToId);
+  const frontier = goals.map(toLocId);
 
   const distance = frontier.reduce((acc, val, idx) => {
     acc[val] = weights[idx] || 0;
@@ -15,7 +15,7 @@ export const dijkstra = (goals, weights = []) => {
     const current = frontier.shift();
 
     // current entity position component
-    const cell = idToCell(current);
+    const cell = toCell(current);
     const neighborLocIds = getNeighborIds(cell);
 
     neighborLocIds.forEach((neighborId) => {
@@ -40,9 +40,22 @@ export const dijkstra = (goals, weights = []) => {
 
   // normalize goals to their weights or 0
   goals.forEach((goal, idx) => {
-    const id = cellToId(goal);
+    const id = toLocId(goal);
     distance[id] = weights[idx] || 0;
   });
 
   return distance;
+};
+
+export const dijkstraReverse = (dMap, coeff = -1.2) => {
+  const dR = {};
+
+  Object.keys(dMap).forEach((x) => {
+    dR[x] = dMap[x] * coeff;
+  });
+
+  const goals = Object.keys(dR);
+  const weights = goals.map((x) => dR[x]);
+
+  return dijkstra(goals, weights);
 };
