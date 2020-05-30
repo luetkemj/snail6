@@ -34,7 +34,7 @@ export const ai = () => {
 
       // should add a component of some sort that will track if an enemy has spotted the player.
       // being in FOV is a cheap shortcut that only works so-so
-      if (distance > 4 || aiEntitiesInFov.get().size > 2) {
+      if (distance > 4 || aiEntitiesInFov.get().size > 1) {
         moveToPlayer(entity);
       } else {
         moveAwayFromPlayer(entity);
