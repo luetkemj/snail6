@@ -24,10 +24,13 @@ export const dijkstra = (goals, weights = []) => {
           ...cache.readSet("entitiesAtLocation", neighborId),
         ];
         if (
-          // check if location exists and is NOT blocking (no entity at location can be blocking)
+          // check if location exists and is NOT blocking (no entity at location can be blocking AND brainless)
           neighborIds &&
           !some(neighborIds, (x) => {
-            return ecs.getEntity(x).has("IsBlocking");
+            return (
+              ecs.getEntity(x).has("IsBlocking") &&
+              !ecs.getEntity(x).has("Brain")
+            );
           })
         ) {
           let dscore = distance[current] + 1;

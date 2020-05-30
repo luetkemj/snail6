@@ -18,6 +18,10 @@ export const aiEntities = ecs.createQuery({
   all: [Brain],
 });
 
+export const aiEntitiesInFov = ecs.createQuery({
+  all: [Brain, IsInFov],
+});
+
 export const animatingEntities = ecs.createQuery({
   all: [Animate, IsInFov],
 });

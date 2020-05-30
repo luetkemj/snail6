@@ -1,6 +1,7 @@
-import { player } from "../state/ecs";
-import { aiEntities } from "../queries";
+import { cache, player } from "../state/ecs";
+import { aiEntities, aiEntitiesInFov } from "../queries";
 import { drunkenWalk, walkDijkstra } from "../lib/pathfinding";
+import { toLocId } from "../lib/grid";
 
 const moveToPlayer = (entity) => {
   const newLoc = walkDijkstra(entity, "player");
@@ -27,8 +28,17 @@ export const ai = () => {
       console.log("covered in blood!");
       moveAwayFromPlayer(entity);
     } else {
-      console.log("ATTACK!!!!");
-      moveToPlayer(entity);
+      const distance = cache.readObj("dijkstraMaps", "player")[
+        toLocId(entity.position)
+      ];
+
+      // should add a component of some sort that will track if an enemy has spotted the player.
+      // being in FOV is a cheap shortcut that only works so-so
+      if (distance > 4 || aiEntitiesInFov.get().size > 2) {
+        moveToPlayer(entity);
+      } else {
+        moveAwayFromPlayer(entity);
+      }
     }
   });
 };
