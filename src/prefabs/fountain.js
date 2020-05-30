@@ -19,6 +19,6 @@ export default {
     { type: IsBlocking },
     { type: Layer300 },
     { type: Position },
-    { type: Name, properties: { nomen: 'fountain' }  }
+    { type: Name, properties: { nomen: "fountain" } },
   ],
 };

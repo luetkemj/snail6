@@ -18,6 +18,6 @@ export default {
     },
     { type: Layer100 },
     { type: Position },
-    { type: Name, properties: { nomen: 'floor' }  }
+    { type: Name, properties: { nomen: "floor" } },
   ],
 };

@@ -30,7 +30,7 @@ const digDrunkenWalk = (x, y, tiles) => {
     tiles[`${loc.x},${loc.y}`] = {
       x: loc.x,
       y: loc.y,
-      sprite: "CAVERN_FLOOR"
+      sprite: "CAVERN_FLOOR",
     };
     return { x: loc.x, y: loc.y };
   } else {
@@ -45,7 +45,7 @@ export const generateDungeon = ({
   height,
   maxRoomCount,
   minRoomSize,
-  maxRoomSize
+  maxRoomSize,
 }) => {
   // fill the entire space with walls so we can dig it out later
   const { tiles } = rectangle(
@@ -69,7 +69,7 @@ export const generateDungeon = ({
       { sprite: "FLOOR", blocking: false, opaque: false }
     );
 
-    if (!rooms.some(room => rectsIntersect(room, candidate))) {
+    if (!rooms.some((room) => rectsIntersect(room, candidate))) {
       rooms[r] = candidate;
       roomTiles = { ...roomTiles, ...candidate.tiles };
     }
@@ -102,7 +102,7 @@ export const generateDungeon = ({
   }
 
   const openTileIds = Object.keys(processedTiles).filter(
-    tileId => !processedTiles[tileId].blocking
+    (tileId) => !processedTiles[tileId].blocking
   );
 
   return { tiles: processedTiles, start: rooms[0].center, openTileIds, rooms };

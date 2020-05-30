@@ -22,7 +22,7 @@ export default {
     { type: Health },
     { type: IsBlocking },
     { type: Layer400 },
-    { type: Name, properties: { nomen: 'goblin' } },
+    { type: Name, properties: { nomen: "goblin" } },
     { type: Position },
   ],
 };

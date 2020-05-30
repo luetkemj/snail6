@@ -42,36 +42,39 @@ const splatterBlood = (entity) => {
 
   locIds.forEach((locId) => {
     cache.readSet("entitiesAtLocation", locId).forEach((x) => {
-        ecs.getEntity(x).add('Soilage', {
-            color: sample(colors.blood),
-            name: 'blood',
-            sourceEntityId: entity.id,
-            sourceName: entity.name.nomen
-        })
+      ecs.getEntity(x).add("Soilage", {
+        // color: sample(colors.blood),
+        color: colors.blood[3],
+        name: "blood",
+        sourceEntityId: entity.id,
+        sourceName: entity.name.nomen,
+      });
     });
   });
 };
 
 const bumpAttack = (targetEntity) => {
-    if (targetEntity.health) {
-        hit(targetEntity);
+  if (targetEntity.health) {
+    hit(targetEntity);
 
-        if (targetEntity.health.current <= 0) {
-          kill(targetEntity);
-        }
-      }
-}
+    if (targetEntity.health.current <= 0) {
+      kill(targetEntity);
+    }
+  }
+};
 
 const washInFountain = (targetEntity, fountain) => {
-    if (targetEntity.has('Soilage')) {
-        if (fountain.has('Soilage')) {
-            console.log("You can't clean yourself in this foul fountain")
-        } else {
-            targetEntity.get('Soilage').forEach(x => fountain.add('Soilage', { ...x.serialize() }))
-            targetEntity.fireEvent('clean')
-        }
+  if (targetEntity.has("Soilage")) {
+    if (fountain.has("Soilage")) {
+      console.log("You can't clean yourself in this foul fountain");
+    } else {
+      targetEntity
+        .get("Soilage")
+        .forEach((x) => fountain.add("Soilage", { ...x.serialize() }));
+      targetEntity.fireEvent("clean");
     }
-}
+  }
+};
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
@@ -105,13 +108,12 @@ export const movement = () => {
       blockers.forEach((blocker) => {
         // if has brain and not the same species - bump attack
         if (blocker.brain && entity.name.nomen !== blocker.name.nomen) {
-            bumpAttack(blocker)
+          bumpAttack(blocker);
         }
 
-        if (blocker.name.nomen === 'fountain') {
-            washInFountain(entity, blocker)
+        if (blocker.name.nomen === "fountain") {
+          washInFountain(entity, blocker);
         }
-
       });
       return entity.remove("MoveTo");
     }

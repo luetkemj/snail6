@@ -6,9 +6,9 @@ export const ai = () => {
     // const newLoc = drunkenWalk(entity);
     const newLoc = walkDijkstra(entity, "player");
     if (Object.keys(newLoc).length) {
-        if (entity.has('IsInFov')) {
-            entity.add("MoveTo", { ...newLoc, relative: false });
-        }
+      if (entity.has("IsInFov")) {
+        entity.add("MoveTo", { ...newLoc, relative: false });
+      }
     }
   });
 };

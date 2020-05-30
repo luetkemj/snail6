@@ -15,9 +15,9 @@ import Layer100 from "../components/Layer100";
 import Layer300 from "../components/Layer300";
 import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
-import Name from '../components/Name';
+import Name from "../components/Name";
 import Position from "../components/Position";
-import Soilage from '../components/Soilage';
+import Soilage from "../components/Soilage";
 
 import BonfirePrefab from "../prefabs/bonfire";
 import FloorPrefab from "../prefabs/floor";
@@ -46,7 +46,7 @@ ecs.registerComponent(Layer400);
 ecs.registerComponent(MoveTo);
 ecs.registerComponent(Name);
 ecs.registerComponent(Position);
-ecs.registerComponent(Soilage)
+ecs.registerComponent(Soilage);
 
 ecs.registerPrefab(BonfirePrefab);
 ecs.registerPrefab(FloorPrefab);

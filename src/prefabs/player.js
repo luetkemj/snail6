@@ -20,7 +20,7 @@ export default {
     { type: Health, properties: { current: 10000, max: 10000 } },
     { type: IsBlocking },
     { type: Layer400 },
-    { type: Name, properties: { nomen: 'player' } },
+    { type: Name, properties: { nomen: "player" } },
     { type: Position },
   ],
 };

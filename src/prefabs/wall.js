@@ -22,6 +22,6 @@ export default {
     { type: IsOpaque },
     { type: Layer100 },
     { type: Position },
-    { type: Name, properties: { nomen: 'wall' } },
+    { type: Name, properties: { nomen: "wall" } },
   ],
 };
