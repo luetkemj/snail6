@@ -11,8 +11,17 @@ const kill = (entity) => {
   entity.remove("Layer400");
   entity.add("Layer300");
   entity.remove("IsBlocking");
-  entity.appearance.char = chars.corpse;
   entity.remove("Brain");
+  if (!entity.has("isBoneless")) {
+    entity.appearance.char = chars.corpse;
+  }
+
+  if (entity.has("isBoneless")) {
+    entity.appearance.background = "transparent";
+    entity.appearance.currentBackground = "transparent";
+    // once more spatter blood!
+    splatterBlood(entity);
+  }
 };
 
 const hit = (targetEntity) => {
@@ -37,7 +46,7 @@ const hit = (targetEntity) => {
 
 const splatterBlood = (entity) => {
   const neighborIds = getNeighborIds(entity.position, "ALL");
-  const locIds = [];
+  const locIds = [toLocId(entity.position)];
 
   times(random(0, 8), () => locIds.push(sample(neighborIds)));
 
@@ -93,6 +102,16 @@ const absorb = (entity) => {
           .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
         cEntity.fireEvent("clean");
       }
+
+      // todo: should actually put the entity into it's inventory (will need to include items eventually)
+      if (cEntity.has("isDead")) {
+        cache.delete(
+          "entitiesAtLocation",
+          toLocId(cEntity.position),
+          cEntity.id
+        );
+        cEntity.destroy();
+      }
     }
   });
 };
@@ -142,7 +161,7 @@ export const movement = () => {
       return entity.remove("MoveTo");
     }
 
-    if (entity.name.nomen === "gelatinousCube") {
+    if (entity.has("canAbsorb")) {
       absorb(entity);
     }
 
