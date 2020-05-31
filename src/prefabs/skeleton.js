@@ -19,7 +19,7 @@ export default {
       },
     },
     { type: Brain, properties: { ai: "skeleton" } },
-    { type: Health },
+    { type: Health, properties: { current: 30, max: 30 } },
     { type: IsBlocking },
     { type: Layer400 },
     { type: Name, properties: { nomen: "skeleton" } },

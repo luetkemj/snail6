@@ -21,7 +21,7 @@ export default {
     },
     { type: Blood },
     { type: Brain, properties: { ai: "goblin" } },
-    { type: Health },
+    { type: Health, properties: { current: 10, max: 10 } },
     { type: IsBlocking },
     { type: Layer400 },
     { type: Name, properties: { nomen: "goblin" } },

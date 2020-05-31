@@ -20,7 +20,7 @@ const kill = (entity) => {
     entity.appearance.background = "transparent";
     entity.appearance.currentBackground = "transparent";
     // once more spatter blood!
-    splatterBlood(entity);
+    splatterBlood(entity, self);
   }
 };
 
@@ -44,9 +44,13 @@ const hit = (targetEntity) => {
   }
 };
 
-const splatterBlood = (entity) => {
+const splatterBlood = (entity, splatterSelf = false) => {
   const neighborIds = getNeighborIds(entity.position, "ALL");
-  const locIds = [toLocId(entity.position)];
+  const locIds = [];
+
+  if (splatterSelf) {
+    locIds.push(toLocId(entity.position));
+  }
 
   times(random(0, 8), () => locIds.push(sample(neighborIds)));
 

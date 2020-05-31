@@ -5,10 +5,12 @@ import { drunkenWalk, walkDijkstra } from "../lib/pathfinding";
 import { toLocId } from "../lib/grid";
 
 const moveToPlayer = (entity) => {
-  const newLoc = walkDijkstra(entity, "player");
-  if (Object.keys(newLoc).length) {
-    if (entity.has("IsInFov")) {
-      entity.add("MoveTo", { ...newLoc, relative: false });
+  if (random(0, 20) > 1) {
+    const newLoc = walkDijkstra(entity, "player");
+    if (Object.keys(newLoc).length) {
+      if (entity.has("IsInFov")) {
+        entity.add("MoveTo", { ...newLoc, relative: false });
+      }
     }
   }
 };

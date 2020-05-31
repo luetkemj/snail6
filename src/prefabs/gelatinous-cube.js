@@ -25,7 +25,7 @@ export default {
     { type: Blood, properties: { color: colors.gelatinousCube } },
     { type: Brain, properties: { ai: "gelatinousCube" } },
     { type: CanAbsorb },
-    { type: Health },
+    { type: Health, properties: { current: 100, max: 100 } },
     { type: IsBlocking },
     { type: isBoneless },
     { type: Layer400 },
