@@ -15,6 +15,8 @@ export const DIAGONAL = [
   { x: -1, y: -1 }, // NW
 ];
 
+export const ALL = [...CARDINAL, ...DIAGONAL];
+
 export const toCell = (cellOrId) => {
   let cell = cellOrId;
   if (typeof cell === "string") cell = idToCell(cell);
