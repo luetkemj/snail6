@@ -9,7 +9,7 @@ export const colors = {
   damage: "#ff0000",
 
   // soilage
-  blood: ["#660000", "#8b0000", "#800000", "#cc1100"],
+  blood: "#cc1100",
 
   // light:
   torchLight: "#FFD00E",
@@ -40,6 +40,8 @@ export const colors = {
   // monsters
   goblin: "#0C9",
   rat: "#F1948A",
+  skeleton: "#fde5a4",
+  gelatinousCube: "#9abf31",
 };
 
 export const chars = {
@@ -71,4 +73,5 @@ export const chars = {
   // monsters
   goblin: "g",
   rat: "r",
+  skeleton: "s",
 };

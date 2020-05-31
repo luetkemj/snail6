@@ -1,5 +1,6 @@
 import { Component } from "geotic";
 
 export default class Position extends Component {
-  static properties = { x: 0, y: 0 };
+  // px, py = previous x, previous y
+  static properties = { x: 0, y: 0, px: null, py: null };
 }

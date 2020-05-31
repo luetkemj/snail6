@@ -1,4 +1,5 @@
 import Appearance from "../components/Appearance";
+import Blood from "../components/Blood";
 import Health from "../components/Health";
 import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
@@ -17,6 +18,7 @@ export default {
         char: chars.player,
       },
     },
+    { type: Blood },
     { type: Health, properties: { current: 10000, max: 10000 } },
     { type: IsBlocking },
     { type: Layer400 },

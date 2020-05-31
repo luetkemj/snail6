@@ -174,8 +174,8 @@ export const getNeighbor = (x, y, dir) => {
 };
 
 export const getDirection = (a, b) => {
-  const cellA = idToCell(a);
-  const cellB = idToCell(b);
+  const cellA = toCell(a);
+  const cellB = toCell(b);
 
   const { x: ax, y: ay } = cellA;
   const { x: bx, y: by } = cellB;

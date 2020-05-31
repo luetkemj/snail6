@@ -3,7 +3,7 @@ import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
-import { cellToId, getNeighborIds } from "../lib/grid";
+import { toLocId, getNeighborIds } from "../lib/grid";
 import { movableEntities } from "../queries";
 
 const kill = (entity) => {
@@ -18,7 +18,9 @@ const kill = (entity) => {
 const hit = (targetEntity) => {
   targetEntity.fireEvent("take-damage", { amount: 5 });
 
-  splatterBlood(targetEntity);
+  if (targetEntity.has("Blood")) {
+    splatterBlood(targetEntity);
+  }
 
   if (!targetEntity.has("Animate")) {
     targetEntity.add("Animate", {
@@ -42,8 +44,7 @@ const splatterBlood = (entity) => {
   locIds.forEach((locId) => {
     cache.readSet("entitiesAtLocation", locId).forEach((x) => {
       ecs.getEntity(x).add("Soilage", {
-        // color: sample(colors.blood),
-        color: colors.blood[3],
+        color: entity.blood.color,
         name: "blood",
         sourceEntityId: entity.id,
         sourceName: entity.name.nomen,
@@ -75,6 +76,27 @@ const washInFountain = (targetEntity, fountain) => {
   }
 };
 
+const absorb = (entity) => {
+  // get all entities at loc excluding self
+  const entitiesAtLoc = cache.readSet(
+    "entitiesAtLocation",
+    toLocId(entity.position)
+  );
+
+  entitiesAtLoc.forEach((eId) => {
+    if (eId !== entity.id) {
+      const cEntity = ecs.getEntity(eId);
+      if (cEntity.has("Soilage")) {
+        // clone all soilage and add to self
+        cEntity
+          .get("Soilage")
+          .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
+        cEntity.fireEvent("clean");
+      }
+    }
+  });
+};
+
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
     let mPos = { x: entity.moveTo.x, y: entity.moveTo.y };
@@ -93,7 +115,7 @@ export const movement = () => {
 
     let blockers = [];
 
-    const locId = cellToId({ x: mx, y: my });
+    const locId = toLocId({ x: mx, y: my });
     const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
 
     entitiesAtLoc.forEach((eid) => {
@@ -106,7 +128,10 @@ export const movement = () => {
     if (blockers.length) {
       blockers.forEach((blocker) => {
         // if has brain and not the same species - bump attack
-        if (blocker.brain && entity.name.nomen !== blocker.name.nomen) {
+        if (
+          (blocker.brain || blocker.name.nomen === "player") &&
+          entity.name.nomen !== blocker.name.nomen
+        ) {
           bumpAttack(blocker);
         }
 
@@ -117,9 +142,13 @@ export const movement = () => {
       return entity.remove("MoveTo");
     }
 
+    if (entity.name.nomen === "gelatinousCube") {
+      absorb(entity);
+    }
+
     // update cache
-    cache.delete("entitiesAtLocation", cellToId(entity.position), entity.id);
-    cache.addSet("entitiesAtLocation", cellToId({ x: mx, y: my }), entity.id);
+    cache.delete("entitiesAtLocation", toLocId(entity.position), entity.id);
+    cache.addSet("entitiesAtLocation", toLocId({ x: mx, y: my }), entity.id);
 
     if (entity.id === player.id && gameState.playerTurn) {
       const playerDijkstraMap = dijkstra([{ x: mx, y: my }]);
@@ -129,6 +158,8 @@ export const movement = () => {
       cache.addObj("dijkstraMaps", "playerReverse", playerReverse);
     }
 
+    entity.position.px = entity.position.x;
+    entity.position.py = entity.position.y;
     entity.position.x = mx;
     entity.position.y = my;
 

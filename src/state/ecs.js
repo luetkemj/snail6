@@ -3,6 +3,7 @@ import Cache from "./cache";
 
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
+import Blood from "../components/Blood";
 import Brain from "../components/Brain";
 import CanDijkstra from "../components/CanDijkstra";
 import Health from "../components/Health";
@@ -22,8 +23,10 @@ import Soilage from "../components/Soilage";
 import BonfirePrefab from "../prefabs/bonfire";
 import FloorPrefab from "../prefabs/floor";
 import FountainPrefab from "../prefabs/fountain";
+import GelatinousCubePrefab from "../prefabs/gelatinous-cube";
 import GoblinPrefab from "../prefabs/goblin";
 import PlayerPrefab from "../prefabs/player";
+import SkeletonPrefab from "../prefabs/skeleton";
 import WallPrefab from "../prefabs/wall";
 
 const ecs = new Engine();
@@ -33,6 +36,7 @@ window.snailCache = cache;
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
 ecs.registerComponent(Appearance);
+ecs.registerComponent(Blood);
 ecs.registerComponent(Brain);
 ecs.registerComponent(CanDijkstra);
 ecs.registerComponent(Health);
@@ -52,8 +56,10 @@ ecs.registerComponent(Soilage);
 ecs.registerPrefab(BonfirePrefab);
 ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(FountainPrefab);
+ecs.registerPrefab(GelatinousCubePrefab);
 ecs.registerPrefab(GoblinPrefab);
 ecs.registerPrefab(PlayerPrefab);
+ecs.registerPrefab(SkeletonPrefab);
 ecs.registerPrefab(WallPrefab);
 
 export let gameState = {

@@ -9,22 +9,23 @@ import IsBlocking from "../components/IsBlocking";
 import Name from "../components/Name";
 
 export default {
-  name: "GoblinPrefab",
+  name: "GelatinousCubePrefab",
 
   components: [
     {
       type: Appearance,
       properties: {
-        color: colors.goblin,
-        char: chars.goblin,
+        color: "",
+        char: "",
+        background: colors.gelatinousCube,
       },
     },
-    { type: Blood },
-    { type: Brain, properties: { ai: "goblin" } },
+    { type: Blood, properties: { color: colors.gelatinousCube } },
+    { type: Brain, properties: { ai: "gelatinousCube" } },
     { type: Health },
     { type: IsBlocking },
     { type: Layer400 },
-    { type: Name, properties: { nomen: "goblin" } },
+    { type: Name, properties: { nomen: "gelatinousCube" } },
     { type: Position },
   ],
 };

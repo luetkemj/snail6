@@ -73,10 +73,32 @@ const initDungeonLevel = () => {
   });
 
   // spawn monsters!
-  times(10, () => {
+  times(random(5, 10), () => {
     const locId = sample(dungeon.openTileIds);
     if (cache.readSet("entitiesAtLocation", locId).size === 1) {
       const entity = ecs.createPrefab("GoblinPrefab", {
+        position: toCell(locId),
+      });
+
+      cache.addSet("entitiesAtLocation", locId, entity.id);
+    }
+  });
+
+  times(random(5, 10), () => {
+    const locId = sample(dungeon.openTileIds);
+    if (cache.readSet("entitiesAtLocation", locId).size === 1) {
+      const entity = ecs.createPrefab("SkeletonPrefab", {
+        position: toCell(locId),
+      });
+
+      cache.addSet("entitiesAtLocation", locId, entity.id);
+    }
+  });
+
+  times(random(1, 3), () => {
+    const locId = sample(dungeon.openTileIds);
+    if (cache.readSet("entitiesAtLocation", locId).size === 1) {
+      const entity = ecs.createPrefab("GelatinousCubePrefab", {
         position: toCell(locId),
       });
 
