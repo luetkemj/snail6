@@ -19,7 +19,10 @@ export const dijkstra = (goals, weights = []) => {
     const neighborLocIds = getNeighborIds(cell);
 
     neighborLocIds.forEach((neighborId) => {
-      if (!distance[neighborId]) {
+      if (
+        !distance[neighborId] &&
+        cache.readSet("entitiesAtLocation", neighborId)
+      ) {
         const neighborIds = [
           ...cache.readSet("entitiesAtLocation", neighborId),
         ];

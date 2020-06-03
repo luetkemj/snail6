@@ -4,9 +4,17 @@ import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
-import { movableEntities } from "../queries";
+import { movableEntities, soiledEntities } from "../queries";
 
 import { aStar } from "../lib/pathfinding";
+
+const updateBloodDijkstra = () => {
+  // currently we only have blood for soilage so we can do this:
+  const bloodDijkstraMap = dijkstra(
+    [...soiledEntities.get()].map((x) => x.position)
+  );
+  cache.addObj("dijkstraMaps", "blood", bloodDijkstraMap);
+};
 
 const kill = (entity) => {
   entity.add("IsDead");
@@ -66,9 +74,14 @@ const splatterBlood = (entity, splatterSelf = false) => {
       });
     });
   });
+
+  updateBloodDijkstra();
 };
 
-const bumpAttack = (targetEntity) => {
+const bumpAttack = (targetEntity, entity) => {
+  // if (entity.canAbsorb) {
+  //   absorb();
+  // }
   if (targetEntity.health) {
     hit(targetEntity);
 
@@ -89,6 +102,26 @@ const washInFountain = (targetEntity, fountain) => {
       targetEntity.fireEvent("clean");
     }
   }
+
+  updateBloodDijkstra();
+};
+
+const absorbTarget = (target, entity) => {
+  // get soilage from all non absorbing entities at target
+  const entitiesAtLoc = cache.readSet(
+    "entitiesAtLocation",
+    toLocId(target.position)
+  );
+  // absorb them
+  entitiesAtLoc.forEach((eId) => {
+    const tEntity = ecs.getEntity(eId);
+    if (!tEntity.canAbsorb && tEntity.soilage) {
+      tEntity
+        .get("Soilage")
+        .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
+      tEntity.fireEvent("clean");
+    }
+  });
 };
 
 const absorb = (entity) => {
@@ -100,26 +133,28 @@ const absorb = (entity) => {
 
   entitiesAtLoc.forEach((eId) => {
     if (eId !== entity.id) {
-      const cEntity = ecs.getEntity(eId);
-      if (cEntity.has("Soilage")) {
+      const targetEntity = ecs.getEntity(eId);
+      if (targetEntity.has("Soilage")) {
         // clone all soilage and add to self
-        cEntity
+        targetEntity
           .get("Soilage")
           .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
-        cEntity.fireEvent("clean");
+        targetEntity.fireEvent("clean");
       }
 
       // todo: should actually put the entity into it's inventory (will need to include items eventually)
-      if (cEntity.has("isDead")) {
+      if (targetEntity.has("isDead")) {
         cache.delete(
           "entitiesAtLocation",
-          toLocId(cEntity.position),
-          cEntity.id
+          toLocId(targetEntity.position),
+          targetEntity.id
         );
-        cEntity.destroy();
+        targetEntity.destroy();
       }
     }
   });
+
+  updateBloodDijkstra();
 };
 
 export const movement = () => {
@@ -157,6 +192,10 @@ export const movement = () => {
     if (blockers.length) {
       blockers.forEach((blocker) => {
         // if has brain and not the same species - bump attack
+        if (entity.canAbsorb) {
+          absorbTarget(entity, blocker);
+        }
+
         if (
           (blocker.brain || blocker.name.nomen === "player") &&
           entity.name.nomen !== blocker.name.nomen

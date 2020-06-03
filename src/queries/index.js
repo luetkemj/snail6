@@ -3,6 +3,8 @@ import ecs from "../state/ecs";
 import Brain from "../components/Brain";
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
+import CanAbsorb from "../components/CanAbsorb";
+import CanDijkstra from "../components/CanDijkstra";
 import IsBlocking from "../components/IsBlocking";
 import IsInFov from "../components/IsInFov";
 import IsOpaque from "../components/IsOpaque";
@@ -12,7 +14,7 @@ import Layer300 from "../components/Layer300";
 import Layer400 from "../components/Layer400";
 import MoveTo from "../components/MoveTo";
 import Position from "../components/Position";
-import CanDijkstra from "../components/CanDijkstra";
+import Soilage from "../components/Soilage";
 
 export const aiEntities = ecs.createQuery({
   all: [Brain],
@@ -63,4 +65,9 @@ export const opaqueEntities = ecs.createQuery({
 
 export const renderableEntities = ecs.createQuery({
   all: [Position, Appearance],
+});
+
+export const soiledEntities = ecs.createQuery({
+  all: [Soilage],
+  none: [CanAbsorb],
 });

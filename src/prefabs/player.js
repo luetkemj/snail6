@@ -19,7 +19,7 @@ export default {
       },
     },
     { type: Blood },
-    { type: Health, properties: { current: 50, max: 50 } },
+    { type: Health, properties: { current: 50000, max: 50 } },
     { type: IsBlocking },
     { type: Layer400 },
     { type: Name, properties: { nomen: "player" } },

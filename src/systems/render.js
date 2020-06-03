@@ -27,7 +27,7 @@ export const render = () => {
 
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
 
-  // renderOmniscience();
+  renderOmniscience();
 
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
