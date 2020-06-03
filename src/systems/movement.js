@@ -6,6 +6,8 @@ import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
 import { movableEntities } from "../queries";
 
+import { aStar } from "../lib/pathfinding";
+
 const kill = (entity) => {
   entity.add("IsDead");
   entity.remove("Layer400");
@@ -122,6 +124,8 @@ const absorb = (entity) => {
 
 export const movement = () => {
   movableEntities.get().forEach((entity) => {
+    aStar(entity.position, player.position);
+
     let mPos = { x: entity.moveTo.x, y: entity.moveTo.y };
     if (entity.moveTo.relative) {
       mPos = {
@@ -141,12 +145,14 @@ export const movement = () => {
     const locId = toLocId({ x: mx, y: my });
     const entitiesAtLoc = cache.readSet("entitiesAtLocation", locId);
 
-    entitiesAtLoc.forEach((eid) => {
-      const potentialBlocker = ecs.getEntity(eid);
-      if (potentialBlocker.isBlocking) {
-        blockers.push(potentialBlocker);
-      }
-    });
+    if (entitiesAtLoc) {
+      entitiesAtLoc.forEach((eid) => {
+        const potentialBlocker = ecs.getEntity(eid);
+        if (potentialBlocker.isBlocking) {
+          blockers.push(potentialBlocker);
+        }
+      });
+    }
 
     if (blockers.length) {
       blockers.forEach((blocker) => {

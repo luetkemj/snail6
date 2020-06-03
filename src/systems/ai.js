@@ -1,20 +1,23 @@
 import { random } from "lodash";
 import { cache, player } from "../state/ecs";
 import { aiEntities, aiEntitiesInFov } from "../queries";
-import { drunkenWalk, walkDijkstra } from "../lib/pathfinding";
+import { aStar, drunkenWalk, walkDijkstra } from "../lib/pathfinding";
 import { toLocId } from "../lib/grid";
 
 const moveToPlayer = (entity) => {
   if (random(0, 20) > 1) {
-    const newLoc = walkDijkstra(entity, "player");
-    if (Object.keys(newLoc).length) {
+    const path = aStar(entity.position, player.position);
+    if (path.length) {
+      const newLoc = path[1];
       if (entity.has("IsInFov")) {
-        entity.add("MoveTo", { ...newLoc, relative: false });
+        entity.add("MoveTo", { x: newLoc[0], y: newLoc[1], relative: false });
       }
     }
   }
 };
 
+// should try and have a safe haven for them to congregrate to and
+// astar there after a quick freak out run about
 const moveAwayFromPlayer = (entity) => {
   const newLoc = walkDijkstra(entity, "playerReverse");
   if (Object.keys(newLoc).length) {
@@ -61,6 +64,8 @@ export const ai = () => {
 
         // should add a component of some sort that will track if an enemy has spotted the player.
         // being in FOV is a cheap shortcut that only works so-so
+        // todo: have the stay out of FOV and only enter when there are enough of them!
+        //  but only do that when hunting...
         if (
           distance > 4 ||
           [...aiEntitiesInFov.get()].filter((x) => x.name.nomen === "goblin")

@@ -101,6 +101,20 @@ export default class Cache {
       }
     }
 
+    if (operation === "readSet") {
+      if (!this[name]) {
+        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        return false;
+      }
+
+      if (key && !this[name][key]) {
+        console.warn(
+          `Cannot "${operation}". Cache ${name}.${key} does not exist`
+        );
+        return false;
+      }
+    }
+
     if (operation === "read") {
       if (!this[name]) {
         console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);

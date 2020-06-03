@@ -34,6 +34,7 @@ import WallPrefab from "../prefabs/wall";
 const ecs = new Engine();
 export const cache = new Cache();
 window.snailCache = cache;
+window.ecs = ecs;
 
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
