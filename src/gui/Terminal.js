@@ -22,7 +22,6 @@ export default class Terminal {
 
   #drawText(opt = {}) {
     const textToRender = opt.text || this.text;
-
     textToRender.split("").forEach((char, index) => {
       // we shouldn't have to do this for each char -
       // but gotta refactor drawCell to solve this one...
@@ -47,7 +46,7 @@ export default class Terminal {
   }
 
   #drawList() {
-    const logs = this.text.slice(this.text.length - 3);
+    const logs = this.text.slice(this.text.length - this.height);
     logs.forEach((entry, index) => {
       const options = {
         ...entry,

@@ -33,6 +33,14 @@ const AdventureLog = new Terminal({
   fadeY: true,
 });
 
+const NamePlate = new Terminal({
+  width: 20,
+  height: 1,
+  x: 0,
+  y: 0,
+  text: "@ You",
+});
+
 export const render = () => {
   clearCanvas();
 
@@ -44,4 +52,5 @@ export const render = () => {
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 
   AdventureLog.draw();
+  NamePlate.draw();
 };
