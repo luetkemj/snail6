@@ -7,7 +7,7 @@ export default class Terminal {
     this.width = options.width;
     this.x = options.x;
     this.y = options.y;
-    this.text = options.text || []; // object or array
+    this.templates = options.templates || []; // array of template objects
     this.options = {};
 
     this.options.fg = options.fg || colors.hudText;
@@ -17,15 +17,15 @@ export default class Terminal {
     this.options.fgA = options.fgA || 1;
     this.options.bgA = options.bgA || 1;
 
-    this.options.fadeY = options.fadeY || false;
+    this.options.fadeY = options.fadeY;
   }
 
-  #drawText(opt = {}) {
-    const textToRender = opt.text || this.text;
+  #drawText(template) {
+    const textToRender = template.text;
     textToRender.split("").forEach((char, index) => {
       // we shouldn't have to do this for each char -
       // but gotta refactor drawCell to solve this one...
-      const options = { ...this.options, ...opt };
+      const options = { ...this.options, ...template };
       const character = {
         appearance: {
           char,
@@ -45,28 +45,50 @@ export default class Terminal {
     });
   }
 
-  #drawList() {
-    const logs = this.text.slice(this.text.length - this.height);
-    logs.forEach((entry, index) => {
-      const options = {
-        ...entry,
-        x: this.x,
-        y: index + this.y,
+  #drawInline(templates) {
+    let cursor = this.x;
+
+    console.log(templates);
+
+    templates.forEach((tempt) => {
+      const tp = {
+        ...tempt,
+        x: cursor,
+        y: this.y,
       };
 
-      if (this.options.fadeY) {
-        options.fgA = index * 0.75 || 0.5;
-      }
+      this.#drawText(tp);
+      cursor += tempt.text.length;
+    });
+  }
 
-      this.#drawText(options);
+  #drawTemplates() {
+    const templates = this.templates.slice(this.templates.length - this.height);
+    templates.forEach((template, index) => {
+      if (Array.isArray(template)) {
+        console.log(template);
+        this.#drawInline(template);
+      } else {
+        const tempt = {
+          ...template,
+          x: this.x,
+          y: index + this.y,
+        };
+
+        if (this.options.fadeY) {
+          tempt.fgA = index * 0.75 || 0.5;
+        }
+
+        this.#drawText(tempt);
+      }
     });
   }
 
   draw() {
-    if (Array.isArray(this.text)) {
-      this.#drawList();
-    } else {
-      this.#drawText();
-    }
+    return this.#drawTemplates();
   }
 }
+
+// ONLY SUPPORT TEMPLATES:
+// templates: [{ text: '', ...options }, { text: '', ...options }] // one or many lines
+// templates: [[{ text: '', ...options }, { text: '', ...options }]] // inline (for multi color things)

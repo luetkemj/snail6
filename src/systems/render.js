@@ -29,7 +29,7 @@ const AdventureLog = new Terminal({
   height: 3,
   x: 21,
   y: 0,
-  text: gameState.adventureLog,
+  templates: gameState.adventureLog,
   fadeY: true,
 });
 
@@ -38,7 +38,9 @@ const NamePlate = new Terminal({
   height: 1,
   x: 0,
   y: 0,
-  text: "@ You",
+  // templates: [{ text: "@ You", fg: "#fff" }],
+  // templates: [{ text: "@", fg: "#fff" }, { text: "You" }],
+  templates: [[{ text: "@", fg: "#ff0077" }, { text: " You" }]],
 });
 
 export const render = () => {
