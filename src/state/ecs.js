@@ -33,8 +33,6 @@ import WallPrefab from "../prefabs/wall";
 
 const ecs = new Engine();
 export const cache = new Cache();
-window.snailCache = cache;
-window.ecs = ecs;
 
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
@@ -71,6 +69,7 @@ export let gameState = {
   userInput: null,
   playerTurn: true,
   turn: 0,
+  adventureLog: [],
 };
 
 export let player = ecs.createPrefab("PlayerPrefab");
@@ -110,6 +109,13 @@ export function saveGame() {
 
   console.log("game saved");
 }
+
+window.snail = {
+  ecs,
+  cache,
+  gameState,
+  player,
+};
 
 export default ecs;
 

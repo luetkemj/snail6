@@ -29,11 +29,8 @@ const AdventureLog = new Terminal({
   height: 3,
   x: 21,
   y: 0,
-  color: "#FFF",
-  background: "transparent",
-  text: { text: "COVERED IN BLOOD!", fg: "red" },
-  // text: "COVERED IN BLOOD!",
-  type: "TEXT",
+  text: gameState.adventureLog,
+  fadeY: true,
 });
 
 export const render = () => {

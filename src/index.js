@@ -1,8 +1,10 @@
 import "./lib/canvas.js";
 import { pxToCell } from "./lib/canvas";
+import { colors } from "./lib/graphics";
 import ecs, { cache, player, gameState } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 import { cellToId } from "./lib/grid";
+import { log } from "./lib/adventure-log";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
@@ -23,6 +25,10 @@ function initGame() {
   player.position.y = dungeon.start.y;
 
   cache.addSet("entitiesAtLocation", cellToId(dungeon.start), player.id);
+
+  log({ text: "COVERED IN BLOOD!", fg: "red" });
+  log({ text: "A game where you get COVERED IN BLOOD!" });
+  log({ text: "Watch out for skellies and jellies!" });
 }
 
 initGame();

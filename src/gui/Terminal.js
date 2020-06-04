@@ -7,31 +7,26 @@ export default class Terminal {
     this.width = options.width;
     this.x = options.x;
     this.y = options.y;
-    this.text = options.text || ""; // string or array
-    this.type = options.type || "LIST"; // [LIST]
-
+    this.text = options.text || []; // object or array
     this.options = {};
 
-    this.options.fg = options.fg || colors.defaultColor;
+    this.options.fg = options.fg || colors.hudText;
     this.options.bg = options.bg || colors.defaultBGColor;
     this.options.x = options.x || this.x;
     this.options.y = options.y || this.y;
     this.options.fgA = options.fgA || 1;
     this.options.bgA = options.bgA || 1;
+
+    this.options.fadeY = options.fadeY || false;
   }
 
-  #drawText() {
-    let textToRender, options;
+  #drawText(opt = {}) {
+    const textToRender = opt.text || this.text;
 
-    if (typeof this.text === "string") {
-      textToRender = this.text;
-      options = this.options;
-    } else {
-      textToRender = this.text.text;
-      options = { ...this.options, ...this.text };
-    }
-
-    textToRender.split("").forEach((char, charIdx) => {
+    textToRender.split("").forEach((char, index) => {
+      // we shouldn't have to do this for each char -
+      // but gotta refactor drawCell to solve this one...
+      const options = { ...this.options, ...opt };
       const character = {
         appearance: {
           char,
@@ -39,28 +34,40 @@ export default class Terminal {
           color: options.fg,
         },
         position: {
-          x: charIdx + options.x,
+          x: index + options.x,
           y: options.y,
         },
       };
+
+      delete options.x;
+      delete options.y;
+
       drawCell(character, options);
     });
   }
 
-  drawList() {
-    console.log("drawList");
+  #drawList() {
+    const logs = this.text.slice(this.text.length - 3);
+    logs.forEach((entry, index) => {
+      const options = {
+        ...entry,
+        x: this.x,
+        y: index + this.y,
+      };
+
+      if (this.options.fadeY) {
+        options.fgA = index * 0.75 || 0.5;
+      }
+
+      this.#drawText(options);
+    });
   }
 
   draw() {
-    if (this.options.type === "LIST") {
-      this.drawList();
-    }
-    if (this.type === "TEXT") {
+    if (Array.isArray(this.text)) {
+      this.#drawList();
+    } else {
       this.#drawText();
     }
   }
 }
-
-// an update method that will auto draw?
-// probably not in this world. but an update method that will
-// instead auto update the content so that render can draw on next tick
