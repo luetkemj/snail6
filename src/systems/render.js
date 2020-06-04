@@ -1,3 +1,5 @@
+import { gameState } from "../state/ecs";
+import Terminal from "../gui/Terminal";
 import { colors } from "../lib/graphics";
 import { clearCanvas, drawCell } from "../lib/canvas";
 import {
@@ -22,6 +24,18 @@ const drawCellIfAble = (entity) => {
   }
 };
 
+const AdventureLog = new Terminal({
+  width: 75,
+  height: 3,
+  x: 21,
+  y: 0,
+  color: "#FFF",
+  background: "transparent",
+  text: { text: "COVERED IN BLOOD!", fg: "red" },
+  // text: "COVERED IN BLOOD!",
+  type: "TEXT",
+});
+
 export const render = () => {
   clearCanvas();
 
@@ -31,4 +45,6 @@ export const render = () => {
 
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
+
+  AdventureLog.draw();
 };
