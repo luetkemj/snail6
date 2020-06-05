@@ -1,7 +1,9 @@
-import { gameState, player } from "../state/ecs";
+import { sortBy } from "lodash";
+import { cache, gameState, player } from "../state/ecs";
 import Terminal from "../gui/Terminal";
 import { colors } from "../lib/graphics";
 import { clearCanvas, drawCell } from "../lib/canvas";
+import { toLocId } from "../lib/grid";
 import {
   layer100Entities,
   layer300Entities,
@@ -33,25 +35,28 @@ const AdventureLog = new Terminal({
   fadeY: true,
 });
 
-const NamePlate = new Terminal({
+const Legend = new Terminal({
   width: 20,
-  height: 1,
+  height: 30,
   x: 0,
   y: 0,
 });
 
+const sortLegend = () => {
+  const playerDijkstra = cache.readObj("dijkstraMaps", "player");
+  console.log(playerDijkstra);
+
+  return sortBy(
+    [...layer400Entities.get(), ...layer300Entities.get()],
+    (entity) => {
+      const dScore = playerDijkstra[toLocId(entity.position)];
+      return dScore;
+    }
+  );
+};
+
 export const render = () => {
   clearCanvas();
-
-  NamePlate.update([
-    [
-      {
-        text: player.appearance.char,
-        fg: player.appearance.currentColor || player.appearance.color,
-      },
-      { text: " You" },
-    ],
-  ]);
 
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
   // renderOmniscience();
@@ -59,5 +64,5 @@ export const render = () => {
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 
   AdventureLog.draw();
-  NamePlate.draw();
+  Legend.drawNamePlates(sortLegend());
 };

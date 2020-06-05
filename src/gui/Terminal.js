@@ -51,7 +51,7 @@ export default class Terminal {
       const tp = {
         ...tempt,
         x: cursor,
-        y: this.y,
+        y: tempt.y || this.y,
       };
 
       this.#drawText(tp);
@@ -78,6 +78,28 @@ export default class Terminal {
         this.#drawText(tempt);
       }
     });
+  }
+
+  drawNamePlates(entities) {
+    this.templates = entities.map((entity, index) => {
+      return [
+        {
+          text: entity.appearance.char || " ",
+          bg: entity.appearance.background,
+          fg: entity.appearance.currentColor || entity.appearance.color,
+          y: index + this.y,
+        },
+
+        {
+          text: ` ${entity.name.nomen}`,
+          y: index + this.y,
+        },
+      ];
+    });
+
+    console.log(this.templates);
+
+    this.draw();
   }
 
   draw() {
