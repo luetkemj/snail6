@@ -1,4 +1,4 @@
-import { gameState } from "../state/ecs";
+import { gameState, player } from "../state/ecs";
 import Terminal from "../gui/Terminal";
 import { colors } from "../lib/graphics";
 import { clearCanvas, drawCell } from "../lib/canvas";
@@ -38,18 +38,23 @@ const NamePlate = new Terminal({
   height: 1,
   x: 0,
   y: 0,
-  // templates: [{ text: "@ You", fg: "#fff" }],
-  // templates: [{ text: "@", fg: "#fff" }, { text: "You" }],
-  templates: [[{ text: "@", fg: "#ff0077" }, { text: " You" }]],
 });
 
 export const render = () => {
   clearCanvas();
 
+  NamePlate.update([
+    [
+      {
+        text: player.appearance.char,
+        fg: player.appearance.currentColor || player.appearance.color,
+      },
+      { text: " You" },
+    ],
+  ]);
+
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
-
   // renderOmniscience();
-
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 

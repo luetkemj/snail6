@@ -47,9 +47,6 @@ export default class Terminal {
 
   #drawInline(templates) {
     let cursor = this.x;
-
-    console.log(templates);
-
     templates.forEach((tempt) => {
       const tp = {
         ...tempt,
@@ -66,7 +63,6 @@ export default class Terminal {
     const templates = this.templates.slice(this.templates.length - this.height);
     templates.forEach((template, index) => {
       if (Array.isArray(template)) {
-        console.log(template);
         this.#drawInline(template);
       } else {
         const tempt = {
@@ -86,6 +82,10 @@ export default class Terminal {
 
   draw() {
     return this.#drawTemplates();
+  }
+
+  update(templates) {
+    this.templates = templates;
   }
 }
 
