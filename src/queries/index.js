@@ -1,8 +1,9 @@
 import ecs from "../state/ecs";
 
-import Brain from "../components/Brain";
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
+import Brain from "../components/Brain";
+import CanLegend from "../components/CanLegend";
 import IsBlocking from "../components/IsBlocking";
 import IsInFov from "../components/IsInFov";
 import IsOpaque from "../components/IsOpaque";
@@ -51,6 +52,10 @@ export const layer300Entities = ecs.createQuery({
 export const layer400Entities = ecs.createQuery({
   all: [Appearance, Layer400, Position],
   any: [IsInFov],
+});
+
+export const legendEntities = ecs.createQuery({
+  all: [CanLegend, IsInFov],
 });
 
 export const movableEntities = ecs.createQuery({

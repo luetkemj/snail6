@@ -9,6 +9,7 @@ import { colors } from "../lib/graphics";
 import Layer400 from "../components/Layer400";
 import IsBlocking from "../components/IsBlocking";
 import Name from "../components/Name";
+import CanLegend from "../components/CanLegend";
 
 export default {
   name: "GelatinousCubePrefab",
@@ -31,5 +32,6 @@ export default {
     { type: Layer400 },
     { type: Name, properties: { nomen: "gelatinousCube" } },
     { type: Position },
+    { type: CanLegend },
   ],
 };

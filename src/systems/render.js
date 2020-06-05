@@ -8,6 +8,7 @@ import {
   layer100Entities,
   layer300Entities,
   layer400Entities,
+  legendEntities,
 } from "../queries";
 
 import { renderOmniscience } from "../lib/debug";
@@ -44,15 +45,11 @@ const Legend = new Terminal({
 
 const sortLegend = () => {
   const playerDijkstra = cache.readObj("dijkstraMaps", "player");
-  console.log(playerDijkstra);
 
-  return sortBy(
-    [...layer400Entities.get(), ...layer300Entities.get()],
-    (entity) => {
-      const dScore = playerDijkstra[toLocId(entity.position)];
-      return dScore;
-    }
-  );
+  return sortBy([...legendEntities.get()], (entity) => {
+    const dScore = playerDijkstra[toLocId(entity.position)];
+    return dScore;
+  });
 };
 
 export const render = () => {

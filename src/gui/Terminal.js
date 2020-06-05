@@ -97,8 +97,6 @@ export default class Terminal {
       ];
     });
 
-    console.log(this.templates);
-
     this.draw();
   }
 

@@ -4,9 +4,17 @@ import ecs, { cache, player, gameState } from "../state/ecs";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
-import { movableEntities } from "../queries";
+import { aiEntities, movableEntities } from "../queries";
 
 import { aStar } from "../lib/pathfinding";
+
+export const nuke = () => {
+  aiEntities.get().forEach((entity) => {
+    if (entity.name.nomen !== "player") {
+      kill(entity);
+    }
+  });
+};
 
 const kill = (entity) => {
   entity.add("IsDead");
@@ -21,9 +29,8 @@ const kill = (entity) => {
   if (entity.has("isBoneless")) {
     entity.appearance.background = "transparent";
     entity.appearance.currentBackground = "transparent";
-    // once more spatter blood!
-    splatterBlood(entity, self);
   }
+  splatterBlood(entity, self);
 };
 
 const hit = (targetEntity) => {
@@ -47,6 +54,7 @@ const hit = (targetEntity) => {
 };
 
 const splatterBlood = (entity, splatterSelf = false) => {
+  if (!entity.blood) return;
   const neighborIds = getNeighborIds(entity.position, "ALL");
   const locIds = [];
 
