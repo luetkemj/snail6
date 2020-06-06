@@ -5,10 +5,12 @@ import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
 import { aiEntities, movableEntities } from "../queries";
+import { log } from "../lib/adventure-log";
 
 import { aStar } from "../lib/pathfinding";
 
 export const nuke = () => {
+  log({ text: `NUKE!`, fg: "orange" });
   aiEntities.get().forEach((entity) => {
     if (entity.name.nomen !== "player") {
       kill(entity);
@@ -89,12 +91,23 @@ const bumpAttack = (targetEntity) => {
 const washInFountain = (targetEntity, fountain) => {
   if (targetEntity.has("Soilage")) {
     if (fountain.has("Soilage")) {
-      console.log("You can't clean yourself in this foul fountain");
+      log({
+        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+      });
     } else {
+      log({ text: `${targetEntity.name.nomen} bathes in the fountain.` });
       targetEntity
         .get("Soilage")
         .forEach((x) => fountain.add("Soilage", { ...x.serialize() }));
       targetEntity.fireEvent("clean");
+    }
+  } else {
+    if (fountain.has("Soilage")) {
+      log({
+        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+      });
+    } else {
+      log({ text: `A fountain full of fresh clean water.` });
     }
   }
 };
@@ -169,6 +182,7 @@ export const movement = () => {
           (blocker.brain || blocker.name.nomen === "player") &&
           entity.name.nomen !== blocker.name.nomen
         ) {
+          log({ text: `${entity.name.nomen} hits ${blocker.name.nomen}` });
           bumpAttack(blocker);
         }
 
