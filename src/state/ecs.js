@@ -24,6 +24,7 @@ import Position from "../components/Position";
 import Soilage from "../components/Soilage";
 
 import BonfirePrefab from "../prefabs/bonfire";
+import CharPrefab from "../prefabs/char";
 import FloorPrefab from "../prefabs/floor";
 import FountainPrefab from "../prefabs/fountain";
 import GelatinousCubePrefab from "../prefabs/gelatinous-cube";
@@ -59,6 +60,7 @@ ecs.registerComponent(Position);
 ecs.registerComponent(Soilage);
 
 ecs.registerPrefab(BonfirePrefab);
+ecs.registerPrefab(CharPrefab);
 ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(FountainPrefab);
 ecs.registerPrefab(GelatinousCubePrefab);

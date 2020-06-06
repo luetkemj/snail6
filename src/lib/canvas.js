@@ -107,21 +107,41 @@ const drawBackground = (color, position, alpha = 1) => {
   );
 };
 
-const drawChar = ({ char, color, pos, fgA, size }) => {
+const drawChar = ({ char, color, pos, fgA, size, rotate }) => {
   ctx.globalAlpha = fgA;
   ctx.fillStyle = color;
   if (size) {
     ctx.font = `${size}px sans-serif`;
   }
-  ctx.fillText(
-    char,
-    pos.x * cellWidth + cellWidth / 2,
-    pos.y * cellHeight + cellHeight / 2
-  );
+
+  if (!rotate) {
+    ctx.fillText(
+      char,
+      pos.x * cellWidth + cellWidth / 2,
+      pos.y * cellHeight + cellHeight / 2
+    );
+  }
+
+  if (rotate) {
+    const newx = pos.x * cellWidth + cellWidth / 2;
+    const newy = pos.y * cellHeight + cellHeight / 2;
+    ctx.save();
+    ctx.translate(newx, newy);
+    if (rotate === 90) {
+      ctx.rotate(Math.PI / 2); // 90
+    } else if (rotate === 180) {
+      ctx.rotate(Math.PI / 1); // 180 // upside down
+    } else if (rotate === 270) {
+      ctx.rotate(-Math.PI / 2); // 270
+    }
+    ctx.textAlign = "center";
+    ctx.fillText(char, 0, 0);
+    ctx.restore();
+  }
 };
 
 export const drawCell = (entity, options = {}) => {
-  const { fg, bg, x, y, fgA = 1, bgA = 1, size = null } = options;
+  const { fg, bg, x, y, fgA = 1, bgA = 1, size = null, rotate } = options;
   const {
     appearance: { char, background, color },
     position,
@@ -132,7 +152,7 @@ export const drawCell = (entity, options = {}) => {
   const pos = x && y ? { x, y } : position;
 
   drawBackground(bgColor, pos, bgA);
-  drawChar({ char, color: charColor, pos, fgA, size });
+  drawChar({ char, color: charColor, pos, fgA, size, rotate });
 };
 
 export const clearCanvas = () =>

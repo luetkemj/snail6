@@ -11,7 +11,7 @@ import {
   legendEntities,
 } from "../queries";
 
-import { renderOmniscience } from "../lib/debug";
+import { renderOmniscience, renderAllChars } from "../lib/debug";
 
 const drawCellIfAble = (entity) => {
   const { appearance, isInFov, isRevealed } = entity;
@@ -62,4 +62,7 @@ export const render = () => {
 
   AdventureLog.draw();
   Legend.drawNamePlates(sortLegend());
+
+  // clearCanvas();
+  // renderAllChars();
 };
