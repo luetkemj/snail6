@@ -1,3 +1,4 @@
+import { times } from "lodash";
 import { drawCell } from "../lib/canvas";
 import { colors } from "../lib/graphics";
 
@@ -81,21 +82,55 @@ export default class Terminal {
   }
 
   drawNamePlates(entities) {
-    this.templates = entities.map((entity, index) => {
-      return [
+    const templates = [];
+    let y = this.y;
+
+    entities.forEach((entity, index) => {
+      templates.push([
         {
-          text: entity.appearance.char || " ",
+          text: `${entity.appearance.char}` || " ",
           bg: entity.appearance.background,
           fg: entity.appearance.currentColor || entity.appearance.color,
-          y: index + this.y,
+          y,
         },
 
         {
-          text: ` ${entity.name.nomen}`,
-          y: index + this.y,
+          text: `: ${entity.name.nomen}`,
+          y,
         },
-      ];
+      ]);
+      y++;
+
+      if (!entity.isDead && entity.health && entity.health.current > 0) {
+        const percent = (entity.health.current / entity.health.max) * 17; // width of nameplates (hud) minus 3
+        const bars = Math.ceil(percent);
+        if (!bars) return;
+
+        const tempt = [];
+        times(bars + 3, (index) => {
+          if (index < 3) {
+            tempt.push({
+              text: " ",
+              y,
+            });
+          } else {
+            tempt.push({
+              text: "⁗",
+              fg:
+                (entity.blood && entity.blood.color) ||
+                entity.appearance.color ||
+                "red",
+              y,
+            });
+          }
+        });
+
+        templates.push(tempt);
+        y++;
+      }
     });
+
+    this.templates = templates;
 
     this.draw();
   }
