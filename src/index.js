@@ -53,9 +53,9 @@ function gameTick() {
 gameTick();
 
 function update() {
-  if (animatingEntities.get().size) {
-    animation();
-  }
+  // if (animatingEntities.get().size) {
+  //   animation();
+  // }
 
   if (gameState.userInput && gameState.playerTurn && !player.isDead) {
     processUserInput();

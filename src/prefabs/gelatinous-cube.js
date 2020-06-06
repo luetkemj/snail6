@@ -30,7 +30,7 @@ export default {
     { type: IsBlocking },
     { type: isBoneless },
     { type: Layer400 },
-    { type: Name, properties: { nomen: "gelatinousCube" } },
+    { type: Name, properties: { nomen: "Jelly" } },
     { type: Position },
     { type: CanLegend },
   ],

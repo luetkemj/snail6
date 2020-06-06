@@ -127,6 +127,8 @@ export default class Terminal {
 
         templates.push(tempt);
         y++;
+      } else {
+        y++;
       }
     });
 

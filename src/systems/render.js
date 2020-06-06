@@ -44,12 +44,13 @@ const Legend = new Terminal({
 });
 
 const sortLegend = () => {
-  const playerDijkstra = cache.readObj("dijkstraMaps", "player");
+  return legendEntities.get();
+  // const playerDijkstra = cache.readObj("dijkstraMaps", "player");
 
-  return sortBy([...legendEntities.get()], (entity) => {
-    const dScore = playerDijkstra[toLocId(entity.position)];
-    return dScore;
-  });
+  // return sortBy([...legendEntities.get()], (entity) => {
+  //   const dScore = playerDijkstra[toLocId(entity.position)];
+  //   return dScore;
+  // });
 };
 
 export const render = () => {
