@@ -1,5 +1,6 @@
 import { Component } from "geotic";
 import { colors } from "../lib/graphics";
+import { SOIL } from "../state/events";
 
 export default class Soilage extends Component {
   static allowMultiple = true;
@@ -12,7 +13,7 @@ export default class Soilage extends Component {
   };
 
   onAttached(evt) {
-    this.entity.fireEvent("soil", { color: this.color });
+    this.entity.fireEvent(SOIL, { color: this.color });
   }
 
   onClean(evt) {

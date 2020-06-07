@@ -36,6 +36,14 @@ const AdventureLog = new Terminal({
   fadeY: true,
 });
 
+const InnerMonologue = new Terminal({
+  width: 75,
+  height: 1,
+  x: 21,
+  y: 33,
+  templates: gameState.innerMonologue,
+});
+
 const Legend = new Terminal({
   width: 20,
   height: 30,
@@ -44,13 +52,12 @@ const Legend = new Terminal({
 });
 
 const sortLegend = () => {
-  return legendEntities.get();
-  // const playerDijkstra = cache.readObj("dijkstraMaps", "player");
+  const playerDijkstra = cache.readObj("dijkstraMaps", "player");
 
-  // return sortBy([...legendEntities.get()], (entity) => {
-  //   const dScore = playerDijkstra[toLocId(entity.position)];
-  //   return dScore;
-  // });
+  return sortBy([...legendEntities.get()], (entity) => {
+    const dScore = playerDijkstra[toLocId(entity.position)];
+    return dScore;
+  });
 };
 
 export const render = () => {
@@ -62,6 +69,7 @@ export const render = () => {
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 
   AdventureLog.draw();
+  InnerMonologue.draw();
   Legend.drawNamePlates(sortLegend());
 
   // clearCanvas();

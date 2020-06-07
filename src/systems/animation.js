@@ -1,4 +1,4 @@
-import ecs from "../state/ecs";
+import { SET_START_TIME } from "../state/events";
 
 import { clearCell, drawCell } from "../lib/canvas";
 import { animatingEntities } from "../queries";
@@ -8,7 +8,7 @@ export const animation = () => {
     const time = new Date();
     // set animation startTime
     if (!entity.animate.startTime) {
-      entity.fireEvent("set-start-time", { time });
+      entity.fireEvent(SET_START_TIME, { time });
     }
     const frameTime = time - entity.animate.startTime;
     // end animation when complete

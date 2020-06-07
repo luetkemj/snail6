@@ -12,8 +12,9 @@ export default class Appearance extends Component {
   };
 
   onSoil(evt) {
-    this.currentColor = evt.data.color;
-    evt.handle();
+    if (evt.data.color) {
+      this.currentColor = evt.data.color;
+    }
   }
 
   onClean(evt) {

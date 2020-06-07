@@ -1,6 +1,7 @@
 import { random, sample, times } from "lodash";
 import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
+import { CLEAN, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
@@ -33,10 +34,11 @@ const kill = (entity) => {
     entity.appearance.currentBackground = "transparent";
   }
   splatterBlood(entity, self);
+  entity.fireEvent("kill");
 };
 
 const hit = (targetEntity) => {
-  targetEntity.fireEvent("take-damage", { amount: 5 });
+  targetEntity.fireEvent(TAKE_DAMAGE, { amount: 5 });
 
   if (targetEntity.has("Blood")) {
     splatterBlood(targetEntity);
@@ -68,12 +70,15 @@ const splatterBlood = (entity, splatterSelf = false) => {
 
   locIds.forEach((locId) => {
     cache.readSet("entitiesAtLocation", locId).forEach((x) => {
-      ecs.getEntity(x).add("Soilage", {
+      const e = ecs.getEntity(x);
+
+      e.add("Soilage", {
         color: entity.blood.color,
         name: "blood",
         sourceEntityId: entity.id,
         sourceName: entity.name.nomen,
       });
+      e.fireEvent(SOIL, { text: `${entity.name.nomen} blood` });
     });
   });
 };
@@ -99,7 +104,7 @@ const washInFountain = (targetEntity, fountain) => {
       targetEntity
         .get("Soilage")
         .forEach((x) => fountain.add("Soilage", { ...x.serialize() }));
-      targetEntity.fireEvent("clean");
+      targetEntity.fireEvent(CLEAN);
     }
   } else {
     if (fountain.has("Soilage")) {
@@ -127,7 +132,7 @@ const absorb = (entity) => {
         cEntity
           .get("Soilage")
           .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
-        cEntity.fireEvent("clean");
+        cEntity.fireEvent(CLEAN);
       }
 
       // todo: should actually put the entity into it's inventory (will need to include items eventually)
@@ -169,6 +174,11 @@ export const movement = () => {
     if (entitiesAtLoc) {
       entitiesAtLoc.forEach((eid) => {
         const potentialBlocker = ecs.getEntity(eid);
+
+        if (entity.name.nomen === "player") {
+          potentialBlocker.fireEvent(OBSERVE);
+        }
+
         if (potentialBlocker.isBlocking) {
           blockers.push(potentialBlocker);
         }

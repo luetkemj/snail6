@@ -3,6 +3,7 @@ import Blood from "../components/Blood";
 import isBoneless from "../components/isBoneless";
 import Brain from "../components/Brain";
 import CanAbsorb from "../components/CanAbsorb";
+import Description from "../components/Description";
 import Health from "../components/Health";
 import Position from "../components/Position";
 import { colors } from "../lib/graphics";
@@ -33,5 +34,14 @@ export default {
     { type: Name, properties: { nomen: "Jelly" } },
     { type: Position },
     { type: CanLegend },
+    {
+      type: Description,
+      properties: {
+        text: "It's a woobly, wobbly jelly!",
+        default: "It's a woobly, wobbly jelly!",
+        soiled: "",
+        dead: "Chunks of jelly are scattered about.",
+      },
+    },
   ],
 };

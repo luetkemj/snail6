@@ -8,6 +8,7 @@ import Brain from "../components/Brain";
 import CanAbsorb from "../components/CanAbsorb";
 import CanDijkstra from "../components/CanDijkstra";
 import CanLegend from "../components/CanLegend";
+import Description from "../components/Description";
 import Health from "../components/Health";
 import IsBlocking from "../components/IsBlocking";
 import isBoneless from "../components/isBoneless";
@@ -44,6 +45,7 @@ ecs.registerComponent(Brain);
 ecs.registerComponent(CanAbsorb);
 ecs.registerComponent(CanDijkstra);
 ecs.registerComponent(CanLegend);
+ecs.registerComponent(Description);
 ecs.registerComponent(Health);
 ecs.registerComponent(isBoneless);
 ecs.registerComponent(IsBlocking);
@@ -74,6 +76,7 @@ export let gameState = {
   playerTurn: true,
   turn: 0,
   adventureLog: [],
+  innerMonologue: [{ text: "I think, therefore I am." }],
 };
 
 export let player = ecs.createPrefab("PlayerPrefab");
