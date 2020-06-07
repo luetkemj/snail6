@@ -1,8 +1,11 @@
 import "./lib/canvas.js";
 import { pxToCell } from "./lib/canvas";
+import { colors } from "./lib/graphics";
 import ecs, { cache, player, gameState } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 import { cellToId } from "./lib/grid";
+import { log } from "./lib/adventure-log";
+import { dijkstra } from "./lib/dijkstra";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
 
@@ -23,6 +26,15 @@ function initGame() {
   player.position.y = dungeon.start.y;
 
   cache.addSet("entitiesAtLocation", cellToId(dungeon.start), player.id);
+
+  const playerDijkstraMap = dijkstra([
+    { x: player.position.x, y: player.position.y },
+  ]);
+  cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
+
+  log({ text: "COVERED IN BLOOD!", fg: "red" });
+  log({ text: "A game where you get COVERED IN BLOOD!" });
+  log({ text: "Watch out for skellies and jellies!" });
 }
 
 initGame();
@@ -41,9 +53,9 @@ function gameTick() {
 gameTick();
 
 function update() {
-  if (animatingEntities.get().size) {
-    animation();
-  }
+  // if (animatingEntities.get().size) {
+  //   animation();
+  // }
 
   if (gameState.userInput && gameState.playerTurn && !player.isDead) {
     processUserInput();

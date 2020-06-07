@@ -1,6 +1,7 @@
 import { get, set } from "lodash";
 
 export default class Cache {
+  allChars = [];
   entitiesAtLocation = {};
   dijkstraMaps = {
     player: {},

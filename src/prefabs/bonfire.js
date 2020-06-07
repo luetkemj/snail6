@@ -4,6 +4,7 @@ import Position from "../components/Position";
 import { chars, colors } from "../lib/graphics";
 import Layer300 from "../components/Layer300";
 import Name from "../components/Name";
+import CanLegend from "../components/CanLegend";
 
 export default {
   name: "BonfirePrefab",
@@ -20,5 +21,6 @@ export default {
     { type: Layer300 },
     { type: Position },
     { type: Name, properties: { nomen: "bonfire" } },
+    { type: CanLegend },
   ],
 };

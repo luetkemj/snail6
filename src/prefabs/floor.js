@@ -1,4 +1,5 @@
 import Appearance from "../components/Appearance";
+import Description from "../components/Description";
 import Layer100 from "../components/Layer100";
 import Name from "../components/Name";
 import Position from "../components/Position";
@@ -19,5 +20,14 @@ export default {
     { type: Layer100 },
     { type: Position },
     { type: Name, properties: { nomen: "floor" } },
+    {
+      type: Description,
+      properties: {
+        text: "The hard stone is cold beneath my feet.",
+        default: "The hard stone is cold beneath my feet.",
+        soiled: "The floor is sticky with [SOILAGE].",
+        dead: "",
+      },
+    },
   ],
 };

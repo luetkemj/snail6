@@ -7,6 +7,8 @@ import Blood from "../components/Blood";
 import Brain from "../components/Brain";
 import CanAbsorb from "../components/CanAbsorb";
 import CanDijkstra from "../components/CanDijkstra";
+import CanLegend from "../components/CanLegend";
+import Description from "../components/Description";
 import Health from "../components/Health";
 import IsBlocking from "../components/IsBlocking";
 import isBoneless from "../components/isBoneless";
@@ -23,6 +25,7 @@ import Position from "../components/Position";
 import Soilage from "../components/Soilage";
 
 import BonfirePrefab from "../prefabs/bonfire";
+import CharPrefab from "../prefabs/char";
 import FloorPrefab from "../prefabs/floor";
 import FountainPrefab from "../prefabs/fountain";
 import GelatinousCubePrefab from "../prefabs/gelatinous-cube";
@@ -33,8 +36,6 @@ import WallPrefab from "../prefabs/wall";
 
 const ecs = new Engine();
 export const cache = new Cache();
-window.snailCache = cache;
-window.ecs = ecs;
 
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
@@ -43,6 +44,8 @@ ecs.registerComponent(Blood);
 ecs.registerComponent(Brain);
 ecs.registerComponent(CanAbsorb);
 ecs.registerComponent(CanDijkstra);
+ecs.registerComponent(CanLegend);
+ecs.registerComponent(Description);
 ecs.registerComponent(Health);
 ecs.registerComponent(isBoneless);
 ecs.registerComponent(IsBlocking);
@@ -59,6 +62,7 @@ ecs.registerComponent(Position);
 ecs.registerComponent(Soilage);
 
 ecs.registerPrefab(BonfirePrefab);
+ecs.registerPrefab(CharPrefab);
 ecs.registerPrefab(FloorPrefab);
 ecs.registerPrefab(FountainPrefab);
 ecs.registerPrefab(GelatinousCubePrefab);
@@ -71,6 +75,8 @@ export let gameState = {
   userInput: null,
   playerTurn: true,
   turn: 0,
+  adventureLog: [],
+  innerMonologue: [{ text: "I think, therefore I am." }],
 };
 
 export let player = ecs.createPrefab("PlayerPrefab");
@@ -110,6 +116,13 @@ export function saveGame() {
 
   console.log("game saved");
 }
+
+window.snail = {
+  ecs,
+  cache,
+  gameState,
+  player,
+};
 
 export default ecs;
 

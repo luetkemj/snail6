@@ -1,12 +1,23 @@
 import { random, sample, times } from "lodash";
 import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
+import { CLEAN, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
-import { movableEntities } from "../queries";
+import { aiEntities, movableEntities } from "../queries";
+import { log } from "../lib/adventure-log";
 
 import { aStar } from "../lib/pathfinding";
+
+export const nuke = () => {
+  log({ text: `NUKE!`, fg: "orange" });
+  aiEntities.get().forEach((entity) => {
+    if (entity.name.nomen !== "player") {
+      kill(entity);
+    }
+  });
+};
 
 const kill = (entity) => {
   entity.add("IsDead");
@@ -21,13 +32,13 @@ const kill = (entity) => {
   if (entity.has("isBoneless")) {
     entity.appearance.background = "transparent";
     entity.appearance.currentBackground = "transparent";
-    // once more spatter blood!
-    splatterBlood(entity, self);
   }
+  splatterBlood(entity, self);
+  entity.fireEvent("kill");
 };
 
 const hit = (targetEntity) => {
-  targetEntity.fireEvent("take-damage", { amount: 5 });
+  targetEntity.fireEvent(TAKE_DAMAGE, { amount: 5 });
 
   if (targetEntity.has("Blood")) {
     splatterBlood(targetEntity);
@@ -47,6 +58,7 @@ const hit = (targetEntity) => {
 };
 
 const splatterBlood = (entity, splatterSelf = false) => {
+  if (!entity.blood) return;
   const neighborIds = getNeighborIds(entity.position, "ALL");
   const locIds = [];
 
@@ -58,12 +70,15 @@ const splatterBlood = (entity, splatterSelf = false) => {
 
   locIds.forEach((locId) => {
     cache.readSet("entitiesAtLocation", locId).forEach((x) => {
-      ecs.getEntity(x).add("Soilage", {
+      const e = ecs.getEntity(x);
+
+      e.add("Soilage", {
         color: entity.blood.color,
         name: "blood",
         sourceEntityId: entity.id,
         sourceName: entity.name.nomen,
       });
+      e.fireEvent(SOIL, { text: `${entity.name.nomen} blood` });
     });
   });
 };
@@ -81,12 +96,23 @@ const bumpAttack = (targetEntity) => {
 const washInFountain = (targetEntity, fountain) => {
   if (targetEntity.has("Soilage")) {
     if (fountain.has("Soilage")) {
-      console.log("You can't clean yourself in this foul fountain");
+      log({
+        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+      });
     } else {
+      log({ text: `${targetEntity.name.nomen} bathes in the fountain.` });
       targetEntity
         .get("Soilage")
         .forEach((x) => fountain.add("Soilage", { ...x.serialize() }));
-      targetEntity.fireEvent("clean");
+      targetEntity.fireEvent(CLEAN);
+    }
+  } else {
+    if (fountain.has("Soilage")) {
+      log({
+        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+      });
+    } else {
+      log({ text: `A fountain full of fresh clean water.` });
     }
   }
 };
@@ -106,7 +132,7 @@ const absorb = (entity) => {
         cEntity
           .get("Soilage")
           .forEach((x) => entity.add("Soilage", { ...x.serialize() }));
-        cEntity.fireEvent("clean");
+        cEntity.fireEvent(CLEAN);
       }
 
       // todo: should actually put the entity into it's inventory (will need to include items eventually)
@@ -148,6 +174,11 @@ export const movement = () => {
     if (entitiesAtLoc) {
       entitiesAtLoc.forEach((eid) => {
         const potentialBlocker = ecs.getEntity(eid);
+
+        if (entity.name.nomen === "player") {
+          potentialBlocker.fireEvent(OBSERVE);
+        }
+
         if (potentialBlocker.isBlocking) {
           blockers.push(potentialBlocker);
         }
@@ -161,6 +192,7 @@ export const movement = () => {
           (blocker.brain || blocker.name.nomen === "player") &&
           entity.name.nomen !== blocker.name.nomen
         ) {
+          log({ text: `${entity.name.nomen} hits ${blocker.name.nomen}` });
           bumpAttack(blocker);
         }
 

@@ -1,4 +1,5 @@
 import MoveTo from "../components/MoveTo";
+import { nuke } from "../systems/movement";
 import { gameState, player, loadGame, saveGame } from "../state/ecs";
 
 export const input = (key) => {
@@ -11,6 +12,10 @@ export const input = (key) => {
       break;
     case "z":
       gameState.userInput = { key, type: "REST", payload: {} };
+      break;
+
+    case "N":
+      gameState.userInput = { key, type: "NUKE", payload: {} };
       break;
 
     case "ArrowUp":
@@ -58,6 +63,11 @@ export const processUserInput = () => {
   }
 
   const { key, type, payload } = gameState.userInput;
+
+  if (type === "NUKE") {
+    console.log("nuke!");
+    nuke();
+  }
 
   if (type === "MOVE") {
     player.add(MoveTo, payload);
