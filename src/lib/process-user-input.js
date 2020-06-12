@@ -1,5 +1,5 @@
 import MoveTo from "../components/MoveTo";
-import { nuke } from "../systems/movement";
+import { nuke, splatterBlood } from "../systems/movement";
 import { gameState, player, loadGame, saveGame } from "../state/ecs";
 
 export const input = (key) => {
@@ -14,10 +14,15 @@ export const input = (key) => {
       gameState.userInput = { key, type: "REST", payload: {} };
       break;
 
+    // debug codes:
     case "N":
       gameState.userInput = { key, type: "NUKE", payload: {} };
       break;
+    case "B":
+      gameState.userInput = { key, type: "BLOOD", payload: {} };
+      break;
 
+    // Movement
     case "ArrowUp":
       gameState.userInput = { key, type: "MOVE", payload: { x: 0, y: -1 } };
       break;
@@ -64,8 +69,14 @@ export const processUserInput = () => {
 
   const { key, type, payload } = gameState.userInput;
 
+  console.log({ key, type, payload });
+
+  if (type === "BLOOD") {
+    console.log("splayyer", player);
+    splatterBlood(player);
+  }
+
   if (type === "NUKE") {
-    console.log("nuke!");
     nuke();
   }
 

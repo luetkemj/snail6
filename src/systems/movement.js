@@ -57,7 +57,7 @@ const hit = (targetEntity) => {
   }
 };
 
-const splatterBlood = (entity, splatterSelf = false) => {
+export const splatterBlood = (entity, splatterSelf = false) => {
   if (!entity.blood) return;
   const neighborIds = getNeighborIds(entity.position, "ALL");
   const locIds = [];
