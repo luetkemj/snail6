@@ -27,6 +27,13 @@ const moveAwayFromPlayer = (entity) => {
   }
 };
 
+const moveToBlood = (entity) => {
+  const newLoc = walkDijkstra(entity, "blood");
+  if (Object.keys(newLoc).length) {
+    entity.add("MoveTo", { ...newLoc, relative: false });
+  }
+};
+
 const meander = (entity, frequency = 1, stickiness = 4) => {
   if (random(1, frequency) === 1) {
     let m = drunkenWalk();
@@ -87,7 +94,8 @@ export const ai = () => {
     }
 
     if (entity.brain.ai === "gelatinousCube") {
-      meander(entity);
+      // meander(entity);
+      moveToBlood(entity);
     }
   });
 };

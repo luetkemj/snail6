@@ -64,7 +64,9 @@ export const render = () => {
   clearCanvas();
 
   layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
+
   // renderOmniscience();
+
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
 
@@ -72,6 +74,7 @@ export const render = () => {
   InnerMonologue.draw();
   Legend.drawNamePlates(sortLegend());
 
+  // to view all possible characters
   // clearCanvas();
   // renderAllChars();
 };

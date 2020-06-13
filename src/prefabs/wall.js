@@ -7,6 +7,7 @@ import Description from "../components/Description";
 
 import { chars, colors } from "../lib/graphics";
 import Name from "../components/Name";
+import CanBeAbsorbed from "../components/CanBeAbsorbed";
 
 export default {
   name: "WallPrefab",
@@ -20,6 +21,7 @@ export default {
       },
     },
     { type: IsBlocking },
+    { type: CanBeAbsorbed },
     { type: IsOpaque },
     { type: Layer100 },
     { type: Position },

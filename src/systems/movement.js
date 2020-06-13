@@ -1,11 +1,11 @@
-import { random, sample, times } from "lodash";
+import { compact, random, sample, times } from "lodash";
 import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
 import { CLEAN, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
-import { aiEntities, movableEntities } from "../queries";
+import { aiEntities, movableEntities, soiledEntities } from "../queries";
 import { log } from "../lib/adventure-log";
 
 import { aStar } from "../lib/pathfinding";
@@ -17,6 +17,14 @@ export const nuke = () => {
       kill(entity);
     }
   });
+};
+
+const updateBloodDijkstra = () => {
+  // currently we only have blood for soilage so we can do this:
+  const bloodDijkstraMap = dijkstra(
+    [...soiledEntities.get()].map((x) => x.position)
+  );
+  cache.addObj("dijkstraMaps", "blood", bloodDijkstraMap);
 };
 
 const kill = (entity) => {
@@ -81,6 +89,8 @@ export const splatterBlood = (entity, splatterSelf = false) => {
       e.fireEvent(SOIL, { text: `${entity.name.nomen} blood` });
     });
   });
+
+  updateBloodDijkstra();
 };
 
 const bumpAttack = (targetEntity) => {
@@ -117,15 +127,19 @@ const washInFountain = (targetEntity, fountain) => {
   }
 };
 
-const absorb = (entity) => {
-  // get all entities at loc excluding self
-  const entitiesAtLoc = cache.readSet(
-    "entitiesAtLocation",
-    toLocId(entity.position)
-  );
+const absorb = (entity, position) => {
+  let entitiesAtLoc;
+  if (position) {
+    entitiesAtLoc = cache.readSet("entitiesAtLocation", toLocId(position));
+  } else {
+    entitiesAtLoc = cache.readSet(
+      "entitiesAtLocation",
+      toLocId(entity.position)
+    );
+  }
 
   entitiesAtLoc.forEach((eId) => {
-    if (eId !== entity.id) {
+    if (eId !== entity.id && ecs.getEntity(eId).canBeAbsorbed) {
       const cEntity = ecs.getEntity(eId);
       if (cEntity.has("Soilage")) {
         // clone all soilage and add to self
@@ -146,6 +160,7 @@ const absorb = (entity) => {
       }
     }
   });
+  updateBloodDijkstra();
 };
 
 export const movement = () => {
@@ -198,6 +213,10 @@ export const movement = () => {
 
         if (blocker.name.nomen === "fountain") {
           washInFountain(entity, blocker);
+        }
+
+        if (entity.has("canAbsorb")) {
+          absorb(entity, blocker.position);
         }
       });
       return entity.remove("MoveTo");

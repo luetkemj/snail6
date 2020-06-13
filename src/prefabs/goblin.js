@@ -9,6 +9,7 @@ import Layer400 from "../components/Layer400";
 import IsBlocking from "../components/IsBlocking";
 import Name from "../components/Name";
 import CanLegend from "../components/CanLegend";
+import CanBeAbsorbed from "../components/CanBeAbsorbed";
 
 export default {
   name: "GoblinPrefab",
@@ -22,6 +23,7 @@ export default {
       },
     },
     { type: Blood },
+    { type: CanBeAbsorbed },
     { type: Brain, properties: { ai: "goblin" } },
     { type: Health, properties: { current: 10, max: 10 } },
     { type: IsBlocking },

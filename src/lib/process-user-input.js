@@ -69,10 +69,7 @@ export const processUserInput = () => {
 
   const { key, type, payload } = gameState.userInput;
 
-  console.log({ key, type, payload });
-
   if (type === "BLOOD") {
-    console.log("splayyer", player);
     splatterBlood(player);
   }
 
