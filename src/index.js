@@ -1,3 +1,5 @@
+import copyToClipboard from "copy-to-clipboard";
+
 import "./lib/canvas.js";
 import { pxToCell } from "./lib/canvas";
 import { colors } from "./lib/graphics";
@@ -93,8 +95,13 @@ if (process.env.NODE_ENV !== "test") {
     const [x, y] = pxToCell(e);
     const locId = cellToId({ x, y });
 
-    cache
-      .readSet("entitiesAtLocation", locId)
-      .forEach((eId) => console.log(ecs.getEntity(eId).serialize()));
+    let chars = "";
+    cache.readSet("entitiesAtLocation", locId).forEach((eId) => {
+      const entity = ecs.getEntity(eId);
+      console.log(entity.serialize());
+      chars += entity.appearance.char;
+    });
+
+    copyToClipboard(chars);
   };
 }
