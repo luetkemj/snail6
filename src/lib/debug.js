@@ -35,10 +35,11 @@ export const renderDijkstra = (dMapName) => {
   });
 };
 
-export const renderOmniscience = () => {
+export const renderOmniscience = (alpha) => {
   [...ecs.entities.all].forEach((entity) =>
     drawCell(entity, {
       fg: entity.appearance.currentColor || entity.appearance.color,
+      fgA: alpha || 1,
     })
   );
 };

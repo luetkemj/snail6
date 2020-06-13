@@ -6,7 +6,7 @@ import { colors } from "./lib/graphics";
 import ecs, { cache, player, gameState } from "./state/ecs";
 import { input, processUserInput } from "./lib/process-user-input";
 import { cellToId } from "./lib/grid";
-import { log } from "./lib/adventure-log";
+import { log, innerLog } from "./lib/adventure-log";
 import { dijkstra } from "./lib/dijkstra";
 
 import initDungeonLevel from "./initializers/dungeon-level.init";
@@ -62,9 +62,15 @@ function gameTick() {
 gameTick();
 
 function update() {
-  // if (animatingEntities.get().size) {
-  //   animation();
-  // }
+  if (player.isDead && !gameState.gameOver) {
+    innerLog({
+      text: "Your vision goes dark as you feel your life slip away...",
+      fadeX: true,
+    });
+
+    gameState.gameOver = true;
+    return render();
+  }
 
   if (gameState.userInput && gameState.playerTurn && !player.isDead) {
     processUserInput();

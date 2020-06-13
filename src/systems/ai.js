@@ -86,7 +86,7 @@ export const ai = () => {
       if (player.has("Soilage")) {
         moveToPlayer(entity);
       } else {
-        meander(entity);
+        meander(entity, 5);
       }
     }
 

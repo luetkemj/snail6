@@ -1,4 +1,4 @@
-import { sortBy } from "lodash";
+import { random, sortBy, times, zip } from "lodash";
 import { cache, gameState, player } from "../state/ecs";
 import Terminal from "../gui/Terminal";
 import { colors } from "../lib/graphics";
@@ -13,16 +13,20 @@ import {
 
 import { renderOmniscience, renderAllChars } from "../lib/debug";
 
-const drawCellIfAble = (entity) => {
+const drawCellIfAble = (entity, options) => {
   const { appearance, isInFov, isRevealed } = entity;
 
   if (isInFov) {
-    drawCell(entity, { fg: appearance.currentColor || appearance.color });
+    drawCell(entity, {
+      fg: appearance.currentColor || appearance.color,
+      ...options,
+    });
   }
 
   if (isRevealed && !isInFov) {
     drawCell(entity, {
       fg: colors.revealedColor,
+      ...options,
     });
   }
 };
@@ -51,6 +55,44 @@ const Legend = new Terminal({
   y: 0,
 });
 
+const bloodLines = [];
+times(79, () => {
+  const line = [];
+  times(random(0, 34), () => {
+    line.push("•");
+  });
+  bloodLines.push(line);
+});
+
+const MorgueBlood = new Terminal({
+  width: 79,
+  height: 30,
+  x: 21,
+  y: 3,
+  templates: zip(...bloodLines)
+    .map((line) => line.map((x) => x || " "))
+    .map((x) => ({
+      text: x.join(""),
+      fg: colors.blood,
+    })),
+});
+
+const Morgue = new Terminal({
+  width: 35,
+  height: 8,
+  x: 35,
+  y: 10,
+  templates: [
+    {
+      text: "You Have Died",
+      fg: colors.blood,
+      x: 53,
+    },
+    { text: "Refresh the browser", x: 50 },
+    { text: "to play again", x: 53 },
+  ],
+});
+
 const sortLegend = () => {
   const playerDijkstra = cache.readObj("dijkstraMaps", "player");
 
@@ -63,16 +105,26 @@ const sortLegend = () => {
 export const render = () => {
   clearCanvas();
 
-  layer100Entities.get().forEach((entity) => drawCellIfAble(entity));
+  const options = {};
+  if (player.isDead) {
+    options.fgA = 0;
+  }
+
+  layer100Entities.get().forEach((entity) => drawCellIfAble(entity, options));
 
   // renderOmniscience();
 
-  layer300Entities.get().forEach((entity) => drawCellIfAble(entity));
-  layer400Entities.get().forEach((entity) => drawCellIfAble(entity));
+  layer300Entities.get().forEach((entity) => drawCellIfAble(entity, options));
+  layer400Entities.get().forEach((entity) => drawCellIfAble(entity, options));
 
   AdventureLog.draw();
   InnerMonologue.draw();
   Legend.drawNamePlates(sortLegend());
+
+  if (player.isDead) {
+    MorgueBlood.draw();
+    Morgue.draw();
+  }
 
   // to view all possible characters
   // clearCanvas();

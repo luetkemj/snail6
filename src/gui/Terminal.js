@@ -23,6 +23,7 @@ export default class Terminal {
 
   #drawText(template) {
     const textToRender = template.text;
+
     textToRender.split("").forEach((char, index) => {
       // we shouldn't have to do this for each char -
       // but gotta refactor drawCell to solve this one...
@@ -38,6 +39,10 @@ export default class Terminal {
           y: options.y,
         },
       };
+
+      if (template.fadeX) {
+        options.fgA = (textToRender.length - index) / 100;
+      }
 
       delete options.x;
       delete options.y;
@@ -63,6 +68,9 @@ export default class Terminal {
   #drawTemplates() {
     const templates = this.templates.slice(this.templates.length - this.height);
     templates.forEach((template, index) => {
+      if (index > this.height) {
+        return;
+      }
       if (Array.isArray(template)) {
         const fgA = this.options.fadeY ? index * 0.75 || 0.5 : 1;
         this.#drawInline(
@@ -71,7 +79,7 @@ export default class Terminal {
       } else {
         const tempt = {
           ...template,
-          x: this.x,
+          x: template.x || this.x,
           y: template.y || index + this.y,
         };
 
