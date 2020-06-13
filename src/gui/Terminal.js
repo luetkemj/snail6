@@ -64,7 +64,7 @@ export default class Terminal {
     const templates = this.templates.slice(this.templates.length - this.height);
     templates.forEach((template, index) => {
       if (Array.isArray(template)) {
-        this.#drawInline(template);
+        this.#drawInline(template.map((x) => ({ ...x, y: index + this.y })));
       } else {
         const tempt = {
           ...template,

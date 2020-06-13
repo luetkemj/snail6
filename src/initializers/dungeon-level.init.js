@@ -95,7 +95,7 @@ const initDungeonLevel = () => {
     }
   });
 
-  times(random(1, 3), () => {
+  times(random(1, 1), () => {
     const locId = sample(dungeon.openTileIds);
     if (cache.readSet("entitiesAtLocation", locId).size === 1) {
       const entity = ecs.createPrefab("GelatinousCubePrefab", {

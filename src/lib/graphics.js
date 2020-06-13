@@ -1,7 +1,7 @@
 export const colors = {
   defaultColor: "#ff0077",
   defaultBGColor: "#000",
-  revealedColor: "#333",
+  revealedColor: "#222",
 
   inventoryHighlight: "#A9CCE3",
 

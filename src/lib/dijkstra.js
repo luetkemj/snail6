@@ -20,9 +20,11 @@ export const dijkstra = (goals, weights = []) => {
 
     neighborLocIds.forEach((neighborId) => {
       if (!distance[neighborId]) {
-        const neighborIds = [
-          ...cache.readSet("entitiesAtLocation", neighborId),
-        ];
+        const esAtLoc = cache.readSet("entitiesAtLocation", neighborId);
+        let neighborIds = false;
+        if (esAtLoc) {
+          neighborIds = [...esAtLoc];
+        }
         if (
           // check if location exists and is NOT blocking (no entity at location can be blocking AND brainless)
           neighborIds &&

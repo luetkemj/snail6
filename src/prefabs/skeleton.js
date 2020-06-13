@@ -8,6 +8,7 @@ import IsBlocking from "../components/IsBlocking";
 import Name from "../components/Name";
 import CanLegend from "../components/CanLegend";
 import Description from "../components/Description";
+import CanBeAbsorbed from "../components/CanBeAbsorbed";
 
 export default {
   name: "SkeletonPrefab",
@@ -21,6 +22,7 @@ export default {
       },
     },
     { type: Brain, properties: { ai: "skeleton" } },
+    { type: CanBeAbsorbed },
     { type: Health, properties: { current: 30, max: 30 } },
     { type: IsBlocking },
     { type: Layer400 },

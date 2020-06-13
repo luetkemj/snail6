@@ -3,6 +3,7 @@ import Description from "../components/Description";
 import Layer100 from "../components/Layer100";
 import Name from "../components/Name";
 import Position from "../components/Position";
+import CanBeAbsorbed from "../components/CanBeAbsorbed";
 
 import { chars, colors } from "../lib/graphics";
 
@@ -20,6 +21,7 @@ export default {
     { type: Layer100 },
     { type: Position },
     { type: Name, properties: { nomen: "floor" } },
+    { type: CanBeAbsorbed },
     {
       type: Description,
       properties: {

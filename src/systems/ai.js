@@ -1,6 +1,6 @@
 import { random } from "lodash";
 import { cache, player } from "../state/ecs";
-import { aiEntities, aiEntitiesInFov } from "../queries";
+import { aiEntities, aiEntitiesInFov, soiledEntities } from "../queries";
 import { aStar, drunkenWalk, walkDijkstra } from "../lib/pathfinding";
 import { toLocId } from "../lib/grid";
 
@@ -27,6 +27,13 @@ const moveAwayFromPlayer = (entity) => {
   }
 };
 
+const moveToBlood = (entity) => {
+  const newLoc = walkDijkstra(entity, "blood");
+  if (Object.keys(newLoc).length) {
+    entity.add("MoveTo", { ...newLoc, relative: false });
+  }
+};
+
 const meander = (entity, frequency = 1, stickiness = 4) => {
   if (random(1, frequency) === 1) {
     let m = drunkenWalk();
@@ -44,10 +51,7 @@ const meander = (entity, frequency = 1, stickiness = 4) => {
     }
 
     const newLoc = m;
-
-    if (entity.has("IsInFov")) {
-      entity.add("MoveTo", { ...newLoc, relative: true });
-    }
+    entity.add("MoveTo", { ...newLoc, relative: true });
   }
 };
 
@@ -87,7 +91,11 @@ export const ai = () => {
     }
 
     if (entity.brain.ai === "gelatinousCube") {
-      meander(entity);
+      if (soiledEntities.get().size) {
+        moveToBlood(entity);
+      } else {
+        meander(entity);
+      }
     }
   });
 };
