@@ -97,35 +97,45 @@ export default class Cache {
   validate(name, key, operation) {
     if (operation === "add") {
       if (!this[name]) {
-        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        if (process.env.NODE_ENV === "development") {
+          console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        }
         return false;
       }
     }
 
     if (operation === "readSet") {
       if (!this[name]) {
-        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        if (process.env.NODE_ENV === "development") {
+          console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        }
         return false;
       }
 
       if (key && !this[name][key]) {
-        console.warn(
-          `Cannot "${operation}". Cache ${name}.${key} does not exist`
-        );
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `Cannot "${operation}". Cache ${name}.${key} does not exist`
+          );
+        }
         return false;
       }
     }
 
     if (operation === "read") {
       if (!this[name]) {
-        console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        if (process.env.NODE_ENV === "development") {
+          console.warn(`Cannot "${operation}". Cache "${name}" does not exist`);
+        }
         return false;
       }
 
       if (key && !this[name][key]) {
-        console.warn(
-          `Cannot "${operation}". Cache ${name}.${key} does not exist`
-        );
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `Cannot "${operation}". Cache ${name}.${key} does not exist`
+          );
+        }
         return false;
       }
     }

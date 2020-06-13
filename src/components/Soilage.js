@@ -14,7 +14,10 @@ export default class Soilage extends Component {
   };
 
   onAttached(evt) {
-    if (this.entity.name.nomen === "player") {
+    if (
+      this.entity.name.nomen === "player" &&
+      this.entity.soilage.length === 1
+    ) {
       log([
         { text: "COVERED IN BLOOD! ", fg: this.color },
         { text: "Watch out for " },

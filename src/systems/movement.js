@@ -1,4 +1,4 @@
-import { compact, random, sample, times } from "lodash";
+import { compact, random, sample, some, times } from "lodash";
 import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
 import { CLEAN, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
@@ -106,11 +106,17 @@ const bumpAttack = (targetEntity) => {
 const washInFountain = (targetEntity, fountain) => {
   if (targetEntity.has("Soilage")) {
     if (fountain.has("Soilage")) {
-      log({
-        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
-      });
+      log(
+        {
+          text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+        },
+        targetEntity
+      );
     } else {
-      log({ text: `${targetEntity.name.nomen} bathes in the fountain.` });
+      log(
+        { text: `${targetEntity.name.nomen} bathes in the fountain.` },
+        targetEntity
+      );
       targetEntity
         .get("Soilage")
         .forEach((x) => fountain.add("Soilage", { ...x.serialize() }));
@@ -118,11 +124,14 @@ const washInFountain = (targetEntity, fountain) => {
     }
   } else {
     if (fountain.has("Soilage")) {
-      log({
-        text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
-      });
+      log(
+        {
+          text: `The fountain is filled with ${fountain.soilage[0].sourceName} ${fountain.soilage[0].name}.`,
+        },
+        targetEntity
+      );
     } else {
-      log({ text: `A fountain full of fresh clean water.` });
+      log({ text: `A fountain full of fresh clean water.` }, targetEntity);
     }
   }
 };
@@ -207,7 +216,13 @@ export const movement = () => {
           (blocker.brain || blocker.name.nomen === "player") &&
           entity.name.nomen !== blocker.name.nomen
         ) {
-          log({ text: `${entity.name.nomen} hits ${blocker.name.nomen}` });
+          const playerEntity = [entity, blocker].filter(
+            (e) => e.name.nomen === "player"
+          );
+          log(
+            { text: `${entity.name.nomen} hits ${blocker.name.nomen}` },
+            playerEntity
+          );
           bumpAttack(blocker);
         }
 
