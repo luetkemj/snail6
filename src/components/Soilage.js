@@ -32,6 +32,14 @@ export default class Soilage extends Component {
   }
 
   onClean(evt) {
+    if (this.entity && this.entity.name.nomen === "player") {
+      log([
+        { text: "All clean, but watch out those pesky " },
+        { text: "goblins", fg: colors.goblin },
+        { text: " in groups!" },
+      ]);
+    }
+
     this.destroy();
   }
 }

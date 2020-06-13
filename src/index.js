@@ -32,9 +32,16 @@ function initGame() {
   ]);
   cache.addObj("dijkstraMaps", "player", playerDijkstraMap);
 
-  log({ text: "COVERED IN BLOOD!", fg: "red" });
-  log({ text: "A game where you get COVERED IN BLOOD!" });
-  log({ text: "Watch out for skellies and jellies!" });
+  log({ text: "Welcome to COVERED IN BLOOD!" });
+  log([
+    { text: "A game where you get " },
+    { text: "COVERED IN BLOOD!", fg: "red" },
+  ]);
+  log([
+    { text: "Watch out for mobs of " },
+    { text: "goblins", fg: colors.goblin },
+    { text: "!" },
+  ]);
 }
 
 initGame();
