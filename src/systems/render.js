@@ -55,26 +55,30 @@ const Legend = new Terminal({
   y: 0,
 });
 
-const bloodLines = [];
-times(79, () => {
-  const line = [];
-  times(random(0, 34), () => {
-    line.push("•");
+const bloodTemplates = () => {
+  const bloodLines = [];
+  times(79, () => {
+    const line = [];
+    times(random(0, 34), () => {
+      line.push("•");
+    });
+    bloodLines.push(line);
   });
-  bloodLines.push(line);
-});
+
+  return zip(...bloodLines)
+    .map((line) => line.map((x) => x || " "))
+    .map((x) => ({
+      text: x.join(""),
+      fg: colors.blood,
+    }));
+};
 
 const MorgueBlood = new Terminal({
   width: 79,
   height: 30,
   x: 21,
   y: 3,
-  templates: zip(...bloodLines)
-    .map((line) => line.map((x) => x || " "))
-    .map((x) => ({
-      text: x.join(""),
-      fg: colors.blood,
-    })),
+  templates: bloodTemplates(),
 });
 
 const Morgue = new Terminal({

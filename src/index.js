@@ -62,14 +62,17 @@ function gameTick() {
 gameTick();
 
 function update() {
-  if (player.isDead && !gameState.gameOver) {
-    innerLog({
-      text: "Your vision goes dark as you feel your life slip away...",
-      fadeX: true,
-    });
+  if (player.isDead) {
+    if (!gameState.gameOver) {
+      innerLog({
+        text: "Your vision goes dark as you feel your life slip away...",
+        fadeX: true,
+      });
+
+      render();
+    }
 
     gameState.gameOver = true;
-    return render();
   }
 
   if (gameState.userInput && gameState.playerTurn && !player.isDead) {
