@@ -72,6 +72,18 @@ const initDungeonLevel = () => {
     }
   });
 
+  // add traps
+  times(random(1, 3), () => {
+    const locId = sample(dungeon.openTileIds);
+    if (cache.readSet("entitiesAtLocation", locId).size === 1) {
+      const entity = ecs.createPrefab("TrapPrefab", {
+        position: toCell(locId),
+      });
+
+      cache.addSet("entitiesAtLocation", locId, entity.id);
+    }
+  });
+
   // spawn monsters!
   times(random(5, 10), () => {
     const locId = sample(dungeon.openTileIds);
