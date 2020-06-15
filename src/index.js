@@ -13,6 +13,7 @@ import initDungeonLevel from "./initializers/dungeon-level.init";
 
 import { ai } from "./systems/ai";
 import { animation } from "./systems/animation";
+import { aoe } from "./systems/aoe";
 import { fov } from "./systems/fov";
 import { movement } from "./systems/movement";
 import { render } from "./systems/render";
@@ -52,10 +53,14 @@ function gameTick() {
   if (!gameState.playerTurn) {
     ai();
   }
+
   movement();
+  aoe();
+
   if (gameState.playerTurn) {
     fov();
   }
+
   render();
 }
 

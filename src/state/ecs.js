@@ -24,6 +24,7 @@ import MoveTo from "../components/MoveTo";
 import Name from "../components/Name";
 import Position from "../components/Position";
 import Soilage from "../components/Soilage";
+import Trap from "../components/Trap";
 
 import BonfirePrefab from "../prefabs/bonfire";
 import CharPrefab from "../prefabs/char";
@@ -33,13 +34,16 @@ import GelatinousCubePrefab from "../prefabs/gelatinous-cube";
 import GoblinPrefab from "../prefabs/goblin";
 import PlayerPrefab from "../prefabs/player";
 import SkeletonPrefab from "../prefabs/skeleton";
+import TrapPrefab from "../prefabs/blood-trap";
 import WallPrefab from "../prefabs/wall";
+import AreaOfEffect from "../components/AreaOfEffect";
 
 const ecs = new Engine();
 export const cache = new Cache();
 
 // all Components and Prefabs must be `registered` by the engine
 ecs.registerComponent(Animate);
+ecs.registerComponent(AreaOfEffect);
 ecs.registerComponent(Appearance);
 ecs.registerComponent(Blood);
 ecs.registerComponent(Brain);
@@ -62,6 +66,7 @@ ecs.registerComponent(MoveTo);
 ecs.registerComponent(Name);
 ecs.registerComponent(Position);
 ecs.registerComponent(Soilage);
+ecs.registerComponent(Trap);
 
 ecs.registerPrefab(BonfirePrefab);
 ecs.registerPrefab(CharPrefab);
@@ -71,6 +76,7 @@ ecs.registerPrefab(GelatinousCubePrefab);
 ecs.registerPrefab(GoblinPrefab);
 ecs.registerPrefab(PlayerPrefab);
 ecs.registerPrefab(SkeletonPrefab);
+ecs.registerPrefab(TrapPrefab);
 ecs.registerPrefab(WallPrefab);
 
 export let gameState = {

@@ -2,6 +2,7 @@ import ecs from "../state/ecs";
 
 import Animate from "../components/Animate";
 import Appearance from "../components/Appearance";
+import AreaOfEffect from "../components/AreaOfEffect";
 import Brain from "../components/Brain";
 import CanAbsorb from "../components/CanAbsorb";
 import CanBeAbsorbed from "../components/CanBeAbsorbed";
@@ -28,6 +29,10 @@ export const aiEntitiesInFov = ecs.createQuery({
 
 export const animatingEntities = ecs.createQuery({
   all: [Animate, IsInFov],
+});
+
+export const aoeEntities = ecs.createQuery({
+  all: [AreaOfEffect],
 });
 
 export const blockingEntities = ecs.createQuery({

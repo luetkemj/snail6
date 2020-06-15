@@ -1,7 +1,7 @@
 import { compact, random, sample, some, times } from "lodash";
 import { dijkstra, dijkstraReverse } from "../lib/dijkstra";
 import ecs, { cache, player, gameState } from "../state/ecs";
-import { CLEAN, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
+import { CLEAN, CONTACT, OBSERVE, SOIL, TAKE_DAMAGE } from "../state/events";
 import { chars, colors } from "../lib/graphics";
 import { grid } from "../lib/canvas";
 import { toLocId, getNeighborIds } from "../lib/grid";
@@ -198,6 +198,8 @@ export const movement = () => {
     if (entitiesAtLoc) {
       entitiesAtLoc.forEach((eid) => {
         const potentialBlocker = ecs.getEntity(eid);
+
+        potentialBlocker.fireEvent(CONTACT);
 
         if (entity.name.nomen === "player") {
           potentialBlocker.fireEvent(OBSERVE);
