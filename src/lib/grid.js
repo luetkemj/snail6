@@ -31,6 +31,35 @@ export const toLocId = (cellOrId) => {
   return locId;
 };
 
+const insideCircle = (center, tile, radius) => {
+  const dx = center.x - tile.x;
+  const dy = center.y - tile.y;
+  const distance_squared = dx * dx + dy * dy;
+  return distance_squared <= radius * radius;
+};
+
+export const circle = (center, radius) => {
+  const diameter = radius % 1 ? radius * 2 : radius * 2 + 1;
+  const top = Math.max(0, center.y - radius);
+  const bottom = Math.min(diameter, center.y + radius);
+  const left = Math.max(0, center.x - radius);
+  const right = Math.min(diameter, center.x + radius);
+
+  const locsIds = [];
+
+  for (let y = top; y <= bottom; y++) {
+    for (let x = left; x <= right; x++) {
+      const cx = Math.ceil(x);
+      const cy = Math.ceil(y);
+      if (insideCircle(center, { x: cx, y: cy }, radius)) {
+        locsIds.push(`${cx},${cy}`);
+      }
+    }
+  }
+
+  return locsIds;
+};
+
 export const rectangle = ({ x, y, width, height, hasWalls }, tileProps) => {
   const tiles = {};
 
