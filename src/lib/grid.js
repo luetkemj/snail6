@@ -40,10 +40,10 @@ const insideCircle = (center, tile, radius) => {
 
 export const circle = (center, radius) => {
   const diameter = radius % 1 ? radius * 2 : radius * 2 + 1;
-  const top = Math.max(0, center.y - radius);
-  const bottom = Math.min(diameter, center.y + radius);
-  const left = Math.max(0, center.x - radius);
-  const right = Math.min(diameter, center.x + radius);
+  const top = center.y - radius;
+  const bottom = center.y + radius;
+  const left = center.x - radius;
+  const right = center.x + radius;
 
   const locsIds = [];
 
