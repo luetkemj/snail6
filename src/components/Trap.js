@@ -19,6 +19,7 @@ export default class Trap extends Component {
     if (!this.triggered) {
       this.triggered = true;
       this.entity.add("AreaOfEffect", { ...this.aoe });
+      console.log(this.ecs.queries.aiEntities.get());
     }
   }
 }

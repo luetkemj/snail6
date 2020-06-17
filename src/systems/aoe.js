@@ -14,8 +14,6 @@ export const aoe = () => {
   aoeEntities.get().forEach((entity) => {
     const aoe = entity.areaOfEffect;
 
-    console.log(entity.serialize());
-
     const locIdsInRange = circle(entity.position, aoe.range);
 
     times(locIdsInRange.length, () => {

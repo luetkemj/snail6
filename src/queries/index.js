@@ -82,3 +82,19 @@ export const soiledEntities = ecs.createQuery({
   all: [Soilage, CanBeAbsorbed],
   none: [CanAbsorb],
 });
+
+ecs.queries.aiEntities = aiEntities;
+ecs.queries.aiEntitiesInFov = aiEntitiesInFov;
+ecs.queries.animatingEntities = animatingEntities;
+ecs.queries.aoeEntities = aoeEntities;
+ecs.queries.blockingEntities = blockingEntities;
+ecs.queries.dijkstraAbleEntities = dijkstraAbleEntities;
+ecs.queries.inFovEntities = inFovEntities;
+ecs.queries.layer100Entities = layer100Entities;
+ecs.queries.layer300Entities = layer300Entities;
+ecs.queries.layer400Entities = layer400Entities;
+ecs.queries.legendEntities = legendEntities;
+ecs.queries.movableEntities = movableEntities;
+ecs.queries.opaqueEntities = opaqueEntities;
+ecs.queries.renderableEntities = renderableEntities;
+ecs.queries.soiledEntities = soiledEntities;
