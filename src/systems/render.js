@@ -114,9 +114,9 @@ export const render = () => {
     options.fgA = 0;
   }
 
-  layer100Entities.get().forEach((entity) => drawCellIfAble(entity, options));
+  renderOmniscience();
 
-  // renderOmniscience();
+  layer100Entities.get().forEach((entity) => drawCellIfAble(entity, options));
 
   layer300Entities.get().forEach((entity) => drawCellIfAble(entity, options));
   layer400Entities.get().forEach((entity) => drawCellIfAble(entity, options));
