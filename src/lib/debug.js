@@ -1,6 +1,7 @@
 import { sample } from "lodash";
 import ecs, { cache } from "../state/ecs";
 import { drawCell } from "../lib/canvas";
+import { colors } from "../lib/graphics";
 import { rectangle, toCell } from "../lib/grid";
 import allChars from "./all-chars";
 
@@ -35,27 +36,44 @@ export const renderDijkstra = (dMapName) => {
     });
 };
 
-export const renderOmniscience = (alpha) => {
+export const renderOmniscience = () => {
     [...ecs.entities.all].forEach((entity) => {
-        // if has alpha - it has been seen and can be drawn normally.
-        if (alpha) {
+        const {
+            isInFov,
+            isRevealed,
+            appearance,
+            layer100,
+            layer200,
+            layer300,
+            layer400,
+        } = entity;
+        // if it has been revealed draw normally.
+        if (isInFov) {
             drawCell(entity, {
-                fg: entity.appearance.currentColor || entity.appearance.color,
-                fgA: alpha || 1,
+                fg: appearance.currentColor || appearance.color,
             });
         }
+
+        if (isRevealed && !isInFov) {
+            drawCell(entity, {
+                fg: colors.revealedColor,
+            });
+        }
+
         // if no alpha, draw each layer with a different color
-        if (entity.layer100) {
-            drawCell(entity, { fg: "#101250", fgA: 1 });
-        }
-        if (entity.layer200) {
-            drawCell(entity, { fg: "#102250", fgA: 1 });
-        }
-        if (entity.layer300) {
-            drawCell(entity, { fg: "#103250", fgA: 1 });
-        }
-        if (entity.layer400) {
-            drawCell(entity, { fg: "#104250", fgA: 1 });
+        if (!isRevealed) {
+            if (layer100) {
+                drawCell(entity, { fg: "#101250", fgA: 1 });
+            }
+            if (layer200) {
+                drawCell(entity, { fg: "#102250", fgA: 1 });
+            }
+            if (layer300) {
+                drawCell(entity, { fg: "#103250", fgA: 1 });
+            }
+            if (layer400) {
+                drawCell(entity, { fg: "#104250", fgA: 1 });
+            }
         }
     });
 };

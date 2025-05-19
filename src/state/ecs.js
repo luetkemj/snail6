@@ -80,64 +80,65 @@ ecs.registerPrefab(TrapPrefab);
 ecs.registerPrefab(WallPrefab);
 
 export let gameState = {
-  userInput: null,
-  playerTurn: true,
-  turn: 0,
-  adventureLog: [],
-  innerMonologue: [{ text: "I think, therefore I am." }],
+    userInput: null,
+    playerTurn: true,
+    turn: 0,
+    adventureLog: [],
+    innerMonologue: [{ text: "I think, therefore I am." }],
+    omniscient: false,
 };
 
 export let player = ecs.createPrefab("PlayerPrefab");
 
 export function loadGame() {
-  const data = JSON.parse(localStorage.getItem("gameSaveData"));
-  if (!data) {
-    console.log("No Saved Games Found");
-    return;
-  }
+    const data = JSON.parse(localStorage.getItem("gameSaveData"));
+    if (!data) {
+        console.log("No Saved Games Found");
+        return;
+    }
 
-  for (let item of ecs.entities.all) {
-    item.destroy();
-  }
+    for (let item of ecs.entities.all) {
+        item.destroy();
+    }
 
-  ecs.deserialize(data.ecs);
-  cache.deserialize(data.cache);
-  gameState = data.gameState;
-  player = ecs.getEntity(data.playerId);
+    ecs.deserialize(data.ecs);
+    cache.deserialize(data.cache);
+    gameState = data.gameState;
+    player = ecs.getEntity(data.playerId);
 
-  console.log("game loaded", {
-    cache,
-    gameState,
-    ecs,
-    player,
-  });
+    console.log("game loaded", {
+        cache,
+        gameState,
+        ecs,
+        player,
+    });
 }
 
 export function saveGame() {
-  const gameSaveData = {
-    ecs: ecs.serialize(),
-    cache: cache.serialize(),
-    gameState,
-    playerId: player.id,
-  };
-  localStorage.setItem("gameSaveData", JSON.stringify(gameSaveData));
+    const gameSaveData = {
+        ecs: ecs.serialize(),
+        cache: cache.serialize(),
+        gameState,
+        playerId: player.id,
+    };
+    localStorage.setItem("gameSaveData", JSON.stringify(gameSaveData));
 
-  console.log("game saved");
+    console.log("game saved");
 }
 
 window.snail = {
-  ecs,
-  cache,
-  gameState,
-  player,
+    ecs,
+    cache,
+    gameState,
+    player,
 };
 
 export default ecs;
 
 module.export = {
-  cache,
-  gameState,
-  player,
-  loadGame,
-  saveGame,
+    cache,
+    gameState,
+    player,
+    loadGame,
+    saveGame,
 };
