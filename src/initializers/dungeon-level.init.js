@@ -73,7 +73,7 @@ const initDungeonLevel = () => {
   });
 
   // add traps
-  times(random(100, 300), () => {
+  times(random(1, 5), () => {
     const locId = sample(dungeon.openTileIds);
     if (cache.readSet("entitiesAtLocation", locId).size === 1) {
       const entity = ecs.createPrefab("TrapPrefab", {
